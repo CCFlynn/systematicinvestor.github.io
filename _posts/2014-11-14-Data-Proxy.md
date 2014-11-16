@@ -31,11 +31,13 @@ source('post.fn.r')
 source('../ds.r')
 {% endhighlight %}
 
-
+<!-- open collapse div, http://stackoverflow.com/questions/15917463/embedding-markdown-in-jekyll-html -->
 
 Commodities:
 ----
+<a href="#self" class="acollapse">(hide)</a>
 
+<div markdown="1">
 
 {% highlight r %}
     #*****************************************************************
@@ -127,13 +129,14 @@ Quick glance at historical time series does not show anything abnormal between P
 {% endhighlight %}
 
 ![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-1.png) 
-      
-
-
+</div>
                     
 REITs: 
 ---- 
-(Dow Jones Global **ex-U.S.** Real Estate Securities Index)  
+(Dow Jones Global **ex-U.S.** Real Estate Securities Index)
+<a href="#self" class="acollapse">(hide)</a>
+
+<div markdown="1">
     
 
 {% highlight r %}
@@ -205,15 +208,16 @@ REITs:
 {% endhighlight %}
 
 ![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-4.png) 
-
-
+</div>
+[RWO vs. RWX: Head-To-Head ETF Comparison](http://etfdb.com/tool/etf-comparison/RWO-RWX/)
     
     
 REITs:
 ----
 (Dow Jones Global Select Real Estate Securities Index)
-    
-    
+<a href="#self" class="acollapse">(show)</a>
+
+<div markdown="1" style="display:none;">   
 
 {% highlight r %}
     #*****************************************************************
@@ -284,4 +288,5 @@ REITs:
 {% endhighlight %}
 
 ![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-4.png) 
+</div>
 

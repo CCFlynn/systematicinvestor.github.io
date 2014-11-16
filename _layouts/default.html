@@ -36,7 +36,7 @@
     </div>
 
     <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
+       
     <script>
       (function(document) {
         var toggle = document.querySelector('.sidebar-toggle');
@@ -48,19 +48,37 @@
 
           if(!checkbox.checked ||
              sidebar.contains(target) ||
-             (target === checkbox || target === toggle)) return;
+             (target === checkbox || target === toggle)) {
+             
+             if(target.className === "acollapse") {
+              var collapse = target.parentNode.nextSibling.nextSibling;
+              if(collapse.style.display === "none") {
+                collapse.style.display = "block";
+                target.innerHTML = "(hide)";
+              } else {
+                collapse.style.display = "none";
+                target.innerHTML = "(show)";
+              }
+             }
+             
+             return;
+             }
 
           checkbox.checked = false;
         }, false);
         
+        // open links in a new window
         var links = document.links;
 
         for (var i = 0, linksLength = links.length; i < linksLength; i++) {
            if (links[i].hostname != window.location.hostname) {
                links[i].target = '_blank';
            } 
-        }        
+        }          
       })(document);
-    </script>
+    </script> 
+    
+    <img src="https://ga-beacon.appspot.com/UA-56760514-1/systematicinvestor/{{ page.title }}?pixel">
+    
   </body>
 </html>
