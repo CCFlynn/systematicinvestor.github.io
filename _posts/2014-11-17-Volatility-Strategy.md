@@ -4,6 +4,12 @@ title: Volatility Strategy
 ---
 
 
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+
+
+
+
+
 Volatility Risk Premium (VRP)
 
 A quick test of the results presented at:
@@ -19,6 +25,9 @@ A quick test of the results presented at:
     - [Reconstruct using CBOE futures](http://www.marketsci.com/supporting.docs/Estimate%20VXX.xlsx)
     - [CBOE VIX Futures Historical Market Data](http://cfe.cboe.com/Products/historicalVIX.aspx)
     - [QMAO getSymbols.cfe() method that will do the adjustment for you by default (rescale=TRUE)](https://r-forge.r-project.org/scm/viewvc.php/pkg/qmao/R/getSymbols.cfe.R?view=markup&root=twsinstrument)
+* [How Does the CBOEs VIX Index Work?](http://sixfigureinvesting.com/2014/07/how-does-the-vix-index-work/)
+* [Volatility ETP](http://sixfigureinvesting.com/blog/page/2/)
+
 * [Reconstructing VXX from CBOE futures data ](http://tradingwithpython.blogspot.com/2012/01/reconstructing-vxx-from-cboe-futures.html)
 > Do you have equivalent code to recreate historical VXZ data?
 > Just read the VXZ brochure and adjust the calculation accordingly
@@ -84,22 +93,6 @@ buffer <- getURL("http://www.cboe.com/data/volatilityindexes/volatilityindexes.a
 
 
 
-First, let's load [Load Systematic Investor Toolbox (SIT)](http://systematicinvestor.wordpress.com/systematic-investor-toolbox/):
-
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
-###############################################################################
-if(!file.exists('../sit'))
-shiny:::download('https://github.com/systematicinvestor/SIT/raw/master/sit.lite.gz', '../sit', mode = 'wb', quiet = TRUE)
-con = gzcon(file('../sit', 'rb'))
-source(con)
-close(con)
-{% endhighlight %}
-
-
 
 Based on [Reconstructing VXX from CBOE futures data ](http://tradingwithpython.blogspot.com/2012/01/reconstructing-vxx-from-cboe-futures.html),
 I was able to reconstruct VXX from CBOE futures. I made a helper function `reconstruct.VXX.CBOE`
@@ -116,13 +109,14 @@ I just put NA's
   #*****************************************************************
   # Load historical data
   #****************************************************************** 
+  library(SIT)
   load.packages('quantmod')
   tickers = spl('VXX')    
                  
   data <- new.env()
-	getSymbols(tickers, src = 'yahoo', from = '1980-01-01', env = data, set.symbolnames = F, auto.assign = T)
+getSymbols(tickers, src = 'yahoo', from = '1980-01-01', env = data, set.symbolnames = F, auto.assign = T)
 
-	load.packages('gdata,data.table')
+load.packages('gdata,data.table')
 {% endhighlight %}
 
 
@@ -135,7 +129,7 @@ Next let's load historical data
   data$VXX.HIST = make.stock.xts(make.xts(temp$VXX, as.POSIXct(temp$DATE)))
     
   data$VXX.LONG = read.xts("data/VXXlong.TXT", format='%Y-%m-%d' )
-	data$VXX.LONG$Adjusted = data$VXX.LONG$Close
+data$VXX.LONG$Adjusted = data$VXX.LONG$Close
     
   # reconstruct VXX
   temp = reconstruct.VXX.CBOE()  
@@ -152,13 +146,16 @@ print(bt.start.dates(data))
 |VXX      |2009-01-30 |
 |VXX.CBOE |2004-03-26 |
 |VXX.HIST |2004-03-26 |
+    
+
+
 
 
 {% highlight r %}
     proxy.test(data)    
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-1.png) 
+![plot of chunk plot-4](/public/images/2014-11-17-Volatility-Strategy/plot-4-1.png) 
 
 |         |VXX    |VXX.CBOE |VXX.HIST |VXX.LONG |
 |:--------|:------|:--------|:--------|:--------|
@@ -168,6 +165,7 @@ print(bt.start.dates(data))
 |         |       |         |         |         |
 |Mean     |-77.4% |-74.6%   |-77.4%   |-77.4%   |
 |StDev    | 62.1% | 66.3%   | 62.1%   | 62.1%   |
+    
 
 
 
@@ -176,7 +174,7 @@ print(bt.start.dates(data))
     proxy.test(data, spl('VXX.HIST,VXX.CBOE,VXX.LONG'))    
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-2.png) 
+![plot of chunk plot-4](/public/images/2014-11-17-Volatility-Strategy/plot-4-2.png) 
 
 |         |VXX.HIST |VXX.CBOE |VXX.LONG |
 |:--------|:--------|:--------|:--------|
@@ -185,6 +183,7 @@ print(bt.start.dates(data))
 |         |         |         |         |
 |Mean     |-40.6%   |-38.2%   |-40.3%   |
 |StDev    | 55.7%   | 57.3%   | 55.2%   |
+    
 
 
 
@@ -193,15 +192,16 @@ print(bt.start.dates(data))
     proxy.test(data, spl('VXX,VXX.CBOE,VXX.LONG'))    
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-3.png) 
+![plot of chunk plot-4](/public/images/2014-11-17-Volatility-Strategy/plot-4-3.png) 
 
 |         |VXX    |VXX.CBOE |VXX.LONG |
 |:--------|:------|:--------|:--------|
-|VXX      |       | 97%     |100%     |
-|VXX.CBOE |       |         | 97%     |
+|VXX      |       | 96%     |100%     |
+|VXX.CBOE |       |         | 96%     |
 |         |       |         |         |
-|Mean     |-79.4% |-75.3%   |-79.4%   |
-|StDev    | 60.7% | 66.4%   | 60.7%   |
+|Mean     |-76.3% |-72.7%   |-76.3%   |
+|StDev    | 59.7% | 65.4%   | 59.7%   |
+    
 
 
 
@@ -210,14 +210,15 @@ print(bt.start.dates(data))
     proxy.test(data, spl('VXX,VXX.CBOE'))    
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-4.png) 
+![plot of chunk plot-4](/public/images/2014-11-17-Volatility-Strategy/plot-4-4.png) 
 
 |      |VXX    |VXX.CBOE |
 |:-----|:------|:--------|
-|VXX   |       |97%      |
+|VXX   |       |96%      |
 |      |       |         |
-|Mean  |-79.4% |-75.3%   |
-|StDev | 60.7% | 66.4%   |
+|Mean  |-76.3% |-72.7%   |
+|StDev | 59.7% | 65.4%   |
+    
 
 
 
@@ -226,7 +227,7 @@ print(bt.start.dates(data))
     plota(temp$VXX,type='l',lwd=2, main='VXX reconstructed from CBOE futures')
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-5.png) 
+![plot of chunk plot-4](/public/images/2014-11-17-Volatility-Strategy/plot-4-5.png) 
 
 So we can use following `VXX + VXX.LONG` to extend VXX in `getSymbols.extra`
 
@@ -235,14 +236,14 @@ So we can use following `VXX + VXX.LONG` to extend VXX in `getSymbols.extra`
   tickers = spl('VXZ')    
                  
   data <- new.env()
-	getSymbols(tickers, src = 'yahoo', from = '1980-01-01', env = data, set.symbolnames = F, auto.assign = T)
+getSymbols(tickers, src = 'yahoo', from = '1980-01-01', env = data, set.symbolnames = F, auto.assign = T)
   
   # reconstruct VXZ
   temp = reconstruct.VXX.CBOE()  
   data$VXZ.CBOE = make.stock.xts(temp$VXZ)
   
   data$VXZ.LONG = read.xts("data/VXZlong.TXT", format='%Y-%m-%d' )
-	data$VXZ.LONG$Adjusted = data$VXZ.LONG$Close
+data$VXZ.LONG$Adjusted = data$VXZ.LONG$Close
   
   
 print(bt.start.dates(data))
@@ -255,21 +256,25 @@ print(bt.start.dates(data))
 |VXZ.LONG |2004-03-26 |
 |VXZ      |2009-02-20 |
 |VXZ.CBOE |2004-03-26 |
+    
+
+
 
 
 {% highlight r %}
     proxy.test(data) 
 {% endhighlight %}
 
-![plot of chunk plot-6](/public/images/2014-11-17-Volatility-Strategy/plot-6-1.png) 
+![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-1.png) 
 
 |         |VXZ    |VXZ.CBOE |VXZ.LONG |
 |:--------|:------|:--------|:--------|
 |VXZ      |       | 94%     |100%     |
 |VXZ.CBOE |       |         | 94%     |
 |         |       |         |         |
-|Mean     |-33.7% |-33.2%   |-33.7%   |
-|StDev    | 30.5% | 31.2%   | 30.5%   |
+|Mean     |-33.0% |-32.5%   |-33.0%   |
+|StDev    | 29.9% | 30.8%   | 29.9%   |
+    
 
 
 
@@ -278,14 +283,15 @@ print(bt.start.dates(data))
     proxy.test(data, spl('VXZ.CBOE,VXZ.LONG'))       
 {% endhighlight %}
 
-![plot of chunk plot-6](/public/images/2014-11-17-Volatility-Strategy/plot-6-2.png) 
+![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-2.png) 
 
 |         |VXZ.CBOE |VXZ.LONG |
 |:--------|:--------|:--------|
 |VXZ.CBOE |         |88%      |
 |         |         |         |
-|Mean     | -5.9%   |-13.3%   |
-|StDev    | 27.2%   | 29.3%   |
+|Mean     | -7.3%   |-14.2%   |
+|StDev    | 27.3%   | 29.1%   |
+    
 
 
 
@@ -294,7 +300,7 @@ print(bt.start.dates(data))
 plota(temp$VXZ,type='l',lwd=2, main='VXZ reconstructed from CBOE futures')  
 {% endhighlight %}
 
-![plot of chunk plot-6](/public/images/2014-11-17-Volatility-Strategy/plot-6-3.png) 
+![plot of chunk plot-5](/public/images/2014-11-17-Volatility-Strategy/plot-5-3.png) 
 
 So we can use following `VXZ + VXZ.LONG` to extend VXZ in `getSymbols.extra`
 
@@ -305,25 +311,22 @@ Finally let's plot VIX Term Structure.
     print(cboe.volatility.term.structure.SPX())
 {% endhighlight %}
 
-
-
-{% highlight text %}
-## Warning in readLines(url): incomplete final line found on
-## 'http://www.cboe.com/data/volatilityindexes/volatilityindexes.aspx'
-{% endhighlight %}
-
-![plot of chunk plot-7](/public/images/2014-11-17-Volatility-Strategy/plot-7-1.png) 
+![plot of chunk plot-6](/public/images/2014-11-17-Volatility-Strategy/plot-6-1.png) 
 
 |trade.date          |expiration.date |   vix| contract.month|
 |:-------------------|:---------------|-----:|--------------:|
-|2014-11-21 15:14:59 |2014-12-20      | 12.93|              1|
-|2014-11-21 15:14:59 |2015-01-17      | 14.18|              2|
-|2014-11-21 15:14:59 |2015-02-20      | 15.73|              3|
-|2014-11-21 15:14:59 |2015-03-20      | 16.41|              4|
-|2014-11-21 15:14:59 |2015-06-19      | 18.03|              5|
-|2014-11-21 15:14:59 |2015-09-18      | 18.77|              6|
-|2014-11-21 15:14:59 |2015-12-19      | 19.60|              7|
-|2014-11-21 15:14:59 |2016-01-15      | 19.44|              8|
-|2014-11-21 15:14:59 |2016-06-17      | 20.34|              9|
-|2014-11-21 15:14:59 |2016-12-16      | 21.58|             10|
+|2014-12-05 15:14:57 |2014-12-20      | 11.81|              1|
+|2014-12-05 15:14:57 |2015-01-17      | 12.91|              2|
+|2014-12-05 15:14:57 |2015-02-20      | 14.50|              3|
+|2014-12-05 15:14:57 |2015-03-20      | 16.08|              4|
+|2014-12-05 15:14:57 |2015-06-19      | 17.63|              5|
+|2014-12-05 15:14:57 |2015-09-18      | 18.50|              6|
+|2014-12-05 15:14:57 |2015-12-19      | 19.34|              7|
+|2014-12-05 15:14:57 |2016-01-15      | 19.12|              8|
+|2014-12-05 15:14:57 |2016-06-17      | 20.16|              9|
+|2014-12-05 15:14:57 |2016-12-16      | 21.47|             10|
+    
 
+
+
+*(this report was produced on: 2014-12-07)*

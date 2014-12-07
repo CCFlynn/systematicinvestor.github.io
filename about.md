@@ -5,51 +5,83 @@ permalink: about/
 ---
                                                
 [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+ is a collection of tools that I use in my investment research.
 
-Systematic Investor Toolbox is a collection of tools that I use in my investment research.
+There are two ways to load [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+functionality:
+
+Please make sure that `curl` package is already installed and if not, please execute 
+{% highlight r %}install.packages('curl', repos = 'http://cran.r-project.org'){% endhighlight %}
+
+* First method is to download source code and load it into R session
 
 {% highlight r %}
 ###############################################################################
 # Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
+# github.com/systematicinvestor/SIT
 ###############################################################################
-con = gzcon(url('http://www.systematicportfolio.com/sit.gz', 'rb'))
-    source(con)
+library(curl)
+con = gzcon(curl('http://www.systematicportfolio.com/sit.gz','rb'))
+	source(con)
 close(con)
- 
- 
+{% endhighlight %}
+
+* Second method is to install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+package
+
+{% highlight r %}
 ###############################################################################
-# Load Systematic Investor Toolbox (SIT): Windows only
+# Install Systematic Investor Toolbox (SIT) package
+# github.com/systematicinvestor/SIT
 ###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-setInternet2(TRUE)
-con = gzcon(url('https://github.com/systematicinvestor/SIT/raw/master/sit.gz', 'rb'))
-    source(con)
-close(con)
+library(curl)
+curl_download('http://www.systematicportfolio.com/SIT.tar.gz', 'sit',mode = 'wb',quiet=T)
+install.packages('sit', repos = NULL, type='source')
+{% endhighlight %}
+
+and next load [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+library
+
+{% highlight r %}
+library(SIT)
+{% endhighlight %}
+
+
+Both methods are equivalent. If you want to keep [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+always up-to-date first method is way to go. If you want to just to get [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+second method is easier because you only download it once, and later on just load
+[Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+with `library(SIT)` command.
  
  
-###############################################################################
-# Load Systematic Investor Toolbox (SIT): from file, if for example you saved sit.gz to c:/temp/sit.gz
-###############################################################################
-con = gzcon(file('c:/temp/sit.gz', 'rb'))
-    source(con)
-close(con)
- 
- 
-###############################################################################
-# Load Systematic Investor Toolbox (SIT): Requires RCurl package
-###############################################################################
-require(RCurl)
-sit = getURLContent('https://github.com/systematicinvestor/SIT/raw/master/sit.gz', binary=TRUE, followlocation = TRUE, ssl.verifypeer = FALSE)
-    con = gzcon(rawConnection(sit, 'rb'))
-    source(con)
-close(con)
- 
- 
+Once [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+is loaded, you can for example test sample functionality of `plota.test()` function.
+
+{% highlight r %} 
 ###############################################################################
 # Example Usage:
 ###############################################################################
-# Run plota test
+# Run a plot test
 plota.test()
 {% endhighlight %}
 
+
+
+
+In some of my coding I also use a mixture of these two methods. See below:
+
+{% highlight r %}
+###############################################################################
+# Load Systematic Investor Toolbox (SIT)
+# github.com/systematicinvestor/SIT
+###############################################################################
+library(curl)
+if(!file.exists('../sit'))
+	curl_download('http://www.systematicportfolio.com/sit.gz', '../sit',mode = 'wb',quiet=T)
+con = gzcon(file('../sit', 'rb'))
+	source(con)
+close(con)
+{% endhighlight %}
+
+
+<p class="rss-subscribe">subscribe <a href="{{ "feed.xml" | prepend: site.baseurl }}">via RSS</a></p>

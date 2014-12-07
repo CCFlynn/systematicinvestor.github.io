@@ -3,22 +3,14 @@ layout: post
 title: Trading Equity Curve 
 ---
 
+
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+
+
+
+
 A quick test of the results presented at [Equity Curve Money Management](http://jonathankinlay.com/index.php/2014/11/equity-curve-money-management/). 
 
-First, let's load [Load Systematic Investor Toolbox (SIT)](http://systematicinvestor.wordpress.com/systematic-investor-toolbox/):
-
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
-###############################################################################
-if(!file.exists('../sit'))
-  shiny:::download('https://github.com/systematicinvestor/SIT/raw/master/sit.lite.gz', '../sit', mode = 'wb', quiet = TRUE)
-con = gzcon(file('../sit', 'rb'))
-  source(con)
-close(con)
-{% endhighlight %}
 
 Load Historical Prices from Yahoo Finance:
 
@@ -27,6 +19,7 @@ Load Historical Prices from Yahoo Finance:
   #*****************************************************************
   # Load historical data
   #****************************************************************** 
+  library(SIT)
   load.packages('quantmod')	
   tickers = spl('SPY')	    
                  
@@ -110,15 +103,19 @@ layout(1:2)
 
 |           |SPY.CROSS         |SPY.20.EQUITY     |
 |:----------|:-----------------|:-----------------|
-|Period     |Jan1993 - Nov2014 |Jan1993 - Nov2014 |
-|Cagr       |10.15             |12.76             |
+|Period     |Jan1993 - Dec2014 |Jan1993 - Dec2014 |
+|Cagr       |10.21             |12.82             |
 |Sharpe     |0.68              |0.7               |
-|DVR        |0.62              |0.62              |
-|Volatility |16.16             |20.1              |
+|DVR        |0.63              |0.62              |
+|Volatility |16.14             |20.08             |
 |MaxDD      |-35.53            |-53.37            |
-|AvgDD      |-2.43             |-2.38             |
-|VaR        |-1.62             |-1.85             |
-|CVaR       |-2.36             |-2.99             |
+|AvgDD      |-2.39             |-2.34             |
+|VaR        |-1.61             |-1.85             |
+|CVaR       |-2.35             |-2.99             |
 |Exposure   |99.98             |98.98             |
+    
 
 There is small improvement, but at what cost?
+
+
+*(this report was produced on: 2014-12-07)*

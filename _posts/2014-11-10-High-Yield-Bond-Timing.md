@@ -3,22 +3,16 @@ layout: post
 title: Timing in High Yield Bonds 
 ---
 
+
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+
+
+
+
 A quick test of the results presented at [Predicting Bonds with Stocks: A Strategy to Improve Timing in Corporate and High Yield Bonds](http://cssanalytics.wordpress.com/2014/10/30/predicting-bonds-with-stocks-a-strategy-to-improve-timing-in-corporate-and-high-yield-bonds/). 
 
 First, let's load [Load Systematic Investor Toolbox (SIT)](http://systematicinvestor.wordpress.com/systematic-investor-toolbox/):
 
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
-###############################################################################
-if(!file.exists('../sit'))
-  shiny:::download('https://github.com/systematicinvestor/SIT/raw/master/sit.lite.gz', '../sit', mode = 'wb', quiet = TRUE)
-con = gzcon(file('../sit', 'rb'))
-  source(con)
-close(con)
-{% endhighlight %}
 
 Load Historical Prices from Yahoo Finance:
 
@@ -27,6 +21,7 @@ Load Historical Prices from Yahoo Finance:
   #*****************************************************************
   # Load historical data
   #****************************************************************** 
+  library(SIT)
   load.packages('quantmod')	
   tickers = spl('SPY,HYG+VWEHX,LQD+VWESX,SHY+VFISX')	
                    
@@ -57,15 +52,10 @@ Look at correlations:
 
 
 
-{% highlight text %}
-## Warning in if (prev.call == first.call) result = get(id, envir =
-## .GlobalEnv): the condition has length > 1 and only the first element will
-## be used
-{% endhighlight %}
-
-
-
 Daily Correlations:
+    
+
+
 
 
 |    |HYG |LQD |SHY |
@@ -73,6 +63,7 @@ Daily Correlations:
 |LQD |37  |    |    |
 |SHY |-1  |46  |    |
 |SPY |45  |5   |-21 |
+    
 
 
 
@@ -84,13 +75,17 @@ Daily Correlations:
 
 
 Weekly Correlations:
+    
+
+
 
 
 |    |HYG |LQD |SHY |
 |:---|:---|:---|:---|
-|LQD |42  |    |    |
+|LQD |43  |    |    |
 |SHY |-1  |59  |    |
 |SPY |56  |9   |-16 |
+    
 
 
 
@@ -102,6 +97,9 @@ Weekly Correlations:
 
 
 Bi-Weekly Correlations:
+    
+
+
 
 
 |    |HYG |LQD |SHY |
@@ -109,6 +107,7 @@ Bi-Weekly Correlations:
 |LQD |45  |    |    |
 |SHY |-7  |53  |    |
 |SPY |57  |11  |-20 |
+    
 
 
 
@@ -120,13 +119,17 @@ Bi-Weekly Correlations:
 
 
 Monthly Correlations:
+    
+
+
 
 
 |    |HYG |LQD |SHY |
 |:---|:---|:---|:---|
 |LQD |59  |    |    |
-|SHY |-10 |47  |    |
-|SPY |62  |19  |-23 |
+|SHY |-10 |46  |    |
+|SPY |61  |20  |-23 |
+    
 
 SPY has high correlated with HYG, but correlation with LQD is not very high.
 
@@ -191,16 +194,17 @@ Create Report:
 
 |           |HYG.HYG.20        |HYG.SPY.20        |LQD.LQD.20        |LQD.SPY.20        |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |Jun1996 - Nov2014 |Jun1996 - Nov2014 |Jun1996 - Nov2014 |Jun1996 - Nov2014 |
-|Cagr       |9.82              |12.64             |5.99              |8.77              |
-|Sharpe     |1.63              |2.13              |1.08              |1.56              |
-|DVR        |1.53              |1.98              |1.02              |1.4               |
-|Volatility |5.86              |5.69              |5.55              |5.51              |
-|MaxDD      |-13.45            |-6.36             |-8.93             |-7.49             |
-|AvgDD      |-0.82             |-0.58             |-1.1              |-0.71             |
-|VaR        |-0.37             |-0.36             |-0.54             |-0.53             |
-|CVaR       |-0.78             |-0.71             |-0.81             |-0.78             |
+|Period     |Jun1996 - Dec2014 |Jun1996 - Dec2014 |Jun1996 - Dec2014 |Jun1996 - Dec2014 |
+|Cagr       |9.63              |12.51             |6.04              |8.77              |
+|Sharpe     |1.6               |2.1               |1.09              |1.56              |
+|DVR        |1.51              |1.96              |1.03              |1.41              |
+|Volatility |5.86              |5.69              |5.54              |5.5               |
+|MaxDD      |-13.45            |-6.37             |-8.84             |-7.49             |
+|AvgDD      |-0.85             |-0.59             |-1.1              |-0.71             |
+|VaR        |-0.37             |-0.37             |-0.54             |-0.53             |
+|CVaR       |-0.78             |-0.71             |-0.8              |-0.77             |
 |Exposure   |99.57             |99.57             |99.57             |99.57             |
+    
 
 Please note that using SPY as a timing proxy improves results for both [HYG](https://finance.yahoo.com/q?s=HYG) 
 and [LQD](https://finance.yahoo.com/q?s=LQD).
@@ -240,20 +244,24 @@ timing based SPY's moving average.
 
 
 Monthly Correlations:
+    
+
+
 
 
 |    |SHY |SPY |XLB |XLE |XLF |XLI |XLK |XLP |XLU |XLV |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 |SPY |-32 |    |    |    |    |    |    |    |    |    |
 |XLB |-26 |80  |    |    |    |    |    |    |    |    |
-|XLE |-24 |63  |66  |    |    |    |    |    |    |    |
-|XLF |-18 |82  |69  |47  |    |    |    |    |    |    |
+|XLE |-23 |62  |65  |    |    |    |    |    |    |    |
+|XLF |-18 |82  |69  |46  |    |    |    |    |    |    |
 |XLI |-28 |89  |85  |62  |79  |    |    |    |    |    |
-|XLK |-35 |84  |55  |39  |50  |64  |    |    |    |    |
-|XLP |-15 |59  |46  |39  |57  |54  |26  |    |    |    |
+|XLK |-34 |84  |55  |39  |50  |64  |    |    |    |    |
+|XLP |-14 |59  |46  |38  |57  |54  |27  |    |    |    |
 |XLU |-17 |47  |42  |48  |40  |46  |20  |54  |    |    |
-|XLV |-23 |79  |62  |41  |64  |69  |62  |52  |44  |    |
-|XLY |-25 |86  |76  |45  |77  |82  |68  |50  |35  |69  |
+|XLV |-23 |79  |61  |40  |64  |69  |62  |52  |44  |    |
+|XLY |-25 |86  |75  |44  |77  |82  |68  |50  |35  |69  |
+    
 
 
 
@@ -303,18 +311,22 @@ Monthly Correlations:
 
 |           |XLY.XLY.20        |XLY.SPY.20        |XLP.XLP.20        |XLP.SPY.20        |XLE.XLE.20        |XLE.SPY.20        |XLF.XLF.20        |XLF.SPY.20        |XLV.XLV.20        |XLV.SPY.20        |XLI.XLI.20        |XLI.SPY.20        |XLB.XLB.20        |XLB.SPY.20        |XLK.XLK.20        |XLK.SPY.20        |XLU.XLU.20        |XLU.SPY.20        |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |Dec1998 - Nov2014 |
-|Cagr       |2.29              |4.54              |0.24              |1.63              |3.46              |10.11             |-2.26             |-1.21             |2.94              |6.43              |4.45              |7.1               |2.85              |6.58              |2.56              |4.63              |2.19              |4.51              |
-|Sharpe     |0.22              |0.37              |0.08              |0.21              |0.28              |0.63              |0                 |0.05              |0.31              |0.6               |0.38              |0.56              |0.25              |0.47              |0.24              |0.35              |0.24              |0.43              |
-|DVR        |0.1               |0.31              |0.01              |0.16              |0.12              |0.56              |0                 |0.01              |0.21              |0.5               |0.31              |0.51              |0.12              |0.36              |0.15              |0.3               |0.07              |0.33              |
-|Volatility |15.27             |15.08             |10.41             |10.16             |17.92             |18.02             |21.81             |22.18             |11.56             |11.54             |14.27             |14.1              |16.49             |16.76             |16.49             |16.94             |12.21             |11.95             |
+|Period     |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |Dec1998 - Dec2014 |
+|Cagr       |2.51              |4.75              |0.35              |1.74              |3.41              |9.65              |-2.08             |-1.03             |3.21              |6.69              |4.49              |7.19              |2.85              |6.64              |2.67              |4.73              |2.11              |4.6               |
+|Sharpe     |0.24              |0.38              |0.09              |0.22              |0.28              |0.6               |0.01              |0.06              |0.33              |0.62              |0.38              |0.56              |0.25              |0.47              |0.24              |0.36              |0.23              |0.44              |
+|DVR        |0.11              |0.32              |0                 |0.17              |0.12              |0.53              |0                 |0.01              |0.23              |0.51              |0.32              |0.51              |0.12              |0.37              |0.16              |0.3               |0.06              |0.34              |
+|Volatility |15.25             |15.06             |10.4              |10.15             |17.9              |18.08             |21.77             |22.14             |11.56             |11.54             |14.26             |14.09             |16.48             |16.75             |16.47             |16.91             |12.2              |11.94             |
 |MaxDD      |-41.57            |-37.15            |-43.46            |-37.35            |-51.66            |-37.93            |-68.29            |-69.6             |-37.21            |-18.67            |-34.49            |-33.73            |-50               |-33.21            |-41.73            |-39.8             |-41.02            |-32.18            |
-|AvgDD      |-3.73             |-3.67             |-8.33             |-2.52             |-5.87             |-3.35             |-6.32             |-4.87             |-2.36             |-2.54             |-2.8              |-3.01             |-4.1              |-3.48             |-4.02             |-3.09             |-2.82             |-2.5              |
-|VaR        |-1.52             |-1.52             |-1.03             |-1                |-1.88             |-1.81             |-1.66             |-1.74             |-1.19             |-1.12             |-1.34             |-1.34             |-1.72             |-1.7              |-1.72             |-1.73             |-1.34             |-1.24             |
-|CVaR       |-2.44             |-2.37             |-1.66             |-1.62             |-2.88             |-2.83             |-3.19             |-3.2              |-1.86             |-1.75             |-2.29             |-2.22             |-2.6              |-2.61             |-2.76             |-2.77             |-1.97             |-1.89             |
+|AvgDD      |-3.47             |-3.72             |-6.51             |-2.44             |-6.02             |-3.41             |-6.57             |-5.01             |-2.28             |-2.52             |-2.8              |-3.04             |-4.19             |-3.57             |-3.76             |-3.03             |-2.82             |-2.54             |
+|VaR        |-1.52             |-1.52             |-1.03             |-1                |-1.87             |-1.81             |-1.65             |-1.74             |-1.19             |-1.11             |-1.34             |-1.34             |-1.72             |-1.7              |-1.72             |-1.72             |-1.34             |-1.24             |
+|CVaR       |-2.43             |-2.36             |-1.66             |-1.61             |-2.88             |-2.85             |-3.18             |-3.2              |-1.86             |-1.75             |-2.29             |-2.22             |-2.6              |-2.61             |-2.75             |-2.77             |-1.97             |-1.88             |
 |Exposure   |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |99.5              |
+    
 
 <!-- 
 http://character-code.com/arrows-html-codes.php
 -->
 In all cases, timing signal based on SPY improved strategy returns. Please use left(&#8592;) and right(&#8594;) arrow keys to scroll this wide table.
+
+
+*(this report was produced on: 2014-12-07)*

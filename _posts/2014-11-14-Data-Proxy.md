@@ -3,62 +3,68 @@ layout: post
 title: Data Proxy - extending time series with proxies
 ---
 
+
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+
+
+
+
 This page will hold collection of Proxies I collected to extend historical time series.
 
 Note: there are more examples at
 [Composing Synthetic Prices For Extended Historical ETF Data](http://indexswingtrader.blogspot.ca/2014/05/composing-synthetic-prices-for-extended.html)
 
 
-First, let's load [Load Systematic Investor Toolbox (SIT)](http://systematicinvestor.wordpress.com/systematic-investor-toolbox/):
 
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
-###############################################################################
-if(!file.exists('../sit'))
-	shiny:::download('https://github.com/systematicinvestor/SIT/raw/master/sit.lite.gz', '../sit', mode = 'wb', quiet = TRUE)
-con = gzcon(file('../sit', 'rb'))
-	source(con)
-close(con)
-{% endhighlight %}
-
-Load post functions to be moved to SIT
-
-{% highlight r %}
-source('post.fn.r')
-source('../ds.r')
-{% endhighlight %}
-
-<!-- open collapse div, http://stackoverflow.com/questions/15917463/embedding-markdown-in-jekyll-html -->
-
-Commodities:
-----
+<!-- open collapse div, http://stackoverflow.com/questions/15917463/embedding-markdown-in-jekyll-html 
 <a href="#self" class="acollapse">(hide)</a>
+
+<button>-</button>hide
+<div markdown="1">
+
+<button>+</button>show
+<div markdown="1" style="display:none;">   
+-->
+
+
+
+<input type="button" value="-">Commodities:
+----
 
 <div markdown="1">
 
 {% highlight r %}
     #*****************************************************************
+    # Load external data
+    #******************************************************************   
+    library(SIT)
+    load.packages('quantmod')  
+
+raw.data <- new.env()
+    
+    # TRJ_CRB file was downloaded from the http://www.corecommodityllc.com/CoreCommodity-Indexes/1cc/681
+    # for TRJ/CRB Index-Total Return
+    temp = extract.table.from.webpage( join(readLines("data/TR_CC-CRB")), 'EODValue' )
+    temp = join( apply(temp, 1, join, ','), '\n' )
+    raw.data$CRB = make.stock.xts( read.xts(temp, format='%m/%d/%y' ) )
+     
+    # prfmdata.csv file was downloaded from the http://www.crbequityindexes.com/indexdata-form.php
+    # for "TR/J CRB Global Commodity Equity Index", "Total Return", "All Dates"
+    raw.data$CRB_2 = make.stock.xts( read.xts('data/prfmdata.csv', format='%m/%d/%Y' ) )
+
+    #*****************************************************************
     # Load historical data
     #******************************************************************   
     load.packages('quantmod')  
-    
+        
     tickers = spl('GSG,DBC')
     data = new.env()
+    
+    data$CRB = raw.data$CRB
+    data$CRB_2 = raw.data$CRB_2
+    
     getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
         for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
-      
-    # "TRJ_CRB" file was downloaded from the http://www.corecommodityllc.com/CoreCommodity-Indexes/1cc/681
-    # for "TRJ/CRB Index-Total Return"
-    temp = extract.table.from.webpage( join(readLines("data/TR_CC-CRB")), 'EODValue' )
-    temp = join( apply(temp, 1, join, ','), '\n' )
-    data$CRB_1 = make.stock.xts( read.xts(temp, format='%m/%d/%y' ) )
-     
-    # "prfmdata.csv" file was downloaded from the http://www.crbequityindexes.com/indexdata-form.php
-    # for "TR/J CRB Global Commodity Equity Index", "Total Return", "All Dates"
-    data$CRB_2 = make.stock.xts( read.xts("data/prfmdata.csv", format='%m/%d/%Y' ) )
 {% endhighlight %}
 
 Look at historical start date for each series:
@@ -72,10 +78,11 @@ print(bt.start.dates(data))
 
 |      |Start      |
 |:-----|:----------|
-|CRB_1 |1994-01-03 |
+|CRB   |1994-01-03 |
 |CRB_2 |1999-12-31 |
 |DBC   |2006-02-06 |
 |GSG   |2006-07-21 |
+    
 
 There are 2 sources of historical commodity index data. Let's compare them with commodity ETFs.
       
@@ -84,16 +91,17 @@ There are 2 sources of historical commodity index data. Let's compare them with 
     proxy.test(data)
 {% endhighlight %}
 
-![plot of chunk plot-5](/public/images/2014-11-14-Data-Proxy/plot-5-1.png) 
+![plot of chunk plot-4](/public/images/2014-11-14-Data-Proxy/plot-4-1.png) 
 
-|      |CRB_1 |CRB_2 |DBC   |GSG   |
+|      |CRB   |CRB_2 |DBC   |GSG   |
 |:-----|:-----|:-----|:-----|:-----|
-|CRB_1 |      |66%   |89%   |88%   |
+|CRB   |      |66%   |89%   |88%   |
 |CRB_2 |      |      |66%   |63%   |
 |DBC   |      |      |      |90%   |
 |      |      |      |      |      |
 |Mean  |-0.1% | 9.5% | 0.9% |-4.4% |
 |StDev |19.1% |26.6% |21.0% |25.0% |
+    
 
 The historical commodity index data from [crbequityindexes](http://www.crbequityindexes.com/indexdata-form.php)
 , that I denoted CRB_2, looks very different over the common interval for all proxies
@@ -103,7 +111,7 @@ The historical commodity index data from [crbequityindexes](http://www.crbequity
     proxy.overlay.plot(data)
 {% endhighlight %}
 
-![plot of chunk plot-6](/public/images/2014-11-14-Data-Proxy/plot-6-1.png) 
+![plot of chunk plot-5](/public/images/2014-11-14-Data-Proxy/plot-5-1.png) 
 
 On the all history chart CRB_2 is also different.
 
@@ -113,28 +121,33 @@ On the all history chart CRB_2 is also different.
     proxy.prices(data)  
 {% endhighlight %}
 
-![plot of chunk plot-7](/public/images/2014-11-14-Data-Proxy/plot-7-1.png) 
+![plot of chunk plot-6](/public/images/2014-11-14-Data-Proxy/plot-6-1.png) 
 
-|      |CRB_1 Price |CRB_1 Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
-|:-----|:-----------|:-----------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%       | 8.2%       |11.5%       |11.5%       | 1.7%     | 1.7%     |-4.2%     |-4.2%     |
-|StDev |16.3%       |16.3%       |21.5%       |21.5%       |20.9%     |20.9%     |24.9%     |24.9%     |
+|      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
+|:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.9%     | 0.9%     |-5.3%     |-5.3%     |
+|StDev |16.3%     |16.3%     |21.5%       |21.5%       |21.0%     |21.0%     |24.9%     |24.9%     |
+    
 
 Quick glance at historical time series does not show anything abnormal between Price and Adjusted Price series. 
     
 
 {% highlight r %}
-    tickers = spl('DBC, DBC.CRB=DBC+CRB_1')
+    tickers = spl('DBC, DBC.CRB=DBC+CRB')
     proxy.map(data, tickers)
 {% endhighlight %}
 
-![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-1.png) 
+![plot of chunk plot-7](/public/images/2014-11-14-Data-Proxy/plot-7-1.png) 
 </div>
-                    
-REITs: 
+            
+Please use `CRB` to extend Commodities.
+
+
+        
+<input type="button" value="-">REIT ex-U.S.: 
 ---- 
 (Dow Jones Global **ex-U.S.** Real Estate Securities Index)
-<a href="#self" class="acollapse">(hide)</a>
+
 
 <div markdown="1">
     
@@ -163,21 +176,25 @@ REITs:
 |VGSIX |1996-06-28 |
 |VNQ   |2004-10-01 |
 |RWX   |2007-03-02 |
+    
+
+
 
 
 {% highlight r %}
     proxy.test(data)    
 {% endhighlight %}
 
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-1.png) 
+![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-1.png) 
 
 |      |RWX   |VGSIX |VNQ   |
 |:-----|:-----|:-----|:-----|
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.1% |12.1% |12.2% |
-|StDev |25.8% |40.9% |39.8% |
+|Mean  | 3.0% |12.4% |12.4% |
+|StDev |25.7% |40.8% |39.6% |
+    
 
 
 
@@ -186,18 +203,19 @@ REITs:
     proxy.overlay.plot(data)   
 {% endhighlight %}
 
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-2.png) 
+![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-2.png) 
 
 {% highlight r %}
     proxy.prices(data)
 {% endhighlight %}
 
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-3.png) 
+![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-3.png) 
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.1%     | 3.1%     |14.3%       |14.3%       |15.2%     |15.2%     |
-|StDev |25.8%     |25.8%     |28.3%       |28.3%       |35.5%     |35.5%     |
+|Mean  | 3.0%     | 3.0%     |14.4%       |14.4%       |15.3%     |15.3%     |
+|StDev |25.7%     |25.7%     |28.3%       |28.3%       |35.4%     |35.4%     |
+    
 
 
 
@@ -207,15 +225,19 @@ REITs:
     proxy.map(data, tickers)
 {% endhighlight %}
 
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-4.png) 
+![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-4.png) 
 </div>
+
+Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
+
+
+> Aside comparison of RWO vs. RWX:
 [RWO vs. RWX: Head-To-Head ETF Comparison](http://etfdb.com/tool/etf-comparison/RWO-RWX/)
     
     
-REITs:
+<input type="button" value="+">Global REIT:
 ----
 (Dow Jones Global Select Real Estate Securities Index)
-<a href="#self" class="acollapse">(show)</a>
 
 <div markdown="1" style="display:none;">   
 
@@ -243,21 +265,25 @@ REITs:
 |VGSIX |1996-06-28 |
 |IYR   |2000-06-19 |
 |RWO   |2008-05-22 |
+    
+
+
 
 
 {% highlight r %}
     proxy.test(data)    
 {% endhighlight %}
 
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-1.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-1.png) 
 
 |      |IYR   |RWO   |VGSIX |
 |:-----|:-----|:-----|:-----|
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |13.8% | 8.3% |15.8% |
-|StDev |39.8% |30.4% |42.7% |
+|Mean  |14.0% | 8.5% |16.0% |
+|StDev |39.6% |30.2% |42.5% |
+    
 
 
 
@@ -266,18 +292,19 @@ REITs:
     proxy.overlay.plot(data)   
 {% endhighlight %}
 
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-2.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-2.png) 
 
 {% highlight r %}
     proxy.prices(data)
 {% endhighlight %}
 
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-3.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-3.png) 
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.0%     |14.0%     | 8.3%     | 8.3%     |14.3%       |14.3%       |
-|StDev |29.8%     |29.8%     |30.4%     |30.4%     |28.3%       |28.3%       |
+|Mean  |14.1%     |14.1%     | 8.5%     | 8.5%     |14.4%       |14.4%       |
+|StDev |29.8%     |29.8%     |30.2%     |30.2%     |28.3%       |28.3%       |
+    
 
 
 
@@ -287,6 +314,137 @@ REITs:
     proxy.map(data, tickers)
 {% endhighlight %}
 
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-4.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-4.png) 
 </div>
 
+Please use `IYR` and `VGSIX` to extend Global REIT.
+
+
+
+
+To-do:
+----
+
+
+{% highlight r %}
+#--------------------------------
+filename = 'data/GOLD.Rdata'
+if(!file.exists(filename)) {
+GOLD = bundes.bank.data.gold()
+save(GOLD, file=filename)
+}
+   load(file=filename)
+raw.data$GOLD = make.stock.xts(GOLD)
+
+#--------------------------------   
+# load 3-Month Treasury Bill from FRED (BIL)
+filename = 'data/TB3M.Rdata'
+if(!file.exists(filename)) {
+TB3M = quantmod::getSymbols('DTB3', src='FRED', auto.assign = FALSE)
+save(TB3M, file=filename)
+}
+load(file=filename)
+TB3M[] = ifna.prev(TB3M)
+#compute.raw.annual.factor(TB3M)
+raw.data$TB3M = processTBill(TB3M, timetomaturity = 1/4, 261)
+{% endhighlight %}
+    
+
+Let's save these proxies in **data.proxy.Rdata** for convience to use later on
+----
+
+Syntax to specify tickers in `getSymbols.extra` function:
+
+* Basic : XLY
+* Rename: BOND=TLT
+* Extend: XLB+RYBIX
+* Mix above: XLB=XLB+RYBIX+FSDPX+FSCHX+PRNEX+DREVX
+* TLT;MTM + IEF => TLT = TLT + IEF and MTM = MTM + IEF
+* BOND = TLT;MTM + IEF => BOND = TLT + IEF, TLT = TLT + IEF, and MTM = MTM + IEF
+* BOND;US.BOND = TLT;MTM + IEF => BOND = TLT + IEF, US.BOND = TLT + IEF, TLT = TLT + IEF, and MTM = MTM + IEF
+* BOND = [TLT] + IEF => BOND = TLT + IEF, and TLT = TLT + IEF
+
+* use comma or new line to separate entries
+* lines starting with `#` symbol or empty lines are skipped **Make sure not to use commas in comments**
+
+,message=T, warning=T
+
+
+{% highlight r %}
+tickers = '
+COM = DBC;GSG + CRB
+
+RExUS = [RWX] + VNQ + VGSIX
+RE = [RWX] + VNQ + VGSIX
+RE.US = [ICF] + VGSIX
+
+EMER.EQ = [EEM] + VEIEX
+EMER.FI = [EMB] + PREMX
+
+GOLD = [GLD] + GOLD,
+US.CASH = [BIL] + TB3M,
+
+US.HY = [HYG] + VWEHX
+
+# Bonds
+US.BOND = [AGG] + VBMFX
+INTL.BOND = [BWX] + BEGBX
+
+JAPAN.EQ = [EWJ] + FJPNX
+EUROPE.EQ = [IEV] + FIEUX
+US.SMCAP = IWM;VB + NAESX
+TECH.EQ = [QQQ] + ^NDX
+US.EQ = [VTI] + VTSMX + VFINX
+US.MID = [VO] + VIMSX
+EAFE = [EFA] + VDMIX + VGTSX
+
+MID.TR = [IEF] + VFITX
+CORP.FI = [LQD] + VWESX
+TIPS = [TIP] + VIPSX + LSGSX
+LONG.TR = [TLT] + VUSTX
+'
+
+
+data.proxy <- new.env()
+getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data.proxy, raw.data = raw.data, auto.assign = T)
+
+save(data.proxy, file='data.proxy.Rdata',compress='gzip') 
+{% endhighlight %}
+
+To use saved proxy data to extend historical time series, use `extend.data.proxy` function:
+
+
+{% highlight r %}
+tickers = spl('BIL')
+
+data <- new.env()
+getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)
+
+print(bt.start.dates(data))
+{% endhighlight %}
+
+
+
+|    |Start      |
+|:---|:----------|
+|BIL |2007-05-30 |
+    
+
+
+
+
+{% highlight r %}
+extend.data.proxy(data, proxy.filename = 'data.proxy.Rdata')
+
+print(bt.start.dates(data))
+{% endhighlight %}
+
+
+
+|    |Start      |
+|:---|:----------|
+|BIL |1954-01-04 |
+    
+
+
+*(this report was produced on: 2014-12-07)*

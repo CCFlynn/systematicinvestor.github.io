@@ -2,6 +2,9 @@
 markdown:            kramdown 
 highlighter:         pygments
 
+kramdown:
+  auto_ids: false
+
 # Permalinks
 #
 # Use of `relative_permalinks` ensures post links from the index work properly.
@@ -27,6 +30,6 @@ github:
   repo:           github.com/systematicinvestor/systematicinvestor.github.io
 
 # This is the list of pages to incldue in the header of the website.
-pages_list:       ['SIT', 'Archive']
+pages_list:       ['About']
 
-exclude:          [rmarkdown]
+exclude:          [rmarkdown, compress]

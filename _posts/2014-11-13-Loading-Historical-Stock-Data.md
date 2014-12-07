@@ -3,6 +3,12 @@ layout: post
 title: Loading Historical Stock Data
 ---
 
+
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+
+
+
+
 Historical Stock Data is critical for testing your investment strategies. There are many ways to load Historical Stock Data in to your R session. Below I show 4 different approaches to load historical stock data:
 
 * Download Historical Stock quotes from Yahoo Fiance with getSymbols function from quantmod package
@@ -12,20 +18,6 @@ Historical Stock Data is critical for testing your investment strategies. There 
 
 In the code below I demonstrate these 4 methods and use loaded data to run a back-test: 
 
-Load [Load Systematic Investor Toolbox (SIT)](http://systematicinvestor.wordpress.com/systematic-investor-toolbox/):
-
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# http://systematicinvestor.wordpress.com/systematic-investor-toolbox/
-###############################################################################
-if(!file.exists('../sit'))
-	shiny:::download('https://github.com/systematicinvestor/SIT/raw/master/sit.lite.gz', '../sit', mode = 'wb', quiet = TRUE)
-con = gzcon(file('../sit', 'rb'))
-	source(con)
-close(con)
-{% endhighlight %}
 
 Loading Historical Prices:
 
@@ -33,6 +25,7 @@ Loading Historical Prices:
 	#*****************************************************************
 	# Load historical data
 	#****************************************************************** 
+	library(SIT)
 	load.packages('quantmod')
   
 	stock.folder = 'c:\\Stocks\\Data\\'
@@ -88,9 +81,80 @@ Loading Historical Prices:
                         MV=min.var.portfolio,
                         MC=min.corr.portfolio)
 	) 
-    
+{% endhighlight %}
+
+20 , percent = 9.7% 
+30 , percent = 23.6% 
+40 , percent = 37.5% 
+50 , percent = 51.4% 
+60 , percent = 65.3% 
+70 , percent = 79.2% 
+80 , percent = 93.1% 
+
+
+{% highlight r %}
 	models = create.strategies(obj, data)$models
 {% endhighlight %}
+
+EW , percent = 25% 
+Latest weights :
+
+
+|           |      EMB|     HYG|      UUP|
+|:----------|--------:|-------:|--------:|
+|2014-12-05 | 296.3226| 369.099| 1405.877|
+    
+
+
+
+Performance summary :
+	CAGR	Best	Worst	
+	5.4	2.2	-3.1	
+
+RP , percent = 50% 
+Latest weights :
+
+
+|           |      EMB|      HYG|      UUP|
+|:----------|--------:|--------:|--------:|
+|2014-12-05 | 294.9029| 402.3187| 1286.081|
+    
+
+
+
+Performance summary :
+	CAGR	Best	Worst	
+	4.4	1.8	-2.7	
+
+MV , percent = 75% 
+Latest weights :
+
+
+|           |      EMB|      HYG|      UUP|
+|:----------|--------:|--------:|--------:|
+|2014-12-05 | 291.1793| 336.6892| 1553.726|
+    
+
+
+
+Performance summary :
+	CAGR	Best	Worst	
+	3	1.7	-2.1	
+
+MC , percent = 100% 
+Latest weights :
+
+
+|           |      EMB|      HYG|      UUP|
+|:----------|--------:|--------:|--------:|
+|2014-12-05 | 200.0815| 200.7362| 2503.768|
+    
+
+
+
+Performance summary :
+	CAGR	Best	Worst	
+	2	1.8	-2	
 
 Finally let's make a report:
               
@@ -113,13 +177,17 @@ Finally let's make a report:
 
 |           |EW                |RP                |MV                |MC                |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |Dec2007 - Nov2014 |Dec2007 - Nov2014 |Dec2007 - Nov2014 |Dec2007 - Nov2014 |
-|Cagr       |5.44              |4.49              |2.99              |1.93              |
-|Sharpe     |1.11              |0.98              |0.67              |0.41              |
-|DVR        |1.06              |0.93              |0.61              |0.29              |
+|Period     |Dec2007 - Dec2014 |Dec2007 - Dec2014 |Dec2007 - Dec2014 |Dec2007 - Dec2014 |
+|Cagr       |5.41              |4.45              |2.97              |2.02              |
+|Sharpe     |1.11              |0.97              |0.67              |0.43              |
+|DVR        |1.05              |0.92              |0.61              |0.31              |
 |Volatility |4.87              |4.59              |4.56              |4.95              |
-|MaxDD      |-11.06            |-7.77             |-6.59             |-8.14             |
-|AvgDD      |-0.79             |-0.81             |-0.9              |-1.4              |
+|MaxDD      |-11.05            |-7.78             |-6.59             |-8.15             |
+|AvgDD      |-0.81             |-0.82             |-0.91             |-1.36             |
 |VaR        |-0.41             |-0.41             |-0.41             |-0.48             |
 |CVaR       |-0.74             |-0.72             |-0.71             |-0.74             |
-|Exposure   |84.97             |84.97             |84.97             |84.97             |
+|Exposure   |85.12             |85.12             |85.12             |85.12             |
+    
+
+
+*(this report was produced on: 2014-12-07)*
