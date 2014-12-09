@@ -3,15 +3,25 @@ layout: page
 title: About
 permalink: about/
 ---
-                                               
-[Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
- is a collection of tools that I use in my investment research.
+
+
+This blog is a collection of my thoughts that I want to share without any warranties or
+guarantees. For more details, please visit [About Blog](/About-Blog/) post.
+
+This blog is hosted on [GitHub Pages](https://pages.github.com/) and is written using 
+[R Markdown](http://rmarkdown.rstudio.com/). For more details, please visit [Setup Steps](/Steps/) post.
+
+
+I use [R](http://www.r-project.org/) for most of my research and created a Toolbox to help
+test new ideas. I.e. [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+is a collection of tools that I use in my investment research.
 
 There are two ways to load [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
 functionality:
 
 Please make sure that `curl` package is already installed and if not, please execute 
 {% highlight r %}install.packages('curl', repos = 'http://cran.r-project.org'){% endhighlight %}
+
 
 * First method is to download source code and load it into R session
 
