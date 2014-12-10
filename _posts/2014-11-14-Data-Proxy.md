@@ -125,7 +125,7 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.9%     | 0.9%     |-5.3%     |-5.3%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.7%     | 0.7%     |-5.5%     |-5.5%     |
 |StDev |16.3%     |16.3%     |21.5%       |21.5%       |21.0%     |21.0%     |24.9%     |24.9%     |
     
 
@@ -192,7 +192,7 @@ Please use `CRB` to extend Commodities.
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.0% |12.4% |12.4% |
+|Mean  | 2.8% |12.5% |12.6% |
 |StDev |25.7% |40.8% |39.6% |
     
 
@@ -213,7 +213,7 @@ Please use `CRB` to extend Commodities.
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.0%     | 3.0%     |14.4%       |14.4%       |15.3%     |15.3%     |
+|Mean  | 2.8%     | 2.8%     |14.4%       |14.4%       |15.4%     |15.4%     |
 |StDev |25.7%     |25.7%     |28.3%       |28.3%       |35.4%     |35.4%     |
     
 
@@ -281,7 +281,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.0% | 8.5% |16.0% |
+|Mean  |14.1% | 8.5% |16.2% |
 |StDev |39.6% |30.2% |42.5% |
     
 
@@ -302,7 +302,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.1%     |14.1%     | 8.5%     | 8.5%     |14.4%       |14.4%       |
+|Mean  |14.2%     |14.2%     | 8.5%     | 8.5%     |14.4%       |14.4%       |
 |StDev |29.8%     |29.8%     |30.2%     |30.2%     |28.3%       |28.3%       |
     
 
@@ -322,33 +322,279 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 
 
-To-do:
+
+<input type="button" value="+">CASH:
 ----
+
+<div markdown="1" style="display:none;">   
+
+{% highlight r %}
+	#--------------------------------   
+	# load 3-Month Treasury Bill from FRED (BIL)
+	filename = 'data/TB3M.Rdata'
+	if(!file.exists(filename)) {
+		TB3M = quantmod::getSymbols('DTB3', src='FRED', auto.assign = FALSE)
+		save(TB3M, file=filename)
+	}
+	load(file=filename)
+	TB3M[] = ifna.prev(TB3M)
+	#compute.raw.annual.factor(TB3M)
+	raw.data$TB3M = make.stock.xts(processTBill(TB3M, timetomaturity = 1/4, 261))
+
+    #*****************************************************************
+    # Load historical data
+    #******************************************************************   
+    tickers = spl('BIL')
+    data = new.env()
+    
+    data$TB3M = raw.data$TB3M
+    
+    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
+        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
+           
+    #*****************************************************************
+    # Compare
+    #******************************************************************
+    print(bt.start.dates(data))
+{% endhighlight %}
+
+
+
+|     |Start      |
+|:----|:----------|
+|TB3M |1954-01-04 |
+|BIL  |2007-05-30 |
+    
+
+
 
 
 {% highlight r %}
-#--------------------------------
-filename = 'data/GOLD.Rdata'
-if(!file.exists(filename)) {
-GOLD = bundes.bank.data.gold()
-save(GOLD, file=filename)
-}
-   load(file=filename)
-raw.data$GOLD = make.stock.xts(GOLD)
-
-#--------------------------------   
-# load 3-Month Treasury Bill from FRED (BIL)
-filename = 'data/TB3M.Rdata'
-if(!file.exists(filename)) {
-TB3M = quantmod::getSymbols('DTB3', src='FRED', auto.assign = FALSE)
-save(TB3M, file=filename)
-}
-load(file=filename)
-TB3M[] = ifna.prev(TB3M)
-#compute.raw.annual.factor(TB3M)
-raw.data$TB3M = processTBill(TB3M, timetomaturity = 1/4, 261)
+    proxy.test(data)    
 {% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-1.png) 
+
+|      |BIL  |TB3M |
+|:-----|:----|:----|
+|BIL   |     |26%  |
+|      |     |     |
+|Mean  |0.6% |0.7% |
+|StDev |0.7% |0.3% |
     
+
+
+
+
+{% highlight r %}
+    proxy.overlay.plot(data)   
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-2.png) 
+
+{% highlight r %}
+    proxy.prices(data)
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-3.png) 
+
+|      |BIL Price |BIL Total |TB3M Price |TB3M Total |
+|:-----|:---------|:---------|:----------|:----------|
+|Mean  |0.6%      |0.6%      |4.3%       |4.3%       |
+|StDev |0.7%      |0.7%      |0.4%       |0.4%       |
+    
+
+
+
+
+{% highlight r %}
+    tickers = spl('BIL, BIL.TB3M=BIL+TB3M')
+    proxy.map(data, tickers)
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-4.png) 
+
+{% highlight r %}
+	#--------------------------------   
+	# load 3 years t-bill from FRED (BIL)
+	filename = 'data/TB3Y.Rdata'
+	if(!file.exists(filename)) {
+		TB3Y = quantmod::getSymbols('DGS3', src='FRED', auto.assign = FALSE)
+		save(TB3Y, file=filename)
+	}
+	load(file=filename)
+	TB3Y[] = ifna.prev(TB3Y)
+	#compute.raw.annual.factor(TB3Y)
+	raw.data$TB3Y = make.stock.xts(processTBill(TB3Y, timetomaturity = 3, 261))
+
+    #*****************************************************************
+    # Load historical data
+    #******************************************************************   
+    tickers = spl('SHY')
+    data = new.env()
+    
+    data$TB3Y = raw.data$TB3Y
+    
+    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
+        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
+           
+    #*****************************************************************
+    # Compare
+    #******************************************************************
+    print(bt.start.dates(data))
+{% endhighlight %}
+
+
+
+|     |Start      |
+|:----|:----------|
+|TB3Y |1962-01-02 |
+|SHY  |2002-07-31 |
+    
+
+
+
+
+{% highlight r %}
+    proxy.test(data)    
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-5.png) 
+
+|      |SHY  |TB3Y |
+|:-----|:----|:----|
+|SHY   |     |87%  |
+|      |     |     |
+|Mean  |2.2% |2.5% |
+|StDev |1.5% |2.7% |
+    
+
+
+
+
+{% highlight r %}
+    proxy.overlay.plot(data)   
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-6.png) 
+
+{% highlight r %}
+    proxy.prices(data)
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-7.png) 
+
+|      |SHY Price |SHY Total |TB3Y Price |TB3Y Total |
+|:-----|:---------|:---------|:----------|:----------|
+|Mean  |2.2%      |2.2%      |5.7%       |5.7%       |
+|StDev |1.5%      |1.5%      |3.3%       |3.3%       |
+    
+
+
+
+
+{% highlight r %}
+    tickers = spl('SHY, SHY.TB3Y=SHY+TB3Y')
+    proxy.map(data, tickers)	    
+{% endhighlight %}
+
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-8.png) 
+</div>
+
+
+<input type="button" value="+">GOLD:
+----
+
+<div markdown="1" style="display:none;">   
+
+{% highlight r %}
+	#--------------------------------
+	filename = 'data/GOLD.Rdata'
+	if(!file.exists(filename)) {
+		GOLD = bundes.bank.data.gold()
+		save(GOLD, file=filename)
+	}
+	load(file=filename)
+	raw.data$GOLD = make.stock.xts(GOLD)
+
+    #*****************************************************************
+    # Load historical data
+    #******************************************************************   
+    tickers = spl('GLD')
+    data = new.env()
+    
+    data$GOLD = raw.data$GOLD
+    
+    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
+        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
+           
+    #*****************************************************************
+    # Compare
+    #******************************************************************
+    print(bt.start.dates(data))
+{% endhighlight %}
+
+
+
+|     |Start      |
+|:----|:----------|
+|GOLD |1968-04-01 |
+|GLD  |2004-11-18 |
+    
+
+
+
+
+{% highlight r %}
+    proxy.test(data)    
+{% endhighlight %}
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-1.png) 
+
+|      |GLD   |GOLD  |
+|:-----|:-----|:-----|
+|GLD   |      |61%   |
+|      |      |      |
+|Mean  |11.6% |12.2% |
+|StDev |20.6% |20.4% |
+    
+
+
+
+
+{% highlight r %}
+    proxy.overlay.plot(data)   
+{% endhighlight %}
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-2.png) 
+
+{% highlight r %}
+    proxy.prices(data)
+{% endhighlight %}
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-3.png) 
+
+|      |GLD Price |GLD Total |GOLD Price |GOLD Total |
+|:-----|:---------|:---------|:----------|:----------|
+|Mean  |11.8%     |11.8%     | 9.4%      | 9.4%      |
+|StDev |20.4%     |20.4%     |20.1%      |20.1%      |
+    
+
+
+
+
+{% highlight r %}
+    tickers = spl('GLD, GLD.GOLD=GLD+GOLD')
+    proxy.map(data, tickers)    
+{% endhighlight %}
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-4.png) 
+</div>
+
+
+
+
+
 
 Let's save these proxies in **data.proxy.Rdata** for convience to use later on
 ----
@@ -383,6 +629,7 @@ EMER.FI = [EMB] + PREMX
 
 GOLD = [GLD] + GOLD,
 US.CASH = [BIL] + TB3M,
+SHY + TB3Y,
 
 US.HY = [HYG] + VWEHX
 
@@ -447,4 +694,4 @@ print(bt.start.dates(data))
     
 
 
-*(this report was produced on: 2014-12-07)*
+*(this report was produced on: 2014-12-10)*
