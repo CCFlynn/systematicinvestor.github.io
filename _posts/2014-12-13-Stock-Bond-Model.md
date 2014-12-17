@@ -56,7 +56,7 @@ Next let's compute the Stock Allocation:
 
 
 {% highlight r %}
-metric.data$StockAllocation = eval(expression(((A+F)/1000)/(((A+F)/1000)+B+C+D+E+G)), metric.data)
+metric.data$StockAllocation = with(metric.data, ((A+F)/1000)/(((A+F)/1000)+B+C+D+E+G))
 
 metric.data$AverageRatio  = SMA(ifna.prev(metric.data$StockAllocation),4)
 
@@ -177,12 +177,12 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |BOND              |STOCK             |strategy          |
 |:----------|:-----------------|:-----------------|:-----------------|
 |Period     |Jan1990 - Dec2014 |Jan1990 - Dec2014 |Jan1990 - Dec2014 |
-|Cagr       |8.14              |9.35              |10.1              |
-|Sharpe     |0.8               |0.58              |1.03              |
+|Cagr       |8.18              |9.28              |10.12             |
+|Sharpe     |0.8               |0.58              |1.04              |
 |DVR        |0.76              |0.47              |0.95              |
-|Volatility |10.43             |18.06             |9.7               |
+|Volatility |10.43             |18.05             |9.7               |
 |MaxDD      |-18.78            |-55.25            |-25.07            |
-|AvgDD      |-2.16             |-2.22             |-1.38             |
+|AvgDD      |-2.15             |-2.22             |-1.38             |
 |VaR        |-1.04             |-1.73             |-0.9              |
 |CVaR       |-1.44             |-2.68             |-1.41             |
 |Exposure   |100               |100               |100               |
@@ -194,4 +194,4 @@ There is more to investigate. The fun part is that i was able to replicate this 
 
 
 
-*(this report was produced on: 2014-12-14)*
+*(this report was produced on: 2014-12-17)*
