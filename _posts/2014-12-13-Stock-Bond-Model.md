@@ -63,6 +63,7 @@ metric.data$AverageRatio  = SMA(ifna.prev(metric.data$StockAllocation),4)
 metric.data$RelativeAverageRatio = 1 - (metric.data$AverageRatio - 0.25) / 0.20
   metric.data$RelativeAverageRatio = iif(metric.data$RelativeAverageRatio > 1, 1, metric.data$RelativeAverageRatio)
   metric.data$RelativeAverageRatio = iif(metric.data$RelativeAverageRatio < 0, 0, metric.data$RelativeAverageRatio)
+  colnames(metric.data$RelativeAverageRatio) = 'RelativeAverageRatio'
 
 plota(metric.data$RelativeAverageRatio, type='l')
 {% endhighlight %}
@@ -75,28 +76,28 @@ print(last(metric.data$RelativeAverageRatio, 20))
 
 
 
-|           | NCBEILQ027S.SMA.4|
-|:----------|-----------------:|
-|2009-10-01 |         0.7386075|
-|2010-01-01 |         0.6448204|
-|2010-04-01 |         0.6192706|
-|2010-07-01 |         0.6073752|
-|2010-10-01 |         0.5777071|
-|2011-01-01 |         0.5408631|
-|2011-04-01 |         0.4747850|
-|2011-07-01 |         0.4852374|
-|2011-10-01 |         0.4993816|
-|2012-01-01 |         0.5045022|
-|2012-04-01 |         0.5189942|
-|2012-07-01 |         0.4680151|
-|2012-10-01 |         0.4474356|
-|2013-01-01 |         0.4258632|
-|2013-04-01 |         0.3850559|
-|2013-07-01 |         0.3436522|
-|2013-10-01 |         0.2763624|
-|2014-01-01 |         0.2348901|
-|2014-04-01 |         0.1889742|
-|2014-07-01 |         0.1637294|
+|           | RelativeAverageRatio|
+|:----------|--------------------:|
+|2009-10-01 |            0.7386075|
+|2010-01-01 |            0.6448204|
+|2010-04-01 |            0.6192706|
+|2010-07-01 |            0.6073752|
+|2010-10-01 |            0.5777071|
+|2011-01-01 |            0.5408631|
+|2011-04-01 |            0.4747850|
+|2011-07-01 |            0.4852374|
+|2011-10-01 |            0.4993816|
+|2012-01-01 |            0.5045022|
+|2012-04-01 |            0.5189942|
+|2012-07-01 |            0.4680151|
+|2012-10-01 |            0.4474356|
+|2013-01-01 |            0.4258632|
+|2013-04-01 |            0.3850559|
+|2013-07-01 |            0.3436522|
+|2013-10-01 |            0.2763624|
+|2014-01-01 |            0.2348901|
+|2014-04-01 |            0.1889742|
+|2014-07-01 |            0.1637294|
     
 
 Now let's test the strategy with Vanguard funds:
@@ -177,14 +178,14 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |BOND              |STOCK             |strategy          |
 |:----------|:-----------------|:-----------------|:-----------------|
 |Period     |Jan1990 - Dec2014 |Jan1990 - Dec2014 |Jan1990 - Dec2014 |
-|Cagr       |8.18              |9.28              |10.12             |
-|Sharpe     |0.8               |0.58              |1.04              |
-|DVR        |0.76              |0.47              |0.95              |
-|Volatility |10.43             |18.05             |9.7               |
+|Cagr       |8.06              |9.47              |10.05             |
+|Sharpe     |0.79              |0.59              |1.03              |
+|DVR        |0.75              |0.48              |0.95              |
+|Volatility |10.45             |18.06             |9.7               |
 |MaxDD      |-18.78            |-55.25            |-25.07            |
-|AvgDD      |-2.15             |-2.22             |-1.38             |
-|VaR        |-1.04             |-1.73             |-0.9              |
-|CVaR       |-1.44             |-2.68             |-1.41             |
+|AvgDD      |-2.16             |-2.22             |-1.38             |
+|VaR        |-1.05             |-1.73             |-0.9              |
+|CVaR       |-1.45             |-2.68             |-1.41             |
 |Exposure   |100               |100               |100               |
     
 
@@ -194,4 +195,4 @@ There is more to investigate. The fun part is that i was able to replicate this 
 
 
 
-*(this report was produced on: 2014-12-17)*
+*(this report was produced on: 2014-12-23)*
