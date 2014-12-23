@@ -20,7 +20,6 @@ More Links:
 * [Cuda in Python and Excel](http://blog.quantalea.net/how-to-use-alea-cubase-in-python/)
 
 
-
 There is similar environment for Java Script:
 ---
 
@@ -35,3 +34,5 @@ More Visual Studio goodies:
 * [Visual Studio Programmer Themes Gallery](http://www.hanselman.com/blog/VisualStudioProgrammerThemesGallery.aspx)
 * [Simultaneous Editing for Visual Studio with the free MultiEdit extension](http://www.hanselman.com/blog/SimultaneousEditingForVisualStudioWithTheFreeMultiEditExtension.aspx)
 * [How to change the default browser in Visual Studio programmatically with PowerShell and possibly poke yourself in the eye](http://www.hanselman.com/blog/HowToChangeTheDefaultBrowserInVisualStudioProgrammaticallyWithPowerShellAndPossiblyPokeYourselfInTheEye.aspx)
+
+Test
