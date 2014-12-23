@@ -35,4 +35,3 @@ More Visual Studio goodies:
 * [Simultaneous Editing for Visual Studio with the free MultiEdit extension](http://www.hanselman.com/blog/SimultaneousEditingForVisualStudioWithTheFreeMultiEditExtension.aspx)
 * [How to change the default browser in Visual Studio programmatically with PowerShell and possibly poke yourself in the eye](http://www.hanselman.com/blog/HowToChangeTheDefaultBrowserInVisualStudioProgrammaticallyWithPowerShellAndPossiblyPokeYourselfInTheEye.aspx)
 
-Test
