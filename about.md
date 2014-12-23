@@ -23,20 +23,7 @@ Please make sure that `curl` package is already installed and if not, please exe
 {% highlight r %}install.packages('curl', repos = 'http://cran.r-project.org'){% endhighlight %}
 
 
-* First method is to download source code and load it into R session
-
-{% highlight r %}
-###############################################################################
-# Load Systematic Investor Toolbox (SIT)
-# github.com/systematicinvestor/SIT
-###############################################################################
-library(curl)
-con = gzcon(curl('http://www.systematicportfolio.com/sit.gz','rb'))
-	source(con)
-close(con)
-{% endhighlight %}
-
-* Second method is to install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+* First method is to install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
 package
 
 {% highlight r %}
@@ -56,16 +43,30 @@ library
 library(SIT)
 {% endhighlight %}
 
+* Second method is to download source code and load it into R session
+
+{% highlight r %}
+###############################################################################
+# Load Systematic Investor Toolbox (SIT)
+# github.com/systematicinvestor/SIT
+###############################################################################
+library(curl)
+con = gzcon(curl('http://www.systematicportfolio.com/sit.gz','rb'))
+	source(con)
+close(con)
+{% endhighlight %}
+
 
 Both methods are equivalent. If you want to keep [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
-always up-to-date first method is way to go. If you want to just to get [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
-second method is easier because you only download it once, and later on just load
+always up-to-date second method is way to go. If you want to just to get [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
+first method is easier because you only download it once, and later on just load
 [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
 with `library(SIT)` command.
  
  
 Once [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT)
-is loaded, you can for example test sample functionality of `plota.test()` function.
+is loaded, using either of two methods above, you can for example test sample functionality
+of `plota.test()` function.
 
 {% highlight r %} 
 ###############################################################################
