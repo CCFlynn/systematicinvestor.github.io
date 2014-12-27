@@ -87,7 +87,7 @@ http://stackoverflow.com/questions/3510867/finding-the-type-of-an-input-element
               }
              }
 */             
-             
+
              return;
              }
 
@@ -101,6 +101,12 @@ http://stackoverflow.com/questions/3510867/finding-the-type-of-an-input-element
            if (links[i].hostname != window.location.hostname) {
                links[i].target = '_blank';
            } 
+        }
+        
+        // mark negative values in a <td> of table
+        var tds = document.getElementsByTagName('td');
+        for (var i = 0, tdsLength = tds.length; i < tdsLength; i++) {
+			if (tds[i].firstChild.nodeValue.trim().indexOf('-') == 0) tds[i].className = "negative";
         }
           
         // logic for collapse / expand
