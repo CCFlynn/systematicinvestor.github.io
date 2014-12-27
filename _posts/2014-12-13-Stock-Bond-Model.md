@@ -178,14 +178,14 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |BOND              |STOCK             |strategy          |
 |:----------|:-----------------|:-----------------|:-----------------|
 |Period     |Jan1990 - Dec2014 |Jan1990 - Dec2014 |Jan1990 - Dec2014 |
-|Cagr       |8.06              |9.47              |10.05             |
-|Sharpe     |0.79              |0.59              |1.03              |
-|DVR        |0.75              |0.48              |0.95              |
-|Volatility |10.45             |18.06             |9.7               |
+|Cagr       |8                 |9.49              |10                |
+|Sharpe     |0.78              |0.59              |1.02              |
+|DVR        |0.74              |0.48              |0.94              |
+|Volatility |10.45             |18.06             |9.71              |
 |MaxDD      |-18.78            |-55.25            |-25.07            |
 |AvgDD      |-2.16             |-2.22             |-1.38             |
 |VaR        |-1.05             |-1.73             |-0.9              |
-|CVaR       |-1.45             |-2.68             |-1.41             |
+|CVaR       |-1.45             |-2.67             |-1.41             |
 |Exposure   |100               |100               |100               |
     
 
@@ -195,4 +195,4 @@ There is more to investigate. The fun part is that i was able to replicate this 
 
 
 
-*(this report was produced on: 2014-12-23)*
+*(this report was produced on: 2014-12-25)*

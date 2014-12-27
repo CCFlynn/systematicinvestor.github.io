@@ -125,8 +125,8 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.7%     | 0.7%     |-5.5%     |-5.5%     |
-|StDev |16.3%     |16.3%     |21.5%       |21.5%       |21.0%     |21.0%     |24.9%     |24.9%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.1%     | 0.1%     |-6.5%     |-6.5%     |
+|StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |24.9%     |24.9%     |
     
 
 Quick glance at historical time series does not show anything abnormal between Price and Adjusted Price series. 
@@ -134,10 +134,15 @@ Quick glance at historical time series does not show anything abnormal between P
 
 {% highlight r %}
     tickers = spl('DBC, DBC.CRB=DBC+CRB')
-    proxy.map(data, tickers)
+    proxy.map(data, tickers)      
 {% endhighlight %}
 
 ![plot of chunk plot-7](/public/images/2014-11-14-Data-Proxy/plot-7-1.png) 
+
+
+
+
+
 </div>
             
 Please use `CRB` to extend Commodities.
@@ -153,20 +158,35 @@ Please use `CRB` to extend Commodities.
     
 
 {% highlight r %}
+create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
     #*****************************************************************
     # Load historical data
     #******************************************************************   
     load.packages('quantmod')  
     
-    tickers = spl('RWX,VNQ,VGSIX')
+    tickers = spl(tickers)
     data = new.env()
-    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
+    
+	getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data, raw.data = raw.data, auto.assign = T)    
         for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
                          
     #*****************************************************************
     # Compare
     #******************************************************************
     print(bt.start.dates(data))
+    
+    proxy.test(data)    
+    
+    proxy.overlay.plot(data)   
+    
+    proxy.prices(data)
+
+    tickers = spl(proxy.map.tickers)
+    proxy.map(data, tickers)
+}
+    
+
+	create.proxy('RWX,VNQ,VGSIX', 'RWX, RWX.VNQ=RWX+VNQ, RWX.VNQ.VGSIX=RWX+VNQ+VGSIX')
 {% endhighlight %}
 
 
@@ -179,53 +199,28 @@ Please use `CRB` to extend Commodities.
     
 
 
-
-
-{% highlight r %}
-    proxy.test(data)    
-{% endhighlight %}
-
-![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-1.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-1.png) 
 
 |      |RWX   |VGSIX |VNQ   |
 |:-----|:-----|:-----|:-----|
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 2.8% |12.5% |12.6% |
-|StDev |25.7% |40.8% |39.6% |
+|Mean  | 2.9% |12.5% |12.7% |
+|StDev |25.6% |40.7% |39.5% |
     
 
 
-
-
-{% highlight r %}
-    proxy.overlay.plot(data)   
-{% endhighlight %}
-
-![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-2.png) 
-
-{% highlight r %}
-    proxy.prices(data)
-{% endhighlight %}
-
-![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-3.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-2.png) ![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-3.png) 
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 2.8%     | 2.8%     |14.4%       |14.4%       |15.4%     |15.4%     |
-|StDev |25.7%     |25.7%     |28.3%       |28.3%       |35.4%     |35.4%     |
+|Mean  | 2.9%     | 2.9%     |14.4%       |14.4%       |15.5%     |15.5%     |
+|StDev |25.6%     |25.6%     |28.2%       |28.2%       |35.3%     |35.3%     |
     
 
 
-
-
-{% highlight r %}
-    tickers = spl('RWX, RWX.VNQ=RWX+VNQ, RWX.VNQ.VGSIX=RWX+VNQ+VGSIX')
-    proxy.map(data, tickers)
-{% endhighlight %}
-
-![plot of chunk plot-8](/public/images/2014-11-14-Data-Proxy/plot-8-4.png) 
+![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-4.png) 
 </div>
 
 Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
@@ -242,20 +237,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 <div markdown="1" style="display:none;">   
 
 {% highlight r %}
-    #*****************************************************************
-    # Load historical data
-    #******************************************************************   
-    load.packages('quantmod')  
-    
-    tickers = spl('IYR,VGSIX,RWO')
-    data = new.env()
-    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
-        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
-           
-    #*****************************************************************
-    # Compare
-    #******************************************************************
-    print(bt.start.dates(data))
+	create.proxy('IYR,VGSIX,RWO', 'RWO, RWO.IYR=RWO+IYR, RWO.IYR.VGSIX=RWO+IYR+VGSIX')
 {% endhighlight %}
 
 
@@ -268,53 +250,28 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
     
 
 
-
-
-{% highlight r %}
-    proxy.test(data)    
-{% endhighlight %}
-
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-1.png) 
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-1.png) 
 
 |      |IYR   |RWO   |VGSIX |
 |:-----|:-----|:-----|:-----|
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.1% | 8.5% |16.2% |
-|StDev |39.6% |30.2% |42.5% |
+|Mean  |14.1% | 8.6% |16.1% |
+|StDev |39.5% |30.1% |42.4% |
     
 
 
-
-
-{% highlight r %}
-    proxy.overlay.plot(data)   
-{% endhighlight %}
-
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-2.png) 
-
-{% highlight r %}
-    proxy.prices(data)
-{% endhighlight %}
-
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-3.png) 
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-2.png) ![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-3.png) 
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.2%     |14.2%     | 8.5%     | 8.5%     |14.4%       |14.4%       |
-|StDev |29.8%     |29.8%     |30.2%     |30.2%     |28.3%       |28.3%       |
+|Mean  |14.2%     |14.2%     | 8.6%     | 8.6%     |14.4%       |14.4%       |
+|StDev |29.7%     |29.7%     |30.1%     |30.1%     |28.2%       |28.2%       |
     
 
 
-
-
-{% highlight r %}
-    tickers = spl('RWO, RWO.IYR=RWO+IYR, RWO.IYR.VGSIX=RWO+IYR+VGSIX')
-    proxy.map(data, tickers)
-{% endhighlight %}
-
-![plot of chunk plot-9](/public/images/2014-11-14-Data-Proxy/plot-9-4.png) 
+![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-4.png) 
 </div>
 
 Please use `IYR` and `VGSIX` to extend Global REIT.
@@ -340,22 +297,9 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 	TB3M[] = ifna.prev(TB3M)
 	#compute.raw.annual.factor(TB3M)
 	raw.data$TB3M = make.stock.xts(processTBill(TB3M, timetomaturity = 1/4, 261))
+	#--------------------------------   
 
-    #*****************************************************************
-    # Load historical data
-    #******************************************************************   
-    tickers = spl('BIL')
-    data = new.env()
-    
-    data$TB3M = raw.data$TB3M
-    
-    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
-        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
-           
-    #*****************************************************************
-    # Compare
-    #******************************************************************
-    print(bt.start.dates(data))
+	create.proxy('BIL,TB3M', 'BIL, BIL.TB3M=BIL+TB3M', raw.data)
 {% endhighlight %}
 
 
@@ -367,13 +311,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.test(data)    
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-1.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-1.png) 
 
 |      |BIL  |TB3M |
 |:-----|:----|:----|
@@ -384,19 +322,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.overlay.plot(data)   
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-2.png) 
-
-{% highlight r %}
-    proxy.prices(data)
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-3.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-2.png) ![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-3.png) 
 
 |      |BIL Price |BIL Total |TB3M Price |TB3M Total |
 |:-----|:---------|:---------|:----------|:----------|
@@ -405,14 +331,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    tickers = spl('BIL, BIL.TB3M=BIL+TB3M')
-    proxy.map(data, tickers)
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-4.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-4.png) 
 
 {% highlight r %}
 	#--------------------------------   
@@ -426,22 +345,9 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 	TB3Y[] = ifna.prev(TB3Y)
 	#compute.raw.annual.factor(TB3Y)
 	raw.data$TB3Y = make.stock.xts(processTBill(TB3Y, timetomaturity = 3, 261))
-
-    #*****************************************************************
-    # Load historical data
-    #******************************************************************   
-    tickers = spl('SHY')
-    data = new.env()
-    
-    data$TB3Y = raw.data$TB3Y
-    
-    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
-        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
-           
-    #*****************************************************************
-    # Compare
-    #******************************************************************
-    print(bt.start.dates(data))
+	#--------------------------------   
+	
+	create.proxy('SHY,TB3Y', 'SHY, SHY.TB3Y=SHY+TB3Y', raw.data)	
 {% endhighlight %}
 
 
@@ -453,13 +359,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.test(data)    
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-5.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-5.png) 
 
 |      |SHY  |TB3Y |
 |:-----|:----|:----|
@@ -470,19 +370,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.overlay.plot(data)   
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-6.png) 
-
-{% highlight r %}
-    proxy.prices(data)
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-7.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-6.png) ![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-7.png) 
 
 |      |SHY Price |SHY Total |TB3Y Price |TB3Y Total |
 |:-----|:---------|:---------|:----------|:----------|
@@ -491,14 +379,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    tickers = spl('SHY, SHY.TB3Y=SHY+TB3Y')
-    proxy.map(data, tickers)	    
-{% endhighlight %}
-
-![plot of chunk plot-10](/public/images/2014-11-14-Data-Proxy/plot-10-8.png) 
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-8.png) 
 </div>
 
 
@@ -516,22 +397,9 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 	}
 	load(file=filename)
 	raw.data$GOLD = make.stock.xts(GOLD)
+	#--------------------------------
 
-    #*****************************************************************
-    # Load historical data
-    #******************************************************************   
-    tickers = spl('GLD')
-    data = new.env()
-    
-    data$GOLD = raw.data$GOLD
-    
-    getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)   
-        for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
-           
-    #*****************************************************************
-    # Compare
-    #******************************************************************
-    print(bt.start.dates(data))
+	create.proxy('GLD,GOLD', 'GLD, GLD.GOLD=GLD+GOLD', raw.data)		
 {% endhighlight %}
 
 
@@ -543,13 +411,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.test(data)    
-{% endhighlight %}
-
-![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-1.png) 
+![plot of chunk plot-12](/public/images/2014-11-14-Data-Proxy/plot-12-1.png) 
 
 |      |GLD   |GOLD  |
 |:-----|:-----|:-----|
@@ -560,35 +422,16 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
     
 
 
-
-
-{% highlight r %}
-    proxy.overlay.plot(data)   
-{% endhighlight %}
-
-![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-2.png) 
-
-{% highlight r %}
-    proxy.prices(data)
-{% endhighlight %}
-
-![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-3.png) 
+![plot of chunk plot-12](/public/images/2014-11-14-Data-Proxy/plot-12-2.png) ![plot of chunk plot-12](/public/images/2014-11-14-Data-Proxy/plot-12-3.png) 
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |11.8%     |11.8%     | 9.4%      | 9.4%      |
-|StDev |20.4%     |20.4%     |20.1%      |20.1%      |
+|Mean  |11.3%     |11.3%     | 9.4%      | 9.4%      |
+|StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
 
-
-
-{% highlight r %}
-    tickers = spl('GLD, GLD.GOLD=GLD+GOLD')
-    proxy.map(data, tickers)    
-{% endhighlight %}
-
-![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-4.png) 
+![plot of chunk plot-12](/public/images/2014-11-14-Data-Proxy/plot-12-4.png) 
 </div>
 
 
@@ -655,6 +498,8 @@ LONG.TR = [TLT] + VUSTX
 data.proxy <- new.env()
 getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data.proxy, raw.data = raw.data, auto.assign = T)
 
+data.proxy.raw = raw.data
+save(data.proxy.raw, file='data.proxy.raw.Rdata',compress='gzip') 
 save(data.proxy, file='data.proxy.Rdata',compress='gzip') 
 {% endhighlight %}
 
@@ -694,4 +539,4 @@ print(bt.start.dates(data))
     
 
 
-*(this report was produced on: 2014-12-10)*
+*(this report was produced on: 2014-12-25)*
