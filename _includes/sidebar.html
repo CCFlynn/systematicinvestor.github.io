@@ -18,11 +18,15 @@
 
     {% assign pages_list = site.pages | sort:"url" %}
     {% for node in pages_list %}
+    
       {% assign exclude_page = false %}
       {% if node.url contains 'Tool-' %}
           {% assign exclude_page = true %}
       {% endif %}  
-    	  	
+      {% if node.url contains 'Strategy-' %}
+          {% assign exclude_page = true %}
+      {% endif %}  
+          	  	
       {% if exclude_page != true %}      
       {% if node.title != null %}
         {% if node.layout == "page" %}

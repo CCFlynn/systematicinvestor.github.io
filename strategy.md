@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Tools
+title: Strategy
 ---
 
-Following are automated researcg reports that are created each night:
+Following are automated Strategy back-test and signal reports that are created each night:
 
 <ul>
 {% for post in site.pages %}
-	{% if post.url contains 'Tool-' %}
+	{% if post.url contains 'Strategy-' %}
 	
 	 {% assign report_name = post.url | split:'/' | last | remove:'.html' %}	
 <li><a href="{{ BASE_PATH }}{{ post.url }}">{{ post.title }}</a>
