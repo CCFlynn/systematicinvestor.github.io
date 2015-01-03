@@ -20,7 +20,7 @@ There are numerous articles talking about timing luck:
 Let's test concept of trading on different dates by
 simulating a momentum strategy with various lookbacks
 that trades on Quarter ends, and compare it to trading
-with 1/2 months offsets. I.e. let's simulate trading on  
+with 1/2 months offsets. I.e. let's simulate trading
 on the second or third month of the quarter instead of the
 first month.
 
@@ -37,8 +37,8 @@ tickers = spl('DBC,EEM,EWJ,GLD,ICF,IEF,IEV,RWX,TLT,VTI')
 
 data <- new.env()
 getSymbols(tickers, src = 'yahoo', from = '1970-01-01', env = data, auto.assign = T)
-extend.data.proxy(data)
-for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
+  extend.data.proxy(data)
+  for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
 bt.prep(data, align='remove.na')
 {% endhighlight %}
 
