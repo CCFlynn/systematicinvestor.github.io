@@ -72,7 +72,7 @@ DimObs=1
 		legend(x='topright', c('State1','State2'),  fill=1:2, bty='n')
 {% endhighlight %}
 
-![plot of chunk plot-2](/public/images/2015-01-02-Regime-Detection-Update/plot-2-1.png) 
+![plot of chunk plot-2](/public/images/2015-01-04-Regime-Detection-Update/plot-2-1.png) 
 
 {% highlight r %}
 	# http://lipas.uwasa.fi/~bepa/Markov.pdf
@@ -104,7 +104,7 @@ converged at iteration 48 with logLik: 124.6015
 		legend(x='topright', c('State1','State2'),  fill=1:2, bty='n')
 {% endhighlight %}
 
-![plot of chunk plot-2](/public/images/2015-01-02-Regime-Detection-Update/plot-2-2.png) 
+![plot of chunk plot-2](/public/images/2015-01-04-Regime-Detection-Update/plot-2-2.png) 
 
 {% highlight r %}
 	#*****************************************************************
@@ -145,7 +145,7 @@ DimObs=1
 		plota.legend('Returns + Detected Regimes')
 {% endhighlight %}
 
-![plot of chunk plot-2](/public/images/2015-01-02-Regime-Detection-Update/plot-2-3.png) 
+![plot of chunk plot-2](/public/images/2015-01-04-Regime-Detection-Update/plot-2-3.png) 
 
 
 *(this report was produced on: 2015-01-04)*
