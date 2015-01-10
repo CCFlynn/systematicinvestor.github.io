@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Regime Detection Update
+comments: true
 ---
 
 
