@@ -2,17 +2,13 @@
   <!-- Add Disqus comments. -->
   <div class="disqus_thread"></div>
   <script type="text/javascript">
-  (function() {
-		//function loadDisqus(){
-		//	alert("Loading");			
+  		var disqus_shortname = 'systematicinvestor';
+		function loadDisqus(){
           	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          	dsq.src = '//systematicinvestor.disqus.com/embed.js';
+          	dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
           	(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-//          	alert("Done");
-//		}
-//	loadDisqus();
-		//setTimeout("loadDisqus();", 5 * 1000);          
-})();		
+		}
+		setTimeout("loadDisqus();", 5 * 1000);          
   </script>
 {% endif %}
 
