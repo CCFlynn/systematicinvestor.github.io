@@ -2,6 +2,7 @@
   <!-- Add Disqus comments. -->
   <div class="disqus_thread"></div>
   <script type="text/javascript">
+  (function() {
 		function loadDisqus(){
 			alert("Loading");			
           	var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -11,6 +12,7 @@
 		}
 	
 		setTimeout("loadDisqus();", 5 * 1000);          
+	})();		
   </script>
 {% endif %}
 
