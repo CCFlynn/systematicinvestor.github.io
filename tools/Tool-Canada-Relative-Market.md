@@ -45,7 +45,7 @@ This report covers following ETFs:
 
 ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-1.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-2.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-3.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-4.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-5.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-6.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-7.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-8.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-9.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-10.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-11.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-12.png) ![plot of chunk plot-2](/public/images/Tool-Canada-Relative-Market/plot-2-13.png) 
 
-<input type="button" value="+">Detail Charts:
+<input type="button" class="btn btn-sm" value="+">Detail Charts:
 ---
     
 
@@ -72,20 +72,20 @@ This report covers following ETFs:
 
 |       |Feb14  |Mar14  |Apr14  |May14  |Jun14  |Jul14  |Aug14  |Sep14  |Oct14  |Nov14  |Dec14  |Jan15  |Total  |
 |:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|
-|XIC.TO |  4.0% |  1.2% |  2.4% | -0.1% |  4.0% |  1.4% |  2.1% | -4.1% | -1.9% |  1.2% |  1.2% | -4.0% |  7.1% |
-|XIT.TO |  3.4% | -4.5% |  2.4% | -3.6% |  7.5% |  2.3% |  1.4% | -0.1% |  4.5% |  5.9% |  4.9% | -0.3% | 25.8% |
-|XCG.TO |  4.2% |  0.0% |  2.1% | -0.7% |  5.2% |  2.2% |  3.4% | -1.5% | -0.8% |  4.3% |  1.8% | -1.2% | 20.4% |
-|XRE.TO |  3.4% |  1.4% |  2.1% |  0.9% |  1.0% | -0.2% |  2.2% | -3.0% |  3.9% |  0.7% | -3.3% |  6.5% | 16.1% |
-|XGB.TO |  0.3% | -0.1% |  0.3% |  1.3% |  0.3% |  0.4% |  1.3% | -0.8% |  0.8% |  1.5% |  0.7% |  1.6% |  7.8% |
-|XBB.TO |  0.4% | -0.1% |  0.5% |  1.2% |  0.4% |  0.5% |  1.0% | -0.7% |  0.6% |  1.5% |  0.5% |  1.6% |  7.5% |
-|XCB.TO |  0.5% |  0.1% |  0.3% |  1.1% |  0.2% |  0.5% |  0.9% | -1.0% |  0.8% |  0.8% |  0.7% |  0.9% |  5.9% |
-|XIU.TO |  3.9% |  1.2% |  2.2% |  0.0% |  3.7% |  2.4% |  1.6% | -3.4% | -1.3% |  1.2% | -0.5% | -3.7% |  7.3% |
-|XCV.TO |  4.1% |  0.8% |  3.0% | -0.1% |  3.7% |  3.6% | -0.2% | -4.1% | -1.5% |  1.6% |  1.7% | -5.5% |  6.5% |
-|XFN.TO |  4.2% |  2.1% |  1.4% |  0.9% |  3.0% |  4.6% |  0.2% | -2.3% |  0.6% |  3.9% | -3.2% | -6.8% |  8.5% |
-|XDV.TO |  2.9% |  1.8% |  1.8% |  0.7% |  2.3% |  2.0% |  2.1% | -3.4% | -1.0% |  1.9% | -1.7% | -5.6% |  3.3% |
+|XIC.TO |  4.0% |  1.2% |  2.4% | -0.1% |  4.0% |  1.4% |  2.1% | -4.1% | -1.9% |  1.2% |  1.2% | -4.3% |  6.7% |
+|XIT.TO |  3.4% | -4.5% |  2.4% | -3.6% |  7.5% |  2.3% |  1.4% | -0.1% |  4.5% |  5.9% |  4.9% | -1.0% | 24.9% |
+|XCG.TO |  4.2% |  0.0% |  2.1% | -0.7% |  5.2% |  2.2% |  3.4% | -1.5% | -0.8% |  4.3% |  1.8% | -0.6% | 21.1% |
+|XRE.TO |  3.4% |  1.4% |  2.1% |  0.9% |  1.0% | -0.2% |  2.2% | -3.0% |  3.9% |  0.7% | -3.3% |  6.0% | 15.6% |
+|XGB.TO |  0.3% | -0.1% |  0.3% |  1.3% |  0.3% |  0.4% |  1.3% | -0.8% |  0.8% |  1.5% |  0.7% |  2.3% |  8.6% |
+|XBB.TO |  0.4% | -0.1% |  0.5% |  1.2% |  0.4% |  0.5% |  1.0% | -0.7% |  0.6% |  1.5% |  0.5% |  2.1% |  8.1% |
+|XCB.TO |  0.5% |  0.1% |  0.3% |  1.1% |  0.2% |  0.5% |  0.9% | -1.0% |  0.8% |  0.8% |  0.7% |  1.1% |  6.1% |
+|XIU.TO |  3.9% |  1.2% |  2.2% |  0.0% |  3.7% |  2.4% |  1.6% | -3.4% | -1.3% |  1.2% | -0.5% | -4.2% |  6.7% |
+|XCV.TO |  4.1% |  0.8% |  3.0% | -0.1% |  3.7% |  3.6% | -0.2% | -4.1% | -1.5% |  1.6% |  1.7% | -5.3% |  6.8% |
+|XFN.TO |  4.2% |  2.1% |  1.4% |  0.9% |  3.0% |  4.6% |  0.2% | -2.3% |  0.6% |  3.9% | -3.2% | -7.7% |  7.4% |
+|XDV.TO |  2.9% |  1.8% |  1.8% |  0.7% |  2.3% |  2.0% |  2.1% | -3.4% | -1.0% |  1.9% | -1.7% | -6.0% |  2.8% |
+|XMA.TO |  6.6% | -5.8% |  0.4% | -4.3% | 10.3% |  1.1% |  1.3% |-12.3% |-11.0% |  3.4% |  0.9% |  5.3% | -6.6% |
 |XCS.TO |  5.7% |  0.2% |  4.3% | -1.8% |  6.7% | -2.8% |  3.0% | -9.4% | -7.8% | -0.6% |  2.0% | -2.0% | -3.8% |
-|XMA.TO |  6.6% | -5.8% |  0.4% | -4.3% | 10.3% |  1.1% |  1.3% |-12.3% |-11.0% |  3.4% |  0.9% |  1.5% |-10.0% |
-|XEG.TO |  4.9% |  5.4% |  6.7% | -1.0% |  6.5% | -4.3% |  2.7% | -9.9% |-10.9% |-11.0% | -3.8% | -8.1% |-22.8% |
+|XEG.TO |  4.9% |  5.4% |  6.7% | -1.0% |  6.5% | -4.3% |  2.7% | -9.9% |-10.9% |-11.0% | -3.8% | -8.9% |-23.5% |
     
 
 
@@ -95,4 +95,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-01-15)*
+*(this report was produced on: 2015-01-16)*

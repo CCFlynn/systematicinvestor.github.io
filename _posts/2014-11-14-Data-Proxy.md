@@ -24,11 +24,14 @@ Note: there are more examples at
 
 <button>+</button>show
 <div markdown="1" style="display:none;">   
+
+<input type="button" value="-">Commodities:
 -->
 
 
 
-<input type="button" value="-">Commodities:
+
+<input type="button" class="btn btn-sm" value="-">Commodities:
 ----
 
 <div markdown="1">
@@ -85,7 +88,7 @@ print(bt.start.dates(data))
     
 
 There are 2 sources of historical commodity index data. Let's compare them with commodity ETFs.
-      
+
 
 {% highlight r %}
     proxy.test(data)
@@ -125,7 +128,7 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       | 0.1%     | 0.1%     |-6.5%     |-6.5%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.9%     |-0.9%     |-7.9%     |-7.9%     |
 |StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |24.9%     |24.9%     |
     
 
@@ -149,7 +152,7 @@ Please use `CRB` to extend Commodities.
 
 
         
-<input type="button" value="-">REIT ex-U.S.: 
+<input type="button" class="btn btn-sm" value="-">REIT ex-U.S.: 
 ---- 
 (Dow Jones Global **ex-U.S.** Real Estate Securities Index)
 
@@ -206,8 +209,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 2.9% |12.5% |12.7% |
-|StDev |25.6% |40.7% |39.5% |
+|Mean  | 3.2% |13.1% |13.4% |
+|StDev |25.6% |40.6% |39.4% |
     
 
 
@@ -215,7 +218,7 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 2.9%     | 2.9%     |14.4%       |14.4%       |15.5%     |15.5%     |
+|Mean  | 3.2%     | 3.2%     |14.7%       |14.7%       |16.0%     |16.0%     |
 |StDev |25.6%     |25.6%     |28.2%       |28.2%       |35.3%     |35.3%     |
     
 
@@ -230,7 +233,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 [RWO vs. RWX: Head-To-Head ETF Comparison](http://etfdb.com/tool/etf-comparison/RWO-RWX/)
     
     
-<input type="button" value="+">Global REIT:
+<input type="button" class="btn btn-sm" value="+">Global REIT:
 ----
 (Dow Jones Global Select Real Estate Securities Index)
 
@@ -257,8 +260,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.1% | 8.6% |16.1% |
-|StDev |39.5% |30.1% |42.4% |
+|Mean  |14.6% | 9.2% |16.9% |
+|StDev |39.3% |30.0% |42.2% |
     
 
 
@@ -266,8 +269,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.2%     |14.2%     | 8.6%     | 8.6%     |14.4%       |14.4%       |
-|StDev |29.7%     |29.7%     |30.1%     |30.1%     |28.2%       |28.2%       |
+|Mean  |14.4%     |14.4%     | 9.2%     | 9.2%     |14.7%       |14.7%       |
+|StDev |29.7%     |29.7%     |30.0%     |30.0%     |28.2%       |28.2%       |
     
 
 
@@ -280,7 +283,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 
 
-<input type="button" value="+">CASH:
+<input type="button" class="btn btn-sm" value="+">CASH:
 ----
 
 <div markdown="1" style="display:none;">   
@@ -383,7 +386,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 </div>
 
 
-<input type="button" value="+">GOLD:
+<input type="button" class="btn btn-sm" value="+">GOLD:
 ----
 
 <div markdown="1" style="display:none;">   
@@ -426,7 +429,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |11.3%     |11.3%     | 9.4%      | 9.4%      |
+|Mean  |12.0%     |12.0%     | 9.4%      | 9.4%      |
 |StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
@@ -539,4 +542,4 @@ print(bt.start.dates(data))
     
 
 
-*(this report was produced on: 2014-12-25)*
+*(this report was produced on: 2015-01-16)*
