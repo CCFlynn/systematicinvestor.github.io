@@ -30,7 +30,6 @@ permalink: contact/
     </div>
 
     <div>
-      <input type="hidden" name="_next" value="/thankyou">
       <input type="hidden" name="_next" value="//systematicinvestor.github.io/thankyou" />
       <input type="hidden" name="_subject" value="New submission!" />
       <input type="submit" class="btn btn-lg" value="Let's talk">
