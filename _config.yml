@@ -30,6 +30,6 @@ github:
   repo:           github.com/systematicinvestor/systematicinvestor.github.io
 
 # This is the list of pages to incldue in the header of the website.
-pages_list:       ['About']
+pages_list:       ['About', 'Contact']
 
 exclude:          [rmarkdown, compress]
