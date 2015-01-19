@@ -14,7 +14,7 @@ The [Elastic Asset Allocation Strategy(EAA)](http://papers.ssrn.com/sol3/papers.
 backtest and live signal. For more details please see [SSRN paper](http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2543979)
 
 The [EAA Strategy](http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2543979)
-– uses a geometrical weighted average of the historical returns, volatilities
+ uses a geometrical weighted average of the historical returns, volatilities
 and correlations, using elasticities as weights:
 
 > asset's attractivness = [return ^ wR] * [(1-correlation) ^ wC] / [volatility ^ wV] 
@@ -275,4 +275,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-01-18)*
+*(this report was produced on: 2015-01-19)*
