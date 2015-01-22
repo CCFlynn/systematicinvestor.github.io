@@ -38,7 +38,7 @@ for(i in data$symbolnames) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
 bt.prep(data, align='remove.na')
 
 #*****************************************************************
-# Code Strategies
+# Setup
 #*****************************************************************
 prices = last(data$prices, 3*252)
 	n = ncol(prices)
@@ -49,13 +49,15 @@ rets = prices / mlag(prices) - 1
 		rets = coredata(na.omit(rets))
 
 shares = list(AAPL = 530, DIS = 1050, IBM = 150, JNJ = 12700, KO = 3100, NKE = 3500, TXN = 19650)
-	shares = unlist(shares)
+	shares = unlist(shares[colnames(prices)])
 
 capital = sum(last.price * shares)
 exposure = last.price * shares
 weight = exposure / capital
 
-
+#*****************************************************************
+# Compute VaR
+#*****************************************************************
 compute.VaR = function(rets = NULL, cov.mat = cov(rets), 
 	weight = rep(1/nrow(cov.mat), nrow(cov.mat)), 
  	capital = 1, con.levl = 0.95, date = Sys.Date()) 
@@ -74,47 +76,50 @@ compute.VaR = function(rets = NULL, cov.mat = cov(rets),
  	marginal.VaR = z.stat * (cov.mat %*% weight) / port.vol
 	component.VaR = marginal.VaR * weight
  
- list(con.levl = 100*con.levl,
+ list(con.levl = con.levl,
  	date = date,
   	n = nrow(cov.mat),
   	capital = capital,
   	weight = weight,
   	tickers = colnames(cov.mat),
-  
- 	undiversified.VaR = capital * undiversified.VaR,
+
+		 undiversified.VaR = capital * undiversified.VaR,
   	port.vol = sqrt(252) * port.vol,
   	port.VaR = capital * port.VaR,
   	asset.VaR = capital * asset.VaR,
   	component.VaR = capital * component.VaR,
-  	component.VaR.percent = 100 * component.VaR / port.VaR,
+  	component.VaR.percent = component.VaR / port.VaR,
   	marginal.VaR = marginal.VaR
  )
 }
 
-
+#*****************************************************************
+# Helper function to display VaR
+#*****************************************************************
 summary.VaR = function(data.VaR, capital = 1) {
 	plot.data = list(
 	'Portfolio Risk Report as of' = format(data.VaR$date, '%d-%b-%Y'),
- 	'VaR estimation at' = paste(to.cash(data.VaR$con.levl,2,'','%'), 'confidence level'),
+ 	'VaR estimation at' = paste(to.percent(data.VaR$con.levl), 'confidence level'),
  	'Number of assets:' = data.VaR$n,
- 	'Current exposure:' = to.cash(capital * data.VaR$capital,2,'$'),
- 	'Portfolio VaR (undiversified):' = to.cash(capital * data.VaR$undiversified.VaR,2,'$'),
- 	'Portfolio VaR (diversified):' = to.cash(capital * data.VaR$port.VaR,2,'$'),
+ 	'Current exposure:' = to.cash(capital * data.VaR$capital),
+ 	'Portfolio VaR (undiversified):' = to.cash(capital * data.VaR$undiversified.VaR),
+ 	'Portfolio VaR (diversified):' = to.cash(capital * data.VaR$port.VaR),
  	'Component VaR [individual VaR]' = ''
  	)
  
 	plot.data1 = cbind( 
- 	to.cash(data.VaR$component.VaR.percent,2,'','%'),
-  	to.cash(capital * data.VaR$component.VaR,2,'$'),
-  	to.cash(capital * data.VaR$asset.VaR,2,'$')
+ 	to.percent(data.VaR$component.VaR.percent),
+  	to.cash(capital * data.VaR$component.VaR),
+  	to.cash(capital * data.VaR$asset.VaR)
   	)
  
- 	m2c(m2r(
- 	rbind(cbind(sapply(plot.data,identity),'',''), plot.data1)
- 	),F)
+	rbind(cbind(sapply(plot.data,identity),'',''), plot.data1)
 }
 
 
+#*****************************************************************
+# Compute VaR
+#*****************************************************************
 base.VaR = compute.VaR(rets, weight = weight, capital = capital, date = last.date)
 print(summary.VaR(base.VaR))
 {% endhighlight %}
@@ -142,6 +147,7 @@ print(summary.VaR(base.VaR))
 
 
 {% highlight r %}
+# compute min risk portfolio
 ia = create.ia(rets)
 	ia$cov = cov(rets)
 load.packages('quadprog')
@@ -174,27 +180,31 @@ print(summary.VaR(min.risk.VaR))
 
 
 {% highlight r %}
+#*****************************************************************
+# Helper function to display VaR comparison for two portfolios
+#*****************************************************************
 compare.VaR = function(base.VaR, test.VaR) {
 	plot.data = list(
-	'Original position' = to.cash(100 * base.VaR$weight,2,'','%'),
+	'Original position' = to.percent(base.VaR$weight),
 	'Marginal VaR' = to.cash(base.VaR$marginal.VaR,5),
-	'New position' = to.cash(100 * test.VaR$weight,2,'','%'),
+	'New position' = to.percent(test.VaR$weight),
 	'Marginal VaR' = to.cash(test.VaR$marginal.VaR,5)
 	)
 
 	plot.data1 = list(
-	'Portfolio VaR' = to.cash(c(base.VaR$port.VaR, test.VaR$port.VaR),2,'$'),
-	' ' = c('', to.cash(100*(test.VaR$port.VaR / base.VaR$port.VaR - 1),2,'','%')),
-	'Annulized Vol' = to.cash(100*c(base.VaR$port.vol, test.VaR$port.vol),2,'','%')
-	)	
-	
+	'Portfolio VaR' = to.cash(c(base.VaR$port.VaR, test.VaR$port.VaR)),
+	' ' = c('', to.percent(test.VaR$port.VaR / base.VaR$port.VaR - 1)),
+	'Annulized Vol' = to.percent(c(base.VaR$port.vol, test.VaR$port.vol))
+	)
+ 
 	plot.data1 = sapply(plot.data1,identity)
-		plot.data1 = t(m2c(plot.data1))
+ 	plot.data1 = col.name2row(plot.data1)
 	
 	rbind(cbind(base.VaR$ticker, sapply(plot.data,identity)),
-		cbind(plot.data1[,1], plot.data1[,2],'',plot.data1[,3],'')
+		cbind(plot.data1[1,], plot.data1[2,],'',plot.data1[3,],'')
 		)
 }
+
 
 print('Risk-Minimising Position scenario:')
 {% endhighlight %}
@@ -208,20 +218,20 @@ Risk-Minimising Position scenario:
 
 
 {% highlight r %}
-print(compare.VaR(base.VaR,min.risk.VaR))
+print(compare.VaR(base.VaR, min.risk.VaR))
 {% endhighlight %}
 
 
 
 |              |Original position |Marginal VaR |New position |Marginal VaR |
 |:-------------|:-----------------|:------------|:------------|:------------|
-|AAPL          | 1.93%            |0.00955      | 6.77%       |0.01102      |
-|DIS           | 3.33%            |0.01128      | 1.79%       |0.01102      |
-|IBM           | 0.79%            |0.00807      |14.93%       |0.01102      |
-|JNJ           |43.08%            |0.01001      |43.53%       |0.01102      |
-|KO            | 4.48%            |0.00738      |25.24%       |0.01102      |
-|NKE           |10.97%            |0.01180      | 7.75%       |0.01102      |
-|TXN           |35.41%            |0.01891      | 0.00%       |0.01110      |
+|AAPL          | 1.93%            |$0.00955     | 6.77%       |$0.01102     |
+|DIS           | 3.33%            |$0.01128     | 1.79%       |$0.01102     |
+|IBM           | 0.79%            |$0.00807     |14.93%       |$0.01102     |
+|JNJ           |43.08%            |$0.01001     |43.53%       |$0.01102     |
+|KO            | 4.48%            |$0.00738     |25.24%       |$0.01102     |
+|NKE           |10.97%            |$0.01180     | 7.75%       |$0.01102     |
+|TXN           |35.41%            |$0.01891     | 0.00%       |$0.01110     |
 |Portfolio VaR |$39,584.48        |             |$32,915.71   |             |
 |              |                  |             |-16.85%      |             |
 |Annulized Vol |12.79%            |             |10.64%       |             |
@@ -229,4 +239,4 @@ print(compare.VaR(base.VaR,min.risk.VaR))
 
 
 
-*(this report was produced on: 2015-01-21)*
+*(this report was produced on: 2015-01-22)*
