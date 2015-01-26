@@ -5,6 +5,11 @@ permalink: about/
 ---
 
 
+This is a new home for [SystematicInvestor blog](https://systematicinvestor.wordpress.com/)
+it was previously hosted at [Wordpress](https://systematicinvestor.wordpress.com/). 
+I'm making this move to simplify / automate / ease / speed up process of sharing my ideas / blogging.
+
+
 This blog is a collection of my thoughts that I want to share without any warranties or
 guarantees. For more details, please visit [About Blog](/About-Blog/) post.
 
