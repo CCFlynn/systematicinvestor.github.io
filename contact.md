@@ -5,12 +5,6 @@ permalink: contact/
 ---
 
 
-  <p>
-    I live in <a href="http://www.timeanddate.com/worldclock/canada/toronto">Toronto, Canada</a>.
-    You can find me on
-    <a href="https://github.com/systematicinvestor">GitHub</a>
-    or <a href="https://ca.linkedin.com/pub/michael-kapler-mmf-cfa/2/1a0/92a">LinkedIn</a>.
-
   <h1>Contact me</h1>
   
   <form action="//formspree.io/thesystematicinvestor@gmail.com" role="form" method="POST">
