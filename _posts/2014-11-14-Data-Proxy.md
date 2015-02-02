@@ -4,7 +4,7 @@ title: Data Proxy - extending time series with proxies
 ---
 
 
-To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](',base.url,'about) page.
 
 
 
@@ -128,7 +128,7 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.9%     |-0.9%     |-7.9%     |-7.9%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.8%     |-0.8%     |-7.6%     |-7.6%     |
 |StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |24.9%     |24.9%     |
     
 
@@ -209,8 +209,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.2% |13.1% |13.4% |
-|StDev |25.6% |40.6% |39.4% |
+|Mean  | 3.2% |13.0% |13.3% |
+|StDev |25.5% |40.5% |39.3% |
     
 
 
@@ -218,8 +218,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.2%     | 3.2%     |14.7%       |14.7%       |16.0%     |16.0%     |
-|StDev |25.6%     |25.6%     |28.2%       |28.2%       |35.3%     |35.3%     |
+|Mean  | 3.2%     | 3.2%     |14.6%       |14.6%       |16.0%     |16.0%     |
+|StDev |25.5%     |25.5%     |28.2%       |28.2%       |35.2%     |35.2%     |
     
 
 
@@ -260,8 +260,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.6% | 9.2% |16.9% |
-|StDev |39.3% |30.0% |42.2% |
+|Mean  |14.7% | 9.2% |16.8% |
+|StDev |39.2% |30.0% |42.1% |
     
 
 
@@ -269,8 +269,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.4%     |14.4%     | 9.2%     | 9.2%     |14.7%       |14.7%       |
-|StDev |29.7%     |29.7%     |30.0%     |30.0%     |28.2%       |28.2%       |
+|Mean  |14.7%     |14.7%     | 9.2%     | 9.2%     |14.6%       |14.6%       |
+|StDev |29.6%     |29.6%     |30.0%     |30.0%     |28.2%       |28.2%       |
     
 
 
@@ -429,7 +429,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |12.0%     |12.0%     | 9.4%      | 9.4%      |
+|Mean  |12.1%     |12.1%     | 9.4%      | 9.4%      |
 |StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
@@ -502,8 +502,8 @@ data.proxy <- new.env()
 getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data.proxy, raw.data = raw.data, auto.assign = T)
 
 data.proxy.raw = raw.data
-save(data.proxy.raw, file='data.proxy.raw.Rdata',compress='gzip') 
-save(data.proxy, file='data.proxy.Rdata',compress='gzip') 
+save(data.proxy.raw, file='data/data.proxy.raw.Rdata',compress='gzip') 
+save(data.proxy, file='data/data.proxy.Rdata',compress='gzip') 
 {% endhighlight %}
 
 To use saved proxy data to extend historical time series, use `extend.data.proxy` function:
@@ -529,7 +529,7 @@ print(bt.start.dates(data))
 
 
 {% highlight r %}
-extend.data.proxy(data, proxy.filename = 'data.proxy.Rdata')
+extend.data.proxy(data, proxy.filename = 'data/data.proxy.Rdata')
 
 print(bt.start.dates(data))
 {% endhighlight %}
@@ -542,4 +542,4 @@ print(bt.start.dates(data))
     
 
 
-*(this report was produced on: 2015-01-16)*
+*(this report was produced on: 2015-02-02)*
