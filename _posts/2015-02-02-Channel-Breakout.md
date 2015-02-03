@@ -201,16 +201,16 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 
 |           |Donchian55        |Donchian55.Long   |Percentile55      |Percentile55.Long |Donchian20        |Percentile20      |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |Jan1994 - Jan2015 |Jan1994 - Jan2015 |Jan1994 - Jan2015 |Jan1994 - Jan2015 |Jan1994 - Jan2015 |Jan1994 - Jan2015 |
-|Cagr       |9.04              |8.82              |7.08              |7.9               |0.37              |5.64              |
-|Sharpe     |0.64              |0.73              |0.52              |0.68              |0.1               |0.42              |
+|Period     |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |
+|Cagr       |9                 |8.82              |7.04              |7.89              |0.34              |5.6               |
+|Sharpe     |0.63              |0.73              |0.51              |0.68              |0.1               |0.42              |
 |DVR        |0.53              |0.67              |0.42              |0.63              |0                 |0.3               |
 |Volatility |15.51             |12.8              |15.69             |12.36             |16.09             |16.16             |
 |MaxDD      |-44.97            |-29.1             |-42.09            |-26.25            |-68.3             |-37.87            |
 |AvgDD      |-3.13             |-2.8              |-3.88             |-3.05             |-4.75             |-3.55             |
 |VaR        |-1.54             |-1.29             |-1.57             |-1.25             |-1.64             |-1.63             |
 |CVaR       |-2.16             |-1.94             |-2.19             |-1.9              |-2.3              |-2.28             |
-|Exposure   |98.62             |63.38             |98.79             |59.38             |99.62             |99.42             |
+|Exposure   |98.62             |63.37             |98.79             |59.37             |99.62             |99.42             |
     
 
 Unfortunately we cannot replicate results from original [source](https://cssanalytics.wordpress.com/2015/01/21/percentile-channels-a-new-twist-on-a-trend-following-favorite/)
@@ -342,6 +342,47 @@ weight$CASH = 1 - rowSums(weight, na.rm=T)
 data$weight[] = NA
   data$weight[period.ends,] = ifna(weight[period.ends,], 0)
 models$strategy.rp = bt.run.share(data, clean.signal=F, trade.summary=T, silent=T)
+{% endhighlight %}
+
+Let's add another benchmark, for comparison we will use
+the [Quantitative Approach To Tactical Asset Allocation Strategy(QATAA) by Mebane T. Faber](http://mebfaber.com/timing-model/)
+
+
+
+{% highlight r %}
+#*****************************************************************
+#The [Quantitative Approach To Tactical Asset Allocation Strategy(QATAA) by Mebane T. Faber](http://mebfaber.com/timing-model/)
+#[SSRN paper](http://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461)
+#******************************************************************
+# compute 10 month moving average
+sma = bt.apply.matrix(prices, SMA, 200)
+
+# go to cash if prices falls below 10 month moving average
+go2cash = prices < sma
+  go2cash = ifna(go2cash, T)
+
+# equal weight target allocation
+target.allocation = ntop(prices,n)
+  
+# If asset is above it's 10 month moving average it gets allocation
+qt.weight = iif(go2cash, 0, target.allocation)
+  weight = qt.weight
+
+# otherwise, it's weight is allocated to cash
+weight$CASH = 1 - rowSums(weight)
+
+data$weight[] = NA
+  data$weight[period.ends,] = weight[period.ends,]
+models$QATAA.EW = bt.run.share(data, clean.signal=F, trade.summary=T, silent=T)
+
+# same, but risk-parity
+weight = qt.weight * rp.weight
+weight = rowSums(qt.weight, na.rm=T) * weight / rowSums(weight, na.rm=T)
+weight$CASH = 1 - rowSums(weight, na.rm=T)
+
+data$weight[] = NA
+  data$weight[period.ends,] = ifna(weight[period.ends,], 0)
+models$QATAA.RP = bt.run.share(data, clean.signal=F, trade.summary=T, silent=T)
 
 #*****************************************************************
 # Report
@@ -350,7 +391,7 @@ plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
 	mtext('Cumulative Performance', side = 2, line = 1)
 {% endhighlight %}
 
-![plot of chunk plot-3](/public/images/2015-02-02-Channel-Breakout/plot-3-2.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-1.png) 
 
 {% highlight r %}
 print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
@@ -358,18 +399,18 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 
 
 
-|           |ew                |rp                |strategy.ew       |strategy.rp       |
-|:----------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |May1996 - Jan2015 |May1996 - Jan2015 |May1996 - Jan2015 |May1996 - Jan2015 |
-|Cagr       |8.15              |7.55              |9.53              |8.37              |
-|Sharpe     |0.68              |0.84              |1.38              |1.56              |
-|DVR        |0.63              |0.78              |1.33              |1.53              |
-|Volatility |12.74             |9.18              |6.81              |5.26              |
-|MaxDD      |-47.38            |-40.01            |-11.53            |-7.98             |
-|AvgDD      |-1.43             |-1.18             |-0.93             |-0.82             |
-|VaR        |-1.07             |-0.76             |-0.64             |-0.5              |
-|CVaR       |-1.93             |-1.34             |-0.99             |-0.76             |
-|Exposure   |99.7              |99.28             |99.7              |99.7              |
+|           |ew                |rp                |strategy.ew       |strategy.rp       |QATAA.EW          |QATAA.RP          |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |
+|Cagr       |8.18              |7.56              |9.53              |8.37              |10.21             |9.07              |
+|Sharpe     |0.68              |0.84              |1.38              |1.56              |1.36              |1.54              |
+|DVR        |0.63              |0.78              |1.33              |1.53              |1.32              |1.51              |
+|Volatility |12.74             |9.18              |6.81              |5.26              |7.38              |5.76              |
+|MaxDD      |-47.38            |-40.01            |-11.53            |-7.98             |-12.47            |-8.77             |
+|AvgDD      |-1.43             |-1.18             |-0.93             |-0.82             |-1.01             |-0.85             |
+|VaR        |-1.07             |-0.76             |-0.64             |-0.5              |-0.7              |-0.56             |
+|CVaR       |-1.93             |-1.34             |-0.99             |-0.76             |-1.08             |-0.83             |
+|Exposure   |99.7              |99.28             |99.7              |99.7              |99.7              |99.7              |
     
 
 
@@ -395,7 +436,7 @@ for(m in names(models)) {
     
 
 
-![plot of chunk plot-3](/public/images/2015-02-02-Channel-Breakout/plot-3-3.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-2.png) 
 
 Last Trades:
     
@@ -413,7 +454,7 @@ Current Allocation:
 
 |           | EQ| RE| CORP.FI| COM| CASH|
 |:----------|--:|--:|-------:|---:|----:|
-|2015-01-30 | 25| 27|      26|  23|    0|
+|2015-02-02 | 25| 25|      25|  25|    0|
     
 
 
@@ -423,7 +464,7 @@ Current Allocation:
     
 
 
-![plot of chunk plot-3](/public/images/2015-02-02-Channel-Breakout/plot-3-4.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-3.png) 
 
 Last Trades:
     
@@ -441,7 +482,7 @@ Current Allocation:
 
 |           | EQ| RE| CORP.FI| COM| CASH|
 |:----------|--:|--:|-------:|---:|----:|
-|2015-01-30 | 14| 17|      55|  14|    0|
+|2015-02-02 | 16| 20|      49|  14|    0|
     
 
 
@@ -451,7 +492,7 @@ Current Allocation:
     
 
 
-![plot of chunk plot-3](/public/images/2015-02-02-Channel-Breakout/plot-3-5.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-4.png) 
 
 Last Trades:
     
@@ -461,10 +502,6 @@ Last Trades:
 
 |strategy.ew |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
 |:-----------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
-|EQ          | 25.0  |2014-08-29 |2014-09-30 |32    |102.87      |100.71     |-0.52  |
-|RE          | 25.0  |2014-08-29 |2014-09-30 |32    | 72.77      | 68.49     |-1.47  |
-|CORP.FI     | 25.0  |2014-08-29 |2014-09-30 |32    |118.91      |116.91     |-0.42  |
-|CASH        | 25.0  |2014-08-29 |2014-09-30 |32    | 84.48      | 84.42     |-0.02  |
 |EQ          | 18.8  |2014-09-30 |2014-10-31 |31    |100.71      |103.47     | 0.51  |
 |RE          | 18.8  |2014-09-30 |2014-10-31 |31    | 68.49      | 74.21     | 1.57  |
 |CORP.FI     | 18.8  |2014-09-30 |2014-10-31 |31    |116.91      |118.35     | 0.23  |
@@ -481,6 +518,10 @@ Last Trades:
 |RE          | 25.0  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 1.43  |
 |CORP.FI     | 25.0  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 0.94  |
 |CASH        | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
+|EQ          | 18.8  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.21  |
+|RE          | 25.0  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.08  |
+|CORP.FI     | 25.0  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.04  |
+|CASH        | 31.2  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
     
 
 
@@ -494,7 +535,7 @@ Current Allocation:
 
 |           | EQ| RE| CORP.FI| COM| CASH|
 |:----------|--:|--:|-------:|---:|----:|
-|2015-01-30 | 24| 26|      25|   0|   25|
+|2015-02-02 | 19| 25|      25|   0|   31|
     
 
 
@@ -504,7 +545,7 @@ Current Allocation:
     
 
 
-![plot of chunk plot-3](/public/images/2015-02-02-Channel-Breakout/plot-3-6.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-5.png) 
 
 Last Trades:
     
@@ -514,10 +555,6 @@ Last Trades:
 
 |strategy.rp |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
 |:-----------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
-|EQ          | 15.7  |2014-08-29 |2014-09-30 |32    |102.87      |100.71     |-0.33  |
-|RE          | 14.7  |2014-08-29 |2014-09-30 |32    | 72.77      | 68.49     |-0.86  |
-|CORP.FI     | 44.6  |2014-08-29 |2014-09-30 |32    |118.91      |116.91     |-0.75  |
-|CASH        | 25.0  |2014-08-29 |2014-09-30 |32    | 84.48      | 84.42     |-0.02  |
 |EQ          | 13.8  |2014-09-30 |2014-10-31 |31    |100.71      |103.47     | 0.38  |
 |RE          | 10.0  |2014-09-30 |2014-10-31 |31    | 68.49      | 74.21     | 0.83  |
 |CORP.FI     | 32.5  |2014-09-30 |2014-10-31 |31    |116.91      |118.35     | 0.40  |
@@ -534,6 +571,10 @@ Last Trades:
 |RE          | 14.5  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 0.83  |
 |CORP.FI     | 47.8  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 1.79  |
 |CASH        | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
+|EQ          | 10.0  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.11  |
+|RE          | 17.2  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.06  |
+|CORP.FI     | 41.5  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.07  |
+|CASH        | 31.2  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
     
 
 
@@ -547,7 +588,113 @@ Current Allocation:
 
 |           | EQ| RE| CORP.FI| COM| CASH|
 |:----------|--:|--:|-------:|---:|----:|
-|2015-01-30 | 12| 15|      48|   0|   25|
+|2015-02-02 | 10| 17|      41|   0|   31|
+    
+
+
+
+
+# QATAA.EW
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-6.png) 
+
+Last Trades:
+    
+
+
+
+
+|QATAA.EW |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
+|:--------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
+|EQ       | 25    |2014-09-30 |2014-10-31 |31    |100.71      |103.47     | 0.69  |
+|RE       | 25    |2014-09-30 |2014-10-31 |31    | 68.49      | 74.21     | 2.09  |
+|CORP.FI  | 25    |2014-09-30 |2014-10-31 |31    |116.91      |118.35     | 0.31  |
+|CASH     | 25    |2014-09-30 |2014-10-31 |31    | 84.42      | 84.64     | 0.07  |
+|EQ       | 25    |2014-10-31 |2014-11-28 |28    |103.47      |106.04     | 0.62  |
+|RE       | 25    |2014-10-31 |2014-11-28 |28    | 74.21      | 76.23     | 0.68  |
+|CORP.FI  | 25    |2014-10-31 |2014-11-28 |28    |118.35      |119.43     | 0.23  |
+|CASH     | 25    |2014-10-31 |2014-11-28 |28    | 84.64      | 84.73     | 0.03  |
+|EQ       | 25    |2014-11-28 |2014-12-31 |33    |106.04      |106.00     |-0.01  |
+|RE       | 25    |2014-11-28 |2014-12-31 |33    | 76.23      | 76.84     | 0.20  |
+|CORP.FI  | 25    |2014-11-28 |2014-12-31 |33    |119.43      |119.41     | 0.00  |
+|CASH     | 25    |2014-11-28 |2014-12-31 |33    | 84.73      | 84.45     |-0.08  |
+|EQ       | 25    |2014-12-31 |2015-01-30 |30    |106.00      |103.10     |-0.68  |
+|RE       | 25    |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 1.43  |
+|CORP.FI  | 25    |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 0.94  |
+|CASH     | 25    |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
+|EQ       | 25    |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.28  |
+|RE       | 25    |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.08  |
+|CORP.FI  | 25    |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.04  |
+|CASH     | 25    |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           | EQ| RE| CORP.FI| COM| CASH|
+|:----------|--:|--:|-------:|---:|----:|
+|2015-02-02 | 25| 25|      25|   0|   25|
+    
+
+
+
+
+# QATAA.RP
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-7.png) 
+
+Last Trades:
+    
+
+
+
+
+|QATAA.RP |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
+|:--------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
+|EQ       | 18.4  |2014-09-30 |2014-10-31 |31    |100.71      |103.47     | 0.50  |
+|RE       | 13.3  |2014-09-30 |2014-10-31 |31    | 68.49      | 74.21     | 1.11  |
+|CORP.FI  | 43.3  |2014-09-30 |2014-10-31 |31    |116.91      |118.35     | 0.53  |
+|CASH     | 25.0  |2014-09-30 |2014-10-31 |31    | 84.42      | 84.64     | 0.07  |
+|EQ       |  9.8  |2014-10-31 |2014-11-28 |28    |103.47      |106.04     | 0.24  |
+|RE       | 15.8  |2014-10-31 |2014-11-28 |28    | 74.21      | 76.23     | 0.43  |
+|CORP.FI  | 49.4  |2014-10-31 |2014-11-28 |28    |118.35      |119.43     | 0.45  |
+|CASH     | 25.0  |2014-10-31 |2014-11-28 |28    | 84.64      | 84.73     | 0.03  |
+|EQ       | 25.6  |2014-11-28 |2014-12-31 |33    |106.04      |106.00     |-0.01  |
+|RE       | 20.2  |2014-11-28 |2014-12-31 |33    | 76.23      | 76.84     | 0.16  |
+|CORP.FI  | 29.2  |2014-11-28 |2014-12-31 |33    |119.43      |119.41     | 0.00  |
+|CASH     | 25.0  |2014-11-28 |2014-12-31 |33    | 84.73      | 84.45     |-0.08  |
+|EQ       | 12.7  |2014-12-31 |2015-01-30 |30    |106.00      |103.10     |-0.35  |
+|RE       | 14.5  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 0.83  |
+|CORP.FI  | 47.8  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 1.79  |
+|CASH     | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
+|EQ       | 13.9  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.16  |
+|RE       | 17.9  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.06  |
+|CORP.FI  | 43.2  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.08  |
+|CASH     | 25.0  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           | EQ| RE| CORP.FI| COM| CASH|
+|:----------|--:|--:|-------:|---:|----:|
+|2015-02-02 | 14| 18|      43|   0|   25|
     
 
 Unfortunately we cannot match the numbers from original [source](https://cssanalytics.wordpress.com/2015/01/26/a-simple-tactical-asset-allocation-portfolio-with-percentile-channels/)
@@ -556,4 +703,4 @@ But overall, this concept is a very robust allocation framework.
 
 
 
-*(this report was produced on: 2015-02-02)*
+*(this report was produced on: 2015-02-03)*
