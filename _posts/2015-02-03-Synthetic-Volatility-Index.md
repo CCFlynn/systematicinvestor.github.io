@@ -14,9 +14,9 @@ To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinve
 There is an interesting series of articles about Synthetic Volatility Index
 at [QuantLab](https://quantlab.co.za/blog/blog.php)
 
-* [Synthetic Volatility Index Quantified – Part 3](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=35)
-* [Engineering a Synthetic Volatility Index – Part 2](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=34)
-* [Engineering a Synthetic Volatility Index – Part 1](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=33)
+* [Synthetic Volatility Index Quantified  Part 3](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=35)
+* [Engineering a Synthetic Volatility Index  Part 2](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=34)
+* [Engineering a Synthetic Volatility Index  Part 1](https://quantlab.co.za/blog/blog.php?controller=post&action=view&id_post=33)
 
 The objective set by [QuantLab](https://quantlab.co.za/blog/blog.php) is to
 create Synthetic Volatility Index that
