@@ -36,13 +36,6 @@ for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
 d.high.channel = runMax(Hi(data$SP), 55)
 d.low.channel = runMin(Lo(data$SP), 55)
 
-load.packages('caTools')
-runQuantile = function(x, k, probs) {
-  temp = x * NA
-  temp[k:len(x)] = runquantile(as.vector(coredata(x)), k, probs, endrule="trim")    
-  temp
-}
-
 # compute Percentile channels
 p.high.channel = runQuantile(Cl(data$SP), 55, probs=0.75)
 p.low.channel = runQuantile(Cl(data$SP), 55, probs=0.25)
@@ -107,14 +100,6 @@ donchian.channel.breakout.strategy = function(data, lockback.len, long.only=F, u
     else
       data$weight[] = iif(phigh == high.channel, 1, iif(plow == low.channel, iif(long.only,0,-1), NA)) 
   bt.run.share(data, clean.signal=T, silent=T)
-}
-
-load.packages('caTools')
-
-runQuantile = function(x, k, probs) {
-  temp = rep.col(x * NA, len(probs))
-  temp[k:len(x),] = runquantile(as.vector(coredata(x)), k, probs, endrule="trim")    
-  temp
 }
 
 percentile.channel.breakout.strategy = function(data, lockback.len, long.only=F) {
@@ -202,15 +187,15 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |Donchian55        |Donchian55.Long   |Percentile55      |Percentile55.Long |Donchian20        |Percentile20      |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
 |Period     |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |Jan1994 - Feb2015 |
-|Cagr       |9                 |8.82              |7.04              |7.89              |0.34              |5.6               |
-|Sharpe     |0.63              |0.73              |0.51              |0.68              |0.1               |0.42              |
-|DVR        |0.53              |0.67              |0.42              |0.63              |0                 |0.3               |
-|Volatility |15.51             |12.8              |15.69             |12.36             |16.09             |16.16             |
+|Cagr       |8.98              |8.82              |7.02              |7.89              |0.16              |5.42              |
+|Sharpe     |0.63              |0.73              |0.51              |0.68              |0.09              |0.41              |
+|DVR        |0.53              |0.67              |0.42              |0.63              |0                 |0.29              |
+|Volatility |15.51             |12.8              |15.69             |12.36             |16.1              |16.17             |
 |MaxDD      |-44.97            |-29.1             |-42.09            |-26.25            |-68.3             |-37.87            |
 |AvgDD      |-3.13             |-2.8              |-3.88             |-3.05             |-4.75             |-3.55             |
-|VaR        |-1.54             |-1.29             |-1.57             |-1.25             |-1.64             |-1.63             |
+|VaR        |-1.54             |-1.29             |-1.57             |-1.25             |-1.64             |-1.64             |
 |CVaR       |-2.16             |-1.94             |-2.19             |-1.9              |-2.3              |-2.28             |
-|Exposure   |98.62             |63.37             |98.79             |59.37             |99.62             |99.42             |
+|Exposure   |98.62             |63.34             |98.79             |59.35             |99.62             |99.42             |
     
 
 Unfortunately we cannot replicate results from original [source](https://cssanalytics.wordpress.com/2015/01/21/percentile-channels-a-new-twist-on-a-trend-following-favorite/)
@@ -299,6 +284,41 @@ data$weight[] = NA
   data$weight[period.ends,] = rp.weight[period.ends,]
 models$rp = bt.run.share(data, clean.signal=F, silent=T)
 
+
+#*****************************************************************
+# Helper functions
+#*****************************************************************
+reallocate = function(allocation, data, period.ends,	lookback.len,
+	prefix = '',
+	min.risk.fns = 'min.var.portfolio',
+	silent = F
+) {
+	allocation = ifna(allocation, 0)[period.ends,]
+
+	# only allocate to selected assets
+	obj = portfolio.allocation.helper(
+   data$prices, 
+   period.ends=period.ends,
+   lookback.len = lookback.len,
+   universe = allocation > 0,
+   prefix = prefix,
+   min.risk.fns = min.risk.fns,
+   silent = silent
+  )
+
+  # rescale weights to be proportionate allocation
+  for(i in names(obj$weights)) {
+   weight = allocation * obj$weights[[i]]
+   weight = ifna(rowSums(allocation) * weight / rowSums(weight), 0)
+   weight$CASH = 1 - rowSums(weight)
+   obj$weights[[i]] = weight
+  }
+
+	create.strategies(obj, data, silent = silent)$models
+}
+
+
+
 #*****************************************************************
 # Strategy:
 #
@@ -342,6 +362,21 @@ weight$CASH = 1 - rowSums(weight, na.rm=T)
 data$weight[] = NA
   data$weight[period.ends,] = ifna(weight[period.ends,], 0)
 models$strategy.rp = bt.run.share(data, clean.signal=F, trade.summary=T, silent=T)
+
+
+#*****************************************************************
+# Alternative Way
+#*****************************************************************
+models = c(models, 
+  reallocate(allocation, data, period.ends,	20,
+   prefix = 'REP.STG.',
+   min.risk.fns = list(
+    EW=equal.weight.portfolio,
+    RP=risk.parity.portfolio()
+   ),
+   silent = T
+  )
+)
 {% endhighlight %}
 
 Let's add another benchmark, for comparison we will use
@@ -363,12 +398,12 @@ go2cash = prices < sma
 
 # equal weight target allocation
 target.allocation = ntop(prices,n)
-  
+
 # If asset is above it's 10 month moving average it gets allocation
 qt.weight = iif(go2cash, 0, target.allocation)
-  weight = qt.weight
 
 # otherwise, it's weight is allocated to cash
+weight = qt.weight
 weight$CASH = 1 - rowSums(weight)
 
 data$weight[] = NA
@@ -385,9 +420,25 @@ data$weight[] = NA
 models$QATAA.RP = bt.run.share(data, clean.signal=F, trade.summary=T, silent=T)
 
 #*****************************************************************
+# Alternative Way
+#*****************************************************************
+models = c(models, 
+  reallocate(qt.weight, data, period.ends,	20,
+   prefix = 'REP.QATAA.',
+   min.risk.fns = list(
+    EW=equal.weight.portfolio,
+    RP=risk.parity.portfolio()
+   ),
+   silent = T
+  )
+)
+
+
+#*****************************************************************
 # Report
+#*****************************************************************
 #strategy.performance.snapshoot(models, T)
-plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)	    	
+plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
 	mtext('Cumulative Performance', side = 2, line = 1)
 {% endhighlight %}
 
@@ -399,18 +450,18 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 
 
 
-|           |ew                |rp                |strategy.ew       |strategy.rp       |QATAA.EW          |QATAA.RP          |
-|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |
-|Cagr       |8.18              |7.56              |9.53              |8.37              |10.21             |9.07              |
-|Sharpe     |0.68              |0.84              |1.38              |1.56              |1.36              |1.54              |
-|DVR        |0.63              |0.78              |1.33              |1.53              |1.32              |1.51              |
-|Volatility |12.74             |9.18              |6.81              |5.26              |7.38              |5.76              |
-|MaxDD      |-47.38            |-40.01            |-11.53            |-7.98             |-12.47            |-8.77             |
-|AvgDD      |-1.43             |-1.18             |-0.93             |-0.82             |-1.01             |-0.85             |
-|VaR        |-1.07             |-0.76             |-0.64             |-0.5              |-0.7              |-0.56             |
-|CVaR       |-1.93             |-1.34             |-0.99             |-0.76             |-1.08             |-0.83             |
-|Exposure   |99.7              |99.28             |99.7              |99.7              |99.7              |99.7              |
+|           |ew                |rp                |strategy.ew       |strategy.rp       |REP.STG.EW        |REP.STG.RP        |QATAA.EW          |QATAA.RP          |REP.QATAA.EW      |REP.QATAA.RP      |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |May1996 - Feb2015 |
+|Cagr       |8.2               |7.56              |9.54              |8.36              |9.54              |8.36              |10.22             |9.07              |10.22             |9.07              |
+|Sharpe     |0.68              |0.84              |1.38              |1.56              |1.38              |1.56              |1.36              |1.54              |1.36              |1.54              |
+|DVR        |0.63              |0.78              |1.33              |1.53              |1.33              |1.53              |1.32              |1.51              |1.32              |1.51              |
+|Volatility |12.74             |9.18              |6.81              |5.26              |6.81              |5.26              |7.38              |5.76              |7.38              |5.76              |
+|MaxDD      |-47.38            |-40.01            |-11.53            |-7.98             |-11.53            |-7.99             |-12.47            |-8.77             |-12.47            |-8.78             |
+|AvgDD      |-1.43             |-1.18             |-0.93             |-0.82             |-0.93             |-0.82             |-1.01             |-0.85             |-1.01             |-0.85             |
+|VaR        |-1.07             |-0.76             |-0.64             |-0.5              |-0.64             |-0.5              |-0.7              |-0.56             |-0.7              |-0.56             |
+|CVaR       |-1.93             |-1.34             |-0.99             |-0.76             |-0.99             |-0.76             |-1.08             |-0.83             |-1.08             |-0.83             |
+|Exposure   |99.7              |99.28             |99.7              |99.7              |99.7              |99.7              |99.7              |99.7              |99.7              |99.7              |
     
 
 
@@ -426,7 +477,7 @@ for(m in names(models)) {
   print(last.trades(models[m],make.plot=F, return.table=T))
                                               
   print('Current Allocation:')
-  print( round(100*last(models[[m]]$weight)) )
+  print(to.percent(last(models[[m]]$weight)))
 }
 {% endhighlight %}
 
@@ -452,9 +503,9 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 25| 25|      25|  25|    0|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |25.26% |24.75% |24.36%  |25.63% | 0.00% |
     
 
 
@@ -480,9 +531,9 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 16| 20|      49|  14|    0|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |16.20% |20.48% |48.50%  |14.81% | 0.00% |
     
 
 
@@ -518,10 +569,10 @@ Last Trades:
 |RE          | 25.0  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 1.43  |
 |CORP.FI     | 25.0  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 0.94  |
 |CASH        | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
-|EQ          | 18.8  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.21  |
-|RE          | 25.0  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.08  |
-|CORP.FI     | 25.0  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.04  |
-|CASH        | 31.2  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+|EQ          | 18.8  |2015-01-30 |2015-02-04 | 5    |103.10      |105.49     | 0.43  |
+|RE          | 25.0  |2015-01-30 |2015-02-04 | 5    | 81.23      | 81.48     | 0.08  |
+|CORP.FI     | 25.0  |2015-01-30 |2015-02-04 | 5    |123.89      |122.84     |-0.21  |
+|CASH        | 31.2  |2015-01-30 |2015-02-04 | 5    | 84.98      | 84.86     |-0.04  |
     
 
 
@@ -533,9 +584,9 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 19| 25|      25|   0|   31|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |19.18% |25.06% |24.67%  | 0.00% |31.09% |
     
 
 
@@ -571,10 +622,10 @@ Last Trades:
 |RE          | 14.5  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 0.83  |
 |CORP.FI     | 47.8  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 1.79  |
 |CASH        | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
-|EQ          | 10.0  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.11  |
-|RE          | 17.2  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.06  |
-|CORP.FI     | 41.5  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.07  |
-|CASH        | 31.2  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+|EQ          | 10.0  |2015-01-30 |2015-02-04 | 5    |103.10      |105.49     | 0.23  |
+|RE          | 17.2  |2015-01-30 |2015-02-04 | 5    | 81.23      | 81.48     | 0.05  |
+|CORP.FI     | 41.5  |2015-01-30 |2015-02-04 | 5    |123.89      |122.84     |-0.35  |
+|CASH        | 31.2  |2015-01-30 |2015-02-04 | 5    | 84.98      | 84.86     |-0.04  |
     
 
 
@@ -586,9 +637,65 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 10| 17|      41|   0|   31|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |10.30% |17.36% |41.11%  | 0.00% |31.23% |
+    
+
+
+
+
+# REP.STG.EW
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-6.png) 
+
+Last Trades:
+    
+
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |19.18% |25.06% |24.67%  | 0.00% |31.09% |
+    
+
+
+
+
+# REP.STG.RP
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-7.png) 
+
+Last Trades:
+    
+
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |10.31% |17.35% |41.11%  | 0.00% |31.23% |
     
 
 
@@ -598,7 +705,7 @@ Current Allocation:
     
 
 
-![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-6.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-8.png) 
 
 Last Trades:
     
@@ -624,10 +731,10 @@ Last Trades:
 |RE       | 25    |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 1.43  |
 |CORP.FI  | 25    |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 0.94  |
 |CASH     | 25    |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
-|EQ       | 25    |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.28  |
-|RE       | 25    |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.08  |
-|CORP.FI  | 25    |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.04  |
-|CASH     | 25    |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+|EQ       | 25    |2015-01-30 |2015-02-04 | 5    |103.10      |105.49     | 0.58  |
+|RE       | 25    |2015-01-30 |2015-02-04 | 5    | 81.23      | 81.48     | 0.08  |
+|CORP.FI  | 25    |2015-01-30 |2015-02-04 | 5    |123.89      |122.84     |-0.21  |
+|CASH     | 25    |2015-01-30 |2015-02-04 | 5    | 84.98      | 84.86     |-0.04  |
     
 
 
@@ -639,9 +746,9 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 25| 25|      25|   0|   25|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |25.53% |25.02% |24.62%  | 0.00% |24.83% |
     
 
 
@@ -651,7 +758,7 @@ Current Allocation:
     
 
 
-![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-7.png) 
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-9.png) 
 
 Last Trades:
     
@@ -677,10 +784,10 @@ Last Trades:
 |RE       | 14.5  |2014-12-31 |2015-01-30 |30    | 76.84      | 81.23     | 0.83  |
 |CORP.FI  | 47.8  |2014-12-31 |2015-01-30 |30    |119.41      |123.89     | 1.79  |
 |CASH     | 25.0  |2014-12-31 |2015-01-30 |30    | 84.45      | 84.98     | 0.16  |
-|EQ       | 13.9  |2015-01-30 |2015-02-02 | 3    |103.10      |104.26     | 0.16  |
-|RE       | 17.9  |2015-01-30 |2015-02-02 | 3    | 81.23      | 80.97     |-0.06  |
-|CORP.FI  | 43.2  |2015-01-30 |2015-02-02 | 3    |123.89      |123.67     |-0.08  |
-|CASH     | 25.0  |2015-01-30 |2015-02-02 | 3    | 84.98      | 84.92     |-0.02  |
+|EQ       | 13.9  |2015-01-30 |2015-02-04 | 5    |103.10      |105.49     | 0.32  |
+|RE       | 17.9  |2015-01-30 |2015-02-04 | 5    | 81.23      | 81.48     | 0.06  |
+|CORP.FI  | 43.2  |2015-01-30 |2015-02-04 | 5    |123.89      |122.84     |-0.37  |
+|CASH     | 25.0  |2015-01-30 |2015-02-04 | 5    | 84.98      | 84.86     |-0.04  |
     
 
 
@@ -692,9 +799,65 @@ Current Allocation:
 
 
 
-|           | EQ| RE| CORP.FI| COM| CASH|
-|:----------|--:|--:|-------:|---:|----:|
-|2015-02-02 | 14| 18|      43|   0|   25|
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |14.27% |18.04% |42.72%  | 0.00% |24.96% |
+    
+
+
+
+
+# REP.QATAA.EW
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-10.png) 
+
+Last Trades:
+    
+
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |25.53% |25.02% |24.62%  | 0.00% |24.83% |
+    
+
+
+
+
+# REP.QATAA.RP
+    
+
+
+![plot of chunk plot-4](/public/images/2015-02-02-Channel-Breakout/plot-4-11.png) 
+
+Last Trades:
+    
+
+    
+
+
+
+
+Current Allocation:
+    
+
+
+
+
+|           |EQ     |RE     |CORP.FI |COM    |CASH   |
+|:----------|:------|:------|:-------|:------|:------|
+|2015-02-04 |14.29% |18.04% |42.72%  | 0.00% |24.96% |
     
 
 Unfortunately we cannot match the numbers from original [source](https://cssanalytics.wordpress.com/2015/01/26/a-simple-tactical-asset-allocation-portfolio-with-percentile-channels/)
@@ -702,5 +865,16 @@ Unfortunately we cannot match the numbers from original [source](https://cssanal
 But overall, this concept is a very robust allocation framework.
 
 
+ToDo: take the posts about Permanent Portfolio and apply here
+systematicinvestor.wordpress.com/?s=Permanent+Portfolio
 
-*(this report was produced on: 2015-02-03)*
+
+
+
+
+
+
+
+
+
+*(this report was produced on: 2015-02-05)*
