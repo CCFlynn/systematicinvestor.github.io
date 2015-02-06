@@ -75,8 +75,7 @@ for( i in unique(unlist(choices)) )
 # run back test over all combinations
 result = choices
 	result$CAGR = NA
-
-temp = data$prices[,1]
+nyears = compute.nyears(data$prices)
 
 for(i in 1:nrow(choices)) {
 	signal = iif(mas[[choices$fast[i]]] > mas[[choices$mid[i]]] &  
@@ -87,10 +86,9 @@ for(i in 1:nrow(choices)) {
 	data$weight[] = NA
 		data$weight[] = signal
 	model = bt.run.weight.fast(data)
- 	temp[] = model$equity
- result$CAGR[i] = compute.cagr(temp)
+	result$CAGR[i] = compute.cagr(model$equity, nyears)
 	#model = bt.run(data, silent=T)
- #result$CAGR[i] = model$cagr
+	#result$CAGR[i] = model$cagr
 }
 
 # re-arrange
@@ -135,4 +133,4 @@ is to use a great example of htmlwidgets in the
 
 
 
-*(this report was produced on: 2015-02-05)*
+*(this report was produced on: 2015-02-06)*

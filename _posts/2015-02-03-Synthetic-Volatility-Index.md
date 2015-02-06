@@ -63,8 +63,8 @@ plota(vix.proxy, type='l', main=paste('Correlation with VIX:', to.percent(cor.vi
 
 {% highlight r %}
 layout(1)
-temp = na.omit(cbind(Cl(data$VIX),vix.proxy))
-plota.matplot(scale.one(temp))
+temp = as.xts(list(VIX = Cl(data$VIX), Vix.Proxy = vix.proxy)) 
+plota.matplot(scale.one(na.omit(temp)))
 {% endhighlight %}
 
 ![plot of chunk plot-2](/public/images/2015-02-03-Synthetic-Volatility-Index/plot-2-2.png) 
@@ -99,48 +99,12 @@ models = list()
 
 data$weight[] = NA
 	data$weight$SP = 1
-models$SP = bt.run.share(data, clean.signal=T)
-{% endhighlight %}
+models$SP = bt.run.share(data, clean.signal=T, silent=T)
 
-Latest weights :
-
-
-|           |  SP| VIX|
-|:----------|---:|---:|
-|2015-02-04 | 100|   0|
-    
-
-
-
-Performance summary :
-	CAGR	Best	Worst	
-	7.2	11.6	-9	
-
-
-
-{% highlight r %}
 data$weight[] = NA
 	data$weight$SP = iif(low.vol.regime, 1, 0)
-models$low.vol = bt.run.share(data, clean.signal=T)
-{% endhighlight %}
+models$low.vol = bt.run.share(data, clean.signal=T, silent=T)
 
-Latest weights :
-
-
-|           | SP| VIX|
-|:----------|--:|---:|
-|2015-02-04 |  0|   0|
-    
-
-
-
-Performance summary :
-	CAGR	Best	Worst	
-	1.2	6.5	-8.9	
-
-
-
-{% highlight r %}
 #*****************************************************************
 # Report
 #*****************************************************************
@@ -161,7 +125,7 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |SP                |low.vol           |
 |:----------|:-----------------|:-----------------|
 |Period     |Jan1990 - Feb2015 |Jan1990 - Feb2015 |
-|Cagr       |7.16              |1.21              |
+|Cagr       |7.2               |1.21              |
 |Sharpe     |0.47              |0.16              |
 |DVR        |0.34              |0                 |
 |Volatility |18.11             |11.51             |
@@ -177,30 +141,31 @@ The estimate is similar to other volatility estimates available from TTR package
 
 {% highlight r %}
 ohlc = OHLC(data$SP)
-vClose = volatility(ohlc, n=20, calc="close")
-vGK = volatility(ohlc, n=20, calc="garman")
-vParkinson = volatility(ohlc, n=20, calc="parkinson")
-vRS = volatility(ohlc, n=20, calc="rogers")
+temp = as.xts(list(
+  VIX = Cl(data$VIX), 
+  Vix.Proxy = vix.proxy,
+  Vol.Close = volatility(ohlc, n=20, calc='close'),
+  Vol.GK = volatility(ohlc, n=20, calc='garman'),
+  Vol.Parkinson = volatility(ohlc, n=20, calc='parkinson'),
+  Vol.RS = volatility(ohlc, n=20, calc='rogers')
+))
 
-VIX = Cl(data$VIX)
-temp = data.frame(vix.proxy, vClose, vGK, vParkinson, vRS, VIX)
-
-print(to.percent(cor(temp, use='complete.obs',method='pearson')))
+print(to.percent(cor(temp, use='complete.obs',method='pearson'),0))
 {% endhighlight %}
 
 
 
-|           |atr.SMA.20 |vClose  |vGK     |vParkinson |vRS     |Close   |
-|:----------|:----------|:-------|:-------|:----------|:-------|:-------|
-|atr.SMA.20 |100.00%    | 97.75% | 99.11% | 99.58%    | 97.70% | 91.46% |
-|vClose     | 97.75%    |100.00% | 95.71% | 98.01%    | 92.93% | 88.75% |
-|vGK        | 99.11%    | 95.71% |100.00% | 99.42%    | 99.51% | 90.91% |
-|vParkinson | 99.58%    | 98.01% | 99.42% |100.00%    | 98.04% | 91.07% |
-|vRS        | 97.70%    | 92.93% | 99.51% | 98.04%    |100.00% | 90.03% |
-|Close      | 91.46%    | 88.75% | 90.91% | 91.07%    | 90.03% |100.00% |
+|              |VIX  |Vix.Proxy |Vol.Close |Vol.GK |Vol.Parkinson |Vol.RS |
+|:-------------|:----|:---------|:---------|:------|:-------------|:------|
+|VIX           |100% | 91%      | 89%      | 91%   | 91%          | 90%   |
+|Vix.Proxy     | 91% |100%      | 98%      | 99%   |100%          | 98%   |
+|Vol.Close     | 89% | 98%      |100%      | 96%   | 98%          | 93%   |
+|Vol.GK        | 91% | 99%      | 96%      |100%   | 99%          |100%   |
+|Vol.Parkinson | 91% |100%      | 98%      | 99%   |100%          | 98%   |
+|Vol.RS        | 90% | 98%      | 93%      |100%   | 98%          |100%   |
     
 
 
 
 
-*(this report was produced on: 2015-02-05)*
+*(this report was produced on: 2015-02-06)*
