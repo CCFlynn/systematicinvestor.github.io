@@ -466,6 +466,40 @@ for(m in names(models)) {
 |2015-02-09 |24.51% | 0.00% |25.85% |24.69% |24.96% |
     
 
+
+Finnally, let's zoom in on the recent perfomance strating in 2010:
+
+
+{% highlight r %}
+models.2010 = bt.trim(models, dates = '2010::')
+
+plotbt(models.2010, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
+	mtext('Cumulative Performance', side = 2, line = 1)
+{% endhighlight %}
+
+![plot of chunk plot-4](/public/images/2015-02-09-Channel-Breakout2/plot-4-1.png) 
+
+{% highlight r %}
+print(plotbt.strategy.sidebyside(models.2010, make.plot=F, return.table=T))
+{% endhighlight %}
+
+
+
+|           |ew                |rp                |channel.ew        |channel.rp        |QATAA             |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |Jan2010 - Feb2015 |Jan2010 - Feb2015 |Jan2010 - Feb2015 |Jan2010 - Feb2015 |Jan2010 - Feb2015 |
+|Cagr       |8.46              |8.05              |8.82              |9.12              |5.85              |
+|Sharpe     |0.78              |1.09              |1.02              |1.42              |0.69              |
+|DVR        |0.73              |1.02              |0.97              |1.35              |0.53              |
+|Volatility |11.45             |7.57              |8.83              |6.47              |9.14              |
+|MaxDD      |-14.65            |-9.15             |-11.5             |-6.86             |-13.54            |
+|AvgDD      |-1.58             |-1.15             |-1.45             |-1.07             |-1.53             |
+|VaR        |-1.1              |-0.71             |-0.82             |-0.59             |-0.92             |
+|CVaR       |-1.75             |-1.12             |-1.38             |-0.99             |-1.45             |
+|Exposure   |100               |100               |100               |100               |100               |
+    
+
+
 We are able to match the sharpe ratio of about 1.5 using ETF data as reported in the source
 [source](https://cssanalytics.wordpress.com/2015/02/08/a-simple-tactical-asset-allocation-portfolio-with-percentile-channels-for-dummies/)
 
