@@ -3,7 +3,8 @@ layout: page
 title: Strategy
 ---
 
-Following are automated Strategy back-test and signal reports that are created each night:
+Following are automated Strategy back-test and signal reports,
+based on strategies discussed in blogs and at SSRN, that are automatically updated each night:
 
 <ul>
 {% for post in site.pages %}
