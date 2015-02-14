@@ -128,8 +128,8 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.8%     |-0.8%     |-7.6%     |-7.6%     |
-|StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |24.9%     |24.9%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.2%     |-0.2%     |-6.7%     |-6.7%     |
+|StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |25.0%     |25.0%     |
     
 
 Quick glance at historical time series does not show anything abnormal between Price and Adjusted Price series. 
@@ -170,7 +170,7 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
     tickers = spl(tickers)
     data = new.env()
     
-	getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data, raw.data = raw.data, auto.assign = T)    
+    getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data, raw.data = raw.data, auto.assign = T)    
         for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
                          
     #*****************************************************************
@@ -197,7 +197,7 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |      |Start      |
 |:-----|:----------|
 |VGSIX |1996-06-28 |
-|VNQ   |2004-10-01 |
+|VNQ   |2004-09-29 |
 |RWX   |2007-03-02 |
     
 
@@ -209,8 +209,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.2% |13.0% |13.3% |
-|StDev |25.5% |40.5% |39.3% |
+|Mean  | 3.6% |12.8% |13.0% |
+|StDev |25.5% |40.4% |39.3% |
     
 
 
@@ -218,7 +218,7 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.2%     | 3.2%     |14.6%       |14.6%       |16.0%     |16.0%     |
+|Mean  | 3.6%     | 3.6%     |14.5%       |14.5%       |16.0%     |16.0%     |
 |StDev |25.5%     |25.5%     |28.2%       |28.2%       |35.2%     |35.2%     |
     
 
@@ -260,8 +260,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.7% | 9.2% |16.8% |
-|StDev |39.2% |30.0% |42.1% |
+|Mean  |14.5% | 9.2% |16.4% |
+|StDev |39.1% |29.9% |42.0% |
     
 
 
@@ -269,8 +269,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.7%     |14.7%     | 9.2%     | 9.2%     |14.6%       |14.6%       |
-|StDev |29.6%     |29.6%     |30.0%     |30.0%     |28.2%       |28.2%       |
+|Mean  |14.6%     |14.6%     | 9.2%     | 9.2%     |14.5%       |14.5%       |
+|StDev |29.6%     |29.6%     |29.9%     |29.9%     |28.2%       |28.2%       |
     
 
 
@@ -349,8 +349,8 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 	#compute.raw.annual.factor(TB3Y)
 	raw.data$TB3Y = make.stock.xts(processTBill(TB3Y, timetomaturity = 3, 261))
 	#--------------------------------   
-	
-	create.proxy('SHY,TB3Y', 'SHY, SHY.TB3Y=SHY+TB3Y', raw.data)	
+
+	create.proxy('SHY,TB3Y', 'SHY, SHY.TB3Y=SHY+TB3Y', raw.data)
 {% endhighlight %}
 
 
@@ -383,6 +383,211 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 
 ![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-8.png) 
+
+{% highlight r %}
+	#--------------------------------   
+	# load 10 years t-bill from FRED (BIL)
+	filename = 'data/TB10Y.Rdata'
+	if(!file.exists(filename)) {
+		TB10Y = quantmod::getSymbols('DGS10', src='FRED', auto.assign = FALSE)
+		save(TB10Y, file=filename)
+	}
+	load(file=filename)
+	TB10Y[] = ifna.prev(TB10Y)
+	#compute.raw.annual.factor(TB10Y)
+	raw.data$TB10Y = make.stock.xts(processTBill(TB10Y, timetomaturity = 10, 261))
+	#--------------------------------   
+
+	create.proxy('IEF,VFITX,TB10Y', 'IEF, IEF.VFITX=IEF+VFITX, IEF.VFITX.TB10Y=IEF+VFITX+TB10Y', raw.data)
+{% endhighlight %}
+
+
+
+|      |Start      |
+|:-----|:----------|
+|TB10Y |1962-01-02 |
+|VFITX |1996-06-20 |
+|IEF   |2002-07-30 |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-9.png) 
+
+|      |IEF  |TB10Y |VFITX |
+|:-----|:----|:-----|:-----|
+|IEF   |     |96%   |93%   |
+|TB10Y |     |      |92%   |
+|      |     |      |      |
+|Mean  |6.0% |5.9%  |4.7%  |
+|StDev |7.0% |9.4%  |5.1%  |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-10.png) ![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-11.png) 
+
+|      |IEF Price |IEF Total |TB10Y Price |TB10Y Total |VFITX Price |VFITX Total |
+|:-----|:---------|:---------|:-----------|:-----------|:-----------|:-----------|
+|Mean  |6.0%      |6.0%      |6.8%        |6.8%        |5.8%        |5.8%        |
+|StDev |7.0%      |7.0%      |9.6%        |9.6%        |5.2%        |5.2%        |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-12.png) 
+
+{% highlight r %}
+	#--------------------------------   
+	# load 20 years t-bill from FRED (BIL)
+	filename = 'data/TB20Y.Rdata'
+	if(!file.exists(filename)) {
+		TB20Y = quantmod::getSymbols('GS20', src='FRED', auto.assign = FALSE)
+		save(TB20Y, file=filename)
+	}
+	load(file=filename)
+  print(TB20Y[is.na(TB20Y)])
+{% endhighlight %}
+
+
+
+|           | GS20|
+|:----------|----:|
+|1987-01-01 |     |
+|1987-02-01 |     |
+|1987-03-01 |     |
+|1987-04-01 |     |
+|1987-05-01 |     |
+|1987-06-01 |     |
+|1987-07-01 |     |
+|1987-08-01 |     |
+|1987-09-01 |     |
+|1987-10-01 |     |
+|1987-11-01 |     |
+|1987-12-01 |     |
+|1988-01-01 |     |
+|1988-02-01 |     |
+|1988-03-01 |     |
+|1988-04-01 |     |
+|1988-05-01 |     |
+|1988-06-01 |     |
+|1988-07-01 |     |
+|1988-08-01 |     |
+|1988-09-01 |     |
+|1988-10-01 |     |
+|1988-11-01 |     |
+|1988-12-01 |     |
+|1989-01-01 |     |
+|1989-02-01 |     |
+|1989-03-01 |     |
+|1989-04-01 |     |
+|1989-05-01 |     |
+|1989-06-01 |     |
+|1989-07-01 |     |
+|1989-08-01 |     |
+|1989-09-01 |     |
+|1989-10-01 |     |
+|1989-11-01 |     |
+|1989-12-01 |     |
+|1990-01-01 |     |
+|1990-02-01 |     |
+|1990-03-01 |     |
+|1990-04-01 |     |
+|1990-05-01 |     |
+|1990-06-01 |     |
+|1990-07-01 |     |
+|1990-08-01 |     |
+|1990-09-01 |     |
+|1990-10-01 |     |
+|1990-11-01 |     |
+|1990-12-01 |     |
+|1991-01-01 |     |
+|1991-02-01 |     |
+|1991-03-01 |     |
+|1991-04-01 |     |
+|1991-05-01 |     |
+|1991-06-01 |     |
+|1991-07-01 |     |
+|1991-08-01 |     |
+|1991-09-01 |     |
+|1991-10-01 |     |
+|1991-11-01 |     |
+|1991-12-01 |     |
+|1992-01-01 |     |
+|1992-02-01 |     |
+|1992-03-01 |     |
+|1992-04-01 |     |
+|1992-05-01 |     |
+|1992-06-01 |     |
+|1992-07-01 |     |
+|1992-08-01 |     |
+|1992-09-01 |     |
+|1992-10-01 |     |
+|1992-11-01 |     |
+|1992-12-01 |     |
+|1993-01-01 |     |
+|1993-02-01 |     |
+|1993-03-01 |     |
+|1993-04-01 |     |
+|1993-05-01 |     |
+|1993-06-01 |     |
+|1993-07-01 |     |
+|1993-08-01 |     |
+|1993-09-01 |     |
+    
+
+
+
+
+{% highlight r %}
+	TB20Y[] = ifna.prev(TB20Y)
+  # alternative, linear approximate missing data
+  #TB20Y[] = approx(1:nrow(TB20Y), as.vector(TB20Y), 1:nrow(TB20Y), method='linear')$y  
+  
+	#compute.raw.annual.factor(TB10Y)
+	raw.data$TB20Y = make.stock.xts(processTBill(TB20Y, timetomaturity = 20, 12))
+	#--------------------------------   
+
+	create.proxy('TLT,VUSTX,TB20Y', 'TLT, TLT.VUSTX=TLT+VUSTX, TLT.VUSTX.TB20Y=TLT+VUSTX+TB20Y', raw.data)
+{% endhighlight %}
+
+
+
+|      |Start      |
+|:-----|:----------|
+|TB20Y |1953-04-01 |
+|VUSTX |1989-12-14 |
+|TLT   |2002-07-30 |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-13.png) 
+
+|      |TB20Y  |TLT    |VUSTX  |
+|:-----|:------|:------|:------|
+|TB20Y |       |76%    |71%    |
+|TLT   |       |       |99%    |
+|      |       |       |       |
+|Mean  |313.3% |267.3% |244.5% |
+|StDev | 90.2% | 74.2% | 61.2% |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-14.png) ![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-15.png) 
+
+|      |TB20Y Price |TB20Y Total |TLT Price |TLT Total |VUSTX Price |VUSTX Total |
+|:-----|:-----------|:-----------|:---------|:---------|:-----------|:-----------|
+|Mean  |155.4%      |155.4%      |  8.6%    |  8.6%    |  8.3%      |  8.3%      |
+|StDev | 70.3%      | 70.3%      | 13.8%    | 13.8%    | 10.5%      | 10.5%      |
+    
+
+
+![plot of chunk plot-11](/public/images/2014-11-14-Data-Proxy/plot-11-16.png) 
+
+Please note, there are missing observations in GS20 from 1987 to 1993, but VUSTX only begins
+in Dec 1989. Hence, the overlap is missing 3 years of observations: 1987, 1988, 1989.
+In this years we assumed that GS20 was constant at 7.28 as reported in 1986-12-01 7.28.
+
+Another problem with monthly data is the date used to record each observation. These
+are most likely month-end observations, but they are recorded as the first day of the month.
+
 </div>
 
 
@@ -429,7 +634,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |12.1%     |12.1%     | 9.4%      | 9.4%      |
+|Mean  |11.6%     |11.6%     | 9.4%      | 9.4%      |
 |StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
@@ -542,4 +747,15 @@ print(bt.start.dates(data))
     
 
 
-*(this report was produced on: 2015-02-02)*
+
+
+
+
+
+
+
+
+
+
+
+*(this report was produced on: 2015-02-14)*
