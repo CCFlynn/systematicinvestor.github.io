@@ -29,6 +29,7 @@ ui <- fluidPage(
 
 Can be coded using following syntax. I.e. tags are started with **
 
+{% highlight r %}
 **shiny
 **sidebar
 **slider='obs' 'Number of observations:' min=10 max=500 value=100
@@ -38,10 +39,11 @@ function={
     hist(rnorm(input$obs), col = 'darkgray', border = 'white')
   }
 **shiny
-
+{% endhighlight %}
 
 [Another example](http://rmarkdown.rstudio.com/authoring_embedded_shiny.html)
 
+{% highlight r %}
 **shiny
 **fluid
 **select=region, 'Region:', choices = colnames(WorldPhones))
@@ -50,6 +52,7 @@ function={
               ylab = "Number of Telephones", xlab = "Year")
     }
 **shiny
+{% endhighlight %}
 
 It is just an idea, there is no working parser.
 

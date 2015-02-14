@@ -16,7 +16,7 @@ This paper shows steps to improve strategy performance starting with
   * Top Momentum with Minimum Variance allocation
   * Target Risk
 
-*The [Quantitative Approach To Tactical Asset Allocation Strategy(QATAA) by Mebane T. Faber](http://mebfaber.com/timing-model/)
+* The [Quantitative Approach To Tactical Asset Allocation Strategy(QATAA) by Mebane T. Faber](http://mebfaber.com/timing-model/)
 please read [SSRN paper](http://papers.ssrn.com/sol3/papers.cfm?abstract_id=962461) for more details
   * 10 month moving average go to cash filter
 
