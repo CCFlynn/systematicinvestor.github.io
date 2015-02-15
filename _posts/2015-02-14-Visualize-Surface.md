@@ -32,22 +32,7 @@ load.packages('quantmod')
 
 S = c(100,105,20) # spot prices
 r = c(0.05, 0.11,0.1) # expected returns
-sigma = c(0.11,0.16,0.27) # expected standard deviations
- matrix
-{% endhighlight %}
-
-function (data = NA, nrow = 1, ncol = 1, byrow = FALSE, dimnames = NULL) 
-{
-    if (is.object(data) || !is.atomic(data)) 
-        data <- as.vector(data)
-    .Internal(matrix(data, nrow, ncol, byrow, dimnames, missing(nrow), 
-        missing(ncol)))
-}
-<bytecode: 0x0213e0e0>
-<environment: namespace:base>
-
-
-{% highlight r %}
+sigma = c(0.11,0.16,0.27) # expected standard deviations matrix
 rho12 = 0.63 # correlation between first and second assets
 rho13 = 0.2 # correlation between first and third assets
 rho23 = 0.89 # correlation between second and third assets
