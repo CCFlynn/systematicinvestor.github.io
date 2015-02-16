@@ -8,7 +8,7 @@ permalink: search/
 
 <p>What are you looking for?</p>    
 
-<input id="search" type="text" value="asset allocation" class="form-control" onkeydown="if (event.keyCode == 13) doSearch()"/>
+<input id="search" type="text" value="" class="form-control" onkeydown="if (event.keyCode == 13) doSearch()"/>
 
 <div>
 <input id="searchBtn" type="submit" class="btn" onclick="doSearch()" value="Search">
