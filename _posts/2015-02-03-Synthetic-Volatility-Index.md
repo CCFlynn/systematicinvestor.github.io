@@ -2,6 +2,7 @@
 layout: post
 title: Synthetic Volatility Index
 comments: true
+rss: true
 ---
 
 

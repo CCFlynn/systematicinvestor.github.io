@@ -2,6 +2,7 @@
 layout: post
 title: Back-testing Trades
 comments: true
+rss: true
 ---
 
 

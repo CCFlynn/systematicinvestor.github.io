@@ -16,7 +16,7 @@ layout: null
  </author>
 
  {% for post in site.posts limit: 10 %}
- {% if post.comments %}
+ {% if post.rss %}
  <entry>
    <title>{{ post.title }}</title>
    <link href="{{ site.url }}{{ post.url }}"/>

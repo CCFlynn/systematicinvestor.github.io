@@ -2,6 +2,7 @@
 layout: post
 title: Visualize Surface
 comments: true
+rss: true
 ---
 
 

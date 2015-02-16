@@ -2,6 +2,7 @@
 layout: post
 title: Channel Breakout - Second Attempt
 comments: true
+rss: true
 ---
 
 
