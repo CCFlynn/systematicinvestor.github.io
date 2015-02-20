@@ -45,8 +45,11 @@ Note: there are more examples at
 
 raw.data <- new.env()
     
-    # TRJ_CRB file was downloaded from the http://www.corecommodityllc.com/CoreCommodity-Indexes/1cc/681
-    # for TRJ/CRB Index-Total Return
+    # TRJ_CRB file was downloaded from the 
+    # http://www.corecommodityllc.com/CoreIndexes.aspx
+    # select TR/CC-CRB Index-Total Return and click "See Chart"
+    # on Chart page click "Download to Spreadsheet" link
+    # copy TR_CC-CRB, downloaded file, to data folder
     temp = extract.table.from.webpage( join(readLines("data/TR_CC-CRB")), 'EODValue' )
     temp = join( apply(temp, 1, join, ','), '\n' )
     raw.data$CRB = make.stock.xts( read.xts(temp, format='%m/%d/%y' ) )
@@ -128,7 +131,7 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.2%     |-0.2%     |-6.7%     |-6.7%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.4%     |-0.4%     |-6.9%     |-6.9%     |
 |StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |25.0%     |25.0%     |
     
 
@@ -209,8 +212,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.6% |12.8% |13.0% |
-|StDev |25.5% |40.4% |39.3% |
+|Mean  | 3.5% |12.6% |12.8% |
+|StDev |25.5% |40.4% |39.2% |
     
 
 
@@ -218,8 +221,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.6%     | 3.6%     |14.5%       |14.5%       |16.0%     |16.0%     |
-|StDev |25.5%     |25.5%     |28.2%       |28.2%       |35.2%     |35.2%     |
+|Mean  | 3.5%     | 3.5%     |14.4%       |14.4%       |15.8%     |15.8%     |
+|StDev |25.5%     |25.5%     |28.2%       |28.2%       |35.1%     |35.1%     |
     
 
 
@@ -260,7 +263,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.5% | 9.2% |16.4% |
+|Mean  |14.3% | 9.0% |16.2% |
 |StDev |39.1% |29.9% |42.0% |
     
 
@@ -269,7 +272,7 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.6%     |14.6%     | 9.2%     | 9.2%     |14.5%       |14.5%       |
+|Mean  |14.5%     |14.5%     | 9.0%     | 9.0%     |14.4%       |14.4%       |
 |StDev |29.6%     |29.6%     |29.9%     |29.9%     |28.2%       |28.2%       |
     
 
@@ -427,7 +430,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |IEF Price |IEF Total |TB10Y Price |TB10Y Total |VFITX Price |VFITX Total |
 |:-----|:---------|:---------|:-----------|:-----------|:-----------|:-----------|
-|Mean  |6.0%      |6.0%      |6.8%        |6.8%        |5.8%        |5.8%        |
+|Mean  |5.9%      |5.9%      |6.8%        |6.8%        |5.8%        |5.8%        |
 |StDev |7.0%      |7.0%      |9.6%        |9.6%        |5.2%        |5.2%        |
     
 
@@ -574,7 +577,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |TB20Y Price |TB20Y Total |TLT Price |TLT Total |VUSTX Price |VUSTX Total |
 |:-----|:-----------|:-----------|:---------|:---------|:-----------|:-----------|
-|Mean  |155.4%      |155.4%      |  8.6%    |  8.6%    |  8.3%      |  8.3%      |
+|Mean  |155.4%      |155.4%      |  8.5%    |  8.5%    |  8.2%      |  8.2%      |
 |StDev | 70.3%      | 70.3%      | 13.8%    | 13.8%    | 10.5%      | 10.5%      |
     
 
@@ -634,7 +637,7 @@ are most likely month-end observations, but they are recorded as the first day o
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |11.6%     |11.6%     | 9.4%      | 9.4%      |
+|Mean  |11.5%     |11.5%     | 9.4%      | 9.4%      |
 |StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
@@ -758,4 +761,4 @@ print(bt.start.dates(data))
 
 
 
-*(this report was produced on: 2015-02-14)*
+*(this report was produced on: 2015-02-20)*
