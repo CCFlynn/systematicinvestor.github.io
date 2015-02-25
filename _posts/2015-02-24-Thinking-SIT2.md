@@ -328,6 +328,7 @@ Please experiment and have fun.
 
 Revolution Analytics put the [An R tutorial for Microsoft Excel users](http://blog.revolutionanalytics.com/2015/02/an-r-tutorial-for-microsoft-excel-users.html)
 post that highlights following useful resources:
+
 * [Tutorial on how to transition from Excel to R by Tony Ojeda](https://districtdatalabs.silvrback.com/intro-to-r-for-microsoft-excel-users)
 * [Guide to importing data from Excel to R](http://www.milanor.net/blog/?p=779)
 
