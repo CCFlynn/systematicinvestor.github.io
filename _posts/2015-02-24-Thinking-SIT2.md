@@ -14,10 +14,10 @@ I previously presented a case study of Excel to [SIT](https://github.com/systema
 mapping in the [Thinking in SIT](/Thinking-SIT)
 post. I want to continue with another example based on following excellent tutorials:
 
-* [Backtesting A Basic ETF Rotation System in Excel – Free Download](http://systemtradersuccess.com/backtesting-etf-rotational-system/)
+* [Backtesting A Basic ETF Rotation System in Excel  Free Download](http://systemtradersuccess.com/backtesting-etf-rotational-system/)
 * [Improving the Simple ETF Rotational Trading Model](http://systemtradersuccess.com/improving-simple-etf-rotational-model/)
 
-The [Backtesting A Basic ETF Rotation System in Excel – Free Download](http://systemtradersuccess.com/backtesting-etf-rotational-system/)
+The [Backtesting A Basic ETF Rotation System in Excel  Free Download](http://systemtradersuccess.com/backtesting-etf-rotational-system/)
 was covered in the [Thinking in SIT](/Thinking-in-SIT) post.
 
 Following is the code for your reference:
