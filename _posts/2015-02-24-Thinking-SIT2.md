@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Thinking in SIT, more examples
+comments: true
+rss: true
 ---
 
 
