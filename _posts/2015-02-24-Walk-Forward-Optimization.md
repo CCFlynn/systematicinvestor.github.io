@@ -147,7 +147,7 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 |              |SP500             |UIS               |
 |:-------------|:-----------------|:-----------------|
 |Period        |Dec1989 - Feb2015 |Dec1989 - Feb2015 |
-|Cagr          |9.55              |12.01             |
+|Cagr          |9.54              |11.98             |
 |Sharpe        |0.59              |1.21              |
 |DVR           |0.48              |1                 |
 |R2            |0.81              |0.82              |
@@ -155,8 +155,8 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 |MaxDD         |-55.19            |-17.12            |
 |Exposure      |99.98             |98.83             |
 |Win.Percent   |100               |63.6              |
-|Avg.Trade     |896.71            |0.57              |
-|Profit.Factor |NaN               |2.08              |
+|Avg.Trade     |895.53            |0.57              |
+|Profit.Factor |NaN               |2.07              |
 |Num.Trades    |1                 |533               |
     
 
@@ -189,8 +189,8 @@ print(last.trades(models$UIS, make.plot=F, return.table=T))
 |FI         | 55    |2014-11-28 |2014-12-31 |33    |121.96      |125.67     |  1.67 |
 |EQ         | 40    |2014-12-31 |2015-01-30 |30    |205.54      |199.45     | -1.19 |
 |FI         | 60    |2014-12-31 |2015-01-30 |30    |125.67      |138.00     |  5.89 |
-|EQ         | 50    |2015-01-30 |2015-02-25 |26    |199.45      |211.63     |  3.05 |
-|FI         | 50    |2015-01-30 |2015-02-25 |26    |138.00      |130.23     | -2.82 |
+|EQ         | 50    |2015-01-30 |2015-02-26 |27    |199.45      |211.38     |  2.99 |
+|FI         | 50    |2015-01-30 |2015-02-26 |27    |138.00      |128.45     | -3.46 |
     
 
 
@@ -230,7 +230,7 @@ print(plotbt.monthly.table(models$UIS$equity, make.plot = F))
 |2012 |  1.9 |  0.9 | -0.2 |  1.2 | -0.8 |  0.9 |  2.6 |  0.4 |  0.0 | -1.2 |  0.7 | -0.8 |  5.6 | -3.8 |
 |2013 |  0.1 |  1.2 |  2.1 |  3.0 | -1.8 | -2.1 |  4.0 | -3.0 |  3.2 |  4.6 |  1.8 |  1.0 | 14.7 | -6.3 |
 |2014 | -1.1 |  2.7 |  0.8 |  1.4 |  2.7 |  0.9 | -0.4 |  4.2 | -1.7 |  2.6 |  2.9 |  1.5 | 17.6 | -3.0 |
-|2015 |  4.7 |  0.2 |      |      |      |      |      |      |      |      |      |      |  4.9 | -2.1 |
+|2015 |  4.7 | -0.5 |      |      |      |      |      |      |      |      |      |      |  4.2 | -2.1 |
 |Avg  |  0.1 |  0.4 |  0.5 |  1.2 |  1.3 |  0.6 |  0.5 |  1.7 |  1.1 |  0.9 |  1.8 |  1.7 | 11.4 | -6.6 |
     
 
@@ -296,7 +296,7 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 |              |SP500             |UIS               |UIS5              |
 |:-------------|:-----------------|:-----------------|:-----------------|
 |Period        |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |
-|Cagr          |9.55              |12.01             |9.7               |
+|Cagr          |9.54              |11.98             |9.66              |
 |Sharpe        |0.59              |1.21              |1.03              |
 |DVR           |0.48              |1                 |0.9               |
 |R2            |0.81              |0.82              |0.88              |
@@ -304,8 +304,8 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 |MaxDD         |-55.19            |-17.12            |-18.92            |
 |Exposure      |99.98             |98.83             |99.83             |
 |Win.Percent   |100               |63.6              |61.23             |
-|Avg.Trade     |896.71            |0.57              |0.44              |
-|Profit.Factor |NaN               |2.08              |1.83              |
+|Avg.Trade     |895.53            |0.57              |0.44              |
+|Profit.Factor |NaN               |2.07              |1.83              |
 |Num.Trades    |1                 |533               |570               |
     
 
@@ -390,20 +390,83 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 |              |SP500             |UIS               |UIS5              |UIS.A             |UIS.B             |
 |:-------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
 |Period        |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |
-|Cagr          |9.55              |12.01             |9.7               |10.82             |10.02             |
-|Sharpe        |0.59              |1.21              |1.03              |1.16              |1.14              |
-|DVR           |0.48              |1                 |0.9               |1                 |1.03              |
+|Cagr          |9.54              |11.98             |9.66              |10.79             |9.99              |
+|Sharpe        |0.59              |1.21              |1.03              |1.16              |1.13              |
+|DVR           |0.48              |1                 |0.9               |0.99              |1.03              |
 |R2            |0.81              |0.82              |0.88              |0.86              |0.9               |
 |Volatility    |18.41             |9.74              |9.42              |9.22              |8.74              |
 |MaxDD         |-55.19            |-17.12            |-18.92            |-16.73            |-17.94            |
 |Exposure      |99.98             |98.83             |99.83             |97.84             |99.18             |
 |Win.Percent   |100               |63.6              |61.23             |61.99             |62.26             |
-|Avg.Trade     |896.71            |0.57              |0.44              |0.47              |0.45              |
-|Profit.Factor |NaN               |2.08              |1.83              |1.94              |1.88              |
+|Avg.Trade     |895.53            |0.57              |0.44              |0.47              |0.45              |
+|Profit.Factor |NaN               |2.07              |1.83              |1.94              |1.87              |
 |Num.Trades    |1                 |533               |570               |584               |575               |
     
 
+gregor mentioned in his comment that simple monthly switching, based on prior three months returns, works quite well.
 
 
 
-*(this report was produced on: 2015-02-26)*
+{% highlight r %}
+# simple monthly switching, based on prior three month returns, works well
+position.score = prices / mlag(prices, 3 * 21)	
+
+data$weight[] = NA
+	data$weight[period.ends,] = ntop(position.score[period.ends,], 1)
+models$TOP.3M = bt.run.share(data, clean.signal=F, commission = commission, trade.summary=T, silent=T)
+
+plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
+	mtext('Cumulative Performance', side = 2, line = 1)
+{% endhighlight %}
+
+![plot of chunk plot-5](/public/images/2015-02-24-Walk-Forward-Optimization/plot-5-1.png) 
+
+{% highlight r %}
+print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromance.fn=engineering.returns.kpi))
+{% endhighlight %}
+
+
+
+|              |SP500             |UIS               |UIS5              |UIS.A             |UIS.B             |TOP.3M            |
+|:-------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period        |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |Dec1989 - Feb2015 |
+|Cagr          |9.54              |11.98             |9.66              |10.79             |9.99              |13.35             |
+|Sharpe        |0.59              |1.21              |1.03              |1.16              |1.13              |0.98              |
+|DVR           |0.48              |1                 |0.9               |0.99              |1.03              |0.75              |
+|R2            |0.81              |0.82              |0.88              |0.86              |0.9               |0.76              |
+|Volatility    |18.41             |9.74              |9.42              |9.22              |8.74              |13.71             |
+|MaxDD         |-55.19            |-17.12            |-18.92            |-16.73            |-17.94            |-17.08            |
+|Exposure      |99.98             |98.83             |99.83             |97.84             |99.18             |98.83             |
+|Win.Percent   |100               |63.6              |61.23             |61.99             |62.26             |66.78             |
+|Avg.Trade     |895.53            |0.57              |0.44              |0.47              |0.45              |1.16              |
+|Profit.Factor |NaN               |2.07              |1.83              |1.94              |1.87              |2.36              |
+|Num.Trades    |1                 |533               |570               |584               |575               |295               |
+    
+
+Let's quickly check if other look back work equally well:
+
+
+{% highlight r %}
+test.models = list()
+
+for(i in 1:12) {
+	position.score = prices / mlag(prices, i * 21)	
+		
+	data$weight[] = NA
+		data$weight[period.ends,] = ntop(position.score[period.ends,], 1)
+	test.models[[paste0('TOP.', i, 'M')]] = bt.run.share(data, clean.signal=F, commission = commission, trade.summary=T, silent=T)
+}
+
+stats = plotbt.strategy.sidebyside(test.models, make.plot=F, return.table=T, perfromance.fn=engineering.returns.kpi)
+performance.barchart.helper(stats, 'Sharpe,Cagr,Win.Percent,MaxDD,Volatility,Profit.Factor', c(T,T,T,T,F,T), sort.performance = F)
+{% endhighlight %}
+
+![plot of chunk plot-6](/public/images/2015-02-24-Walk-Forward-Optimization/plot-6-1.png) 
+
+Looks like three months is the best look back period.
+
+
+
+
+
+*(this report was produced on: 2015-02-27)*
