@@ -8,7 +8,6 @@ To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinve
 
 
 
-
 Historical Stock Data is critical for testing your investment strategies. There are many ways to load Historical Stock Data in to your R session. Below I show 4 different approaches to load historical stock data:
 
 * Download Historical Stock quotes from Yahoo Fiance with getSymbols function from quantmod package
