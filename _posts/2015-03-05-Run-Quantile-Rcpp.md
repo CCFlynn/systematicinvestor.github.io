@@ -159,30 +159,24 @@ all.equal(test1, test3)
 
 
 {% highlight r %}
-print(microbenchmark(
+print(summary(microbenchmark(
 	run_quantileR(x, n, probs),
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 10
-))
+)))
 {% endhighlight %}
 
 
 
-<pre>
-Unit: microseconds
-                       expr       min        lq       mean     median
- run_quantileR(x, n, probs) 13430.039 13595.727 14176.8040 14047.3915
- run_quantile0(x, n, probs)    39.605    40.688    48.2192    48.1685
-  run_quantile(x, n, probs)    12.329    12.595    16.6316    14.0025
-        uq       max neval
- 14834.662 15255.772    10
-    56.068    56.918    10
-    17.859    29.899    10
-</pre>
+|rownames(x) |expr                       |       min|        lq|       mean|     median|        uq|       max| neval|
+|:-----------|:--------------------------|---------:|---------:|----------:|----------:|---------:|---------:|-----:|
+|1           |run_quantileR(x, n, probs) | 13599.536| 13743.885| 14441.6406| 14404.3455| 15123.079| 15306.554|    10|
+|2           |run_quantile0(x, n, probs) |    39.239|    40.628|    46.5776|    42.4000|    55.451|    61.473|    10|
+|3           |run_quantile(x, n, probs)  |    13.194|    14.305|    22.0225|    23.4225|    29.025|    31.655|    10|
     
 
-Second implementation, `run_quantile`, really shines over larger lock back window
+Second implementation, `run_quantile`, really shines over larger look back window
 
 
 {% highlight r %}
@@ -200,24 +194,19 @@ all.equal(test1, test2)
 
 
 {% highlight r %}
-print(microbenchmark(
+print(summary(microbenchmark(
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 1
-))
+)))
 {% endhighlight %}
 
 
 
-<pre>
-Unit: milliseconds
-                       expr        min         lq       mean     median
- run_quantile0(x, n, probs) 5538.88588 5538.88588 5538.88588 5538.88588
-  run_quantile(x, n, probs)   81.01661   81.01661   81.01661   81.01661
-         uq        max neval
- 5538.88588 5538.88588     1
-   81.01661   81.01661     1
-</pre>
+|rownames(x) |expr                       |        min|         lq|       mean|     median|         uq|        max| neval|
+|:-----------|:--------------------------|----------:|----------:|----------:|----------:|----------:|----------:|-----:|
+|1           |run_quantile0(x, n, probs) | 5568.79338| 5568.79338| 5568.79338| 5568.79338| 5568.79338| 5568.79338|     1|
+|2           |run_quantile(x, n, probs)  |   82.46864|   82.46864|   82.46864|   82.46864|   82.46864|   82.46864|     1|
     
 
 To be continued.
