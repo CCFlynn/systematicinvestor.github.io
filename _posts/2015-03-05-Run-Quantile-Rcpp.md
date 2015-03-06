@@ -159,29 +159,33 @@ all.equal(test1, test3)
 
 
 {% highlight r %}
-microbenchmark(
+print(microbenchmark(
 	run_quantileR(x, n, probs),
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 10
-)
+))
 {% endhighlight %}
 
+
+
+<pre>
 Unit: microseconds
-                       expr       min        lq       mean    median
- run_quantileR(x, n, probs) 13447.739 13570.717 14237.1742 14203.041
- run_quantile0(x, n, probs)    40.374    43.291    46.2664    44.183
-  run_quantile(x, n, probs)    12.864    15.571    24.1743    23.107
+                       expr       min        lq       mean     median
+ run_quantileR(x, n, probs) 13430.039 13595.727 14176.8040 14047.3915
+ run_quantile0(x, n, probs)    39.605    40.688    48.2192    48.1685
+  run_quantile(x, n, probs)    12.329    12.595    16.6316    14.0025
         uq       max neval
- 14833.153 15419.435    10
-    52.408    54.735    10
-    29.580    48.306    10
+ 14834.662 15255.772    10
+    56.068    56.918    10
+    17.859    29.899    10
+</pre>
+    
 
 Second implementation, `run_quantile`, really shines over larger lock back window
 
 
 {% highlight r %}
-# 
 n = 1000
 probs = 0.9
 x = runif(100000)
@@ -196,20 +200,25 @@ all.equal(test1, test2)
 
 
 {% highlight r %}
-microbenchmark(
+print(microbenchmark(
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 1
-)
+))
 {% endhighlight %}
 
+
+
+<pre>
 Unit: milliseconds
                        expr        min         lq       mean     median
- run_quantile0(x, n, probs) 5592.56658 5592.56658 5592.56658 5592.56658
-  run_quantile(x, n, probs)   80.74165   80.74165   80.74165   80.74165
+ run_quantile0(x, n, probs) 5538.88588 5538.88588 5538.88588 5538.88588
+  run_quantile(x, n, probs)   81.01661   81.01661   81.01661   81.01661
          uq        max neval
- 5592.56658 5592.56658     1
-   80.74165   80.74165     1
+ 5538.88588 5538.88588     1
+   81.01661   81.01661     1
+</pre>
+    
 
 To be continued.
 
