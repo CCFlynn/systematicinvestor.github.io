@@ -119,6 +119,8 @@ Next let's check for correctness and speed.
 # make sure to install Rtools on windows
 # http://cran.r-project.org/bin/windows/Rtools/
 library(SIT)
+load.packages('quantmod')
+
 load.packages('Rcpp')
 
 # load run quantile functions
@@ -159,21 +161,21 @@ all.equal(test1, test3)
 
 
 {% highlight r %}
-print(summary(microbenchmark(
+print(to.nice(summary(microbenchmark(
 	run_quantileR(x, n, probs),
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 10
-)))
+)),0))
 {% endhighlight %}
 
 
 
-|rownames(x) |expr                       |       min|        lq|       mean|     median|        uq|       max| neval|
-|:-----------|:--------------------------|---------:|---------:|----------:|----------:|---------:|---------:|-----:|
-|1           |run_quantileR(x, n, probs) | 13599.536| 13743.885| 14441.6406| 14404.3455| 15123.079| 15306.554|    10|
-|2           |run_quantile0(x, n, probs) |    39.239|    40.628|    46.5776|    42.4000|    55.451|    61.473|    10|
-|3           |run_quantile(x, n, probs)  |    13.194|    14.305|    22.0225|    23.4225|    29.025|    31.655|    10|
+|   |expr                       |min    |lq     |mean   |median |uq     |max    |neval  |
+|:--|:--------------------------|:------|:------|:------|:------|:------|:------|:------|
+|1  |run_quantileR(x, n, probs) |13,655 |13,905 |14,471 |14,169 |15,042 |16,294 |    10 |
+|2  |run_quantile0(x, n, probs) |    39 |    40 |    50 |    50 |    55 |    77 |    10 |
+|3  |run_quantile(x, n, probs)  |    13 |    14 |    20 |    17 |    28 |    29 |    10 |
     
 
 Second implementation, `run_quantile`, really shines over larger look back window
@@ -194,19 +196,19 @@ all.equal(test1, test2)
 
 
 {% highlight r %}
-print(summary(microbenchmark(
+print(to.nice(summary(microbenchmark(
 	run_quantile0(x, n, probs),
 	run_quantile(x, n, probs),
 	times = 1
-)))
+)),0))
 {% endhighlight %}
 
 
 
-|rownames(x) |expr                       |        min|         lq|       mean|     median|         uq|        max| neval|
-|:-----------|:--------------------------|----------:|----------:|----------:|----------:|----------:|----------:|-----:|
-|1           |run_quantile0(x, n, probs) | 5568.79338| 5568.79338| 5568.79338| 5568.79338| 5568.79338| 5568.79338|     1|
-|2           |run_quantile(x, n, probs)  |   82.46864|   82.46864|   82.46864|   82.46864|   82.46864|   82.46864|     1|
+|   |expr                       |min   |lq    |mean  |median |uq    |max   |neval |
+|:--|:--------------------------|:-----|:-----|:-----|:------|:-----|:-----|:-----|
+|1  |run_quantile0(x, n, probs) |5,561 |5,561 |5,561 |5,561  |5,561 |5,561 |    1 |
+|2  |run_quantile(x, n, probs)  |   81 |   81 |   81 |   81  |   81 |   81 |    1 |
     
 
 To be continued.
