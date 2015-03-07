@@ -159,36 +159,73 @@ run_quantile_weightR = function(x, n, low.prob, high.prob) {
 #*****************************************************************
 # Test David's example
 #*****************************************************************
+print.helper = function(stats) {
+	colnames(stats) = spl('low,high')
+	print(stats[nrow(stats),,drop=F])
+}
+
 x = c(201:215,117,115,119,118,121)
 n = len(x)
 low.prob = 0.25
 high.prob = 0.75
-last(run_quantile_weightR(x, n, low.prob, high.prob))
+stats = run_quantile_weightR(x, n, low.prob, high.prob)
+	print.helper(stats)
 {% endhighlight %}
 
-[1] 119.4906 214.0909
+
+
+|      low|     high|
+|--------:|--------:|
+| 119.4906| 214.0909|
+    
+
+
 
 
 {% highlight r %}
-last(run_quantile_weight(x, n, low.prob, high.prob))
+stats = run_quantile_weight(x, n, low.prob, high.prob)
+	print.helper(stats)
 {% endhighlight %}
 
-[1] 119.4906 214.0909
+
+
+|      low|     high|
+|--------:|--------:|
+| 119.4906| 214.0909|
+    
+
+
 
 
 {% highlight r %}
 x = c(1:15,117,115,119,118,121)
-last(run_quantile_weightR(x, n, low.prob, high.prob))
+stats = run_quantile_weightR(x, n, low.prob, high.prob)
+	print.helper(stats)
 {% endhighlight %}
 
-[1]   4.090909 119.490566
+
+
+|      low|     high|
+|--------:|--------:|
+| 4.090909| 119.4906|
+    
+
+
 
 
 {% highlight r %}
-last(run_quantile_weight(x, n, low.prob, high.prob))
+stats = run_quantile_weight(x, n, low.prob, high.prob)
+	print.helper(stats)
 {% endhighlight %}
 
-[1]   4.090909 119.490566
+
+
+|      low|     high|
+|--------:|--------:|
+| 4.090909| 119.4906|
+    
+
+
 
 
 {% highlight r %}
@@ -205,10 +242,15 @@ x = runif(100)
 test1 = run_quantile_weightR(x, n, low.prob, high.prob)
 test2 = run_quantile_weight(x, n, low.prob, high.prob)
 
-all.equal(test1, test2)
+print(all.equal(test1, test2))
 {% endhighlight %}
 
-[1] TRUE
+
+
+TRUE
+    
+
+
 
 
 {% highlight r %}
@@ -223,8 +265,8 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                                            |min    |lq     |mean   |median |uq     |max    |neval  |
 |:--|:-----------------------------------------------|:------|:------|:------|:------|:------|:------|:------|
-|1  |run_quantile_weightR(x, n, low.prob, high.prob) |10,896 |11,104 |11,700 |11,188 |12,369 |14,229 |    10 |
-|2  |run_quantile_weight(x, n, low.prob, high.prob)  |   101 |   106 |   117 |   121 |   125 |   127 |    10 |
+|1  |run_quantile_weightR(x, n, low.prob, high.prob) |10,911 |11,001 |11,657 |11,242 |12,256 |13,904 |    10 |
+|2  |run_quantile_weight(x, n, low.prob, high.prob)  |    99 |   100 |   111 |   104 |   121 |   140 |    10 |
     
 
 To be continued.

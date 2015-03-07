@@ -149,17 +149,27 @@ test1 = run_quantileR(x, n, probs)
 test2 = run_quantile0(x, n, probs)
 test3 = run_quantile(x, n, probs)
 
-all.equal(test1, test2)
+print(all.equal(test1, test2))
 {% endhighlight %}
 
-[1] TRUE
+
+
+TRUE
+    
+
+
 
 
 {% highlight r %}
-all.equal(test1, test3)
+print(all.equal(test1, test3))
 {% endhighlight %}
 
-[1] TRUE
+
+
+TRUE
+    
+
+
 
 
 {% highlight r %}
@@ -175,9 +185,9 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                       |min    |lq     |mean   |median |uq     |max    |neval  |
 |:--|:--------------------------|:------|:------|:------|:------|:------|:------|:------|
-|1  |run_quantileR(x, n, probs) |13,626 |13,803 |14,442 |14,048 |15,025 |16,197 |    10 |
-|2  |run_quantile0(x, n, probs) |    39 |    41 |    47 |    44 |    54 |    58 |    10 |
-|3  |run_quantile(x, n, probs)  |    14 |    15 |    23 |    24 |    30 |    32 |    10 |
+|1  |run_quantileR(x, n, probs) |13,666 |13,963 |14,566 |14,261 |15,060 |16,278 |    10 |
+|2  |run_quantile0(x, n, probs) |    40 |    41 |    50 |    54 |    57 |    61 |    10 |
+|3  |run_quantile(x, n, probs)  |    13 |    13 |    20 |    17 |    30 |    34 |    10 |
     
 
 Second implementation, `run_quantile`, really shines over larger look back window
@@ -191,10 +201,15 @@ x = runif(100000)
 test1 = run_quantile0(x, n, probs)
 test2 = run_quantile(x, n, probs)
 
-all.equal(test1, test2)
+print(all.equal(test1, test2))
 {% endhighlight %}
 
-[1] TRUE
+
+
+TRUE
+    
+
+
 
 
 {% highlight r %}
@@ -209,7 +224,7 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                       |min   |lq    |mean  |median |uq    |max   |neval |
 |:--|:--------------------------|:-----|:-----|:-----|:------|:-----|:-----|:-----|
-|1  |run_quantile0(x, n, probs) |5,566 |5,566 |5,566 |5,566  |5,566 |5,566 |    1 |
+|1  |run_quantile0(x, n, probs) |5,570 |5,570 |5,570 |5,570  |5,570 |5,570 |    1 |
 |2  |run_quantile(x, n, probs)  |   82 |   82 |   82 |   82  |   82 |   82 |    1 |
     
 
