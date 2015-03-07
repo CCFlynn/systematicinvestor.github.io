@@ -31,6 +31,7 @@ function takes advantage of previous order and only insert new element in the so
 {% highlight cpp %}
 #include <Rcpp.h>
 using namespace Rcpp;
+using namespace std;
 
 // [[Rcpp::plugins(cpp11)]]
 
@@ -50,9 +51,9 @@ quantile make_quantile(int n, double prob) {
 }
 
 // index vector
-std::vector<int> make_seq(int n) {
-	std::vector<int> id(n);
-	std::iota(id.begin(), id.end(), 0);
+vector<int> make_seq(int n) {
+	vector<int> id(n);
+	iota(id.begin(), id.end(), 0);
 	return id;
 }
 
@@ -64,16 +65,16 @@ NumericVector run_quantile0(NumericVector x, int n, double prob) {
 	// quantile setup
 	auto q = make_quantile(n, prob);
 
-    for(int i = 0; i < (sz-n+1); i++) {
-    	// can be made a lot faster by not re-sorting each time
-    	std::vector<double> z(&x[i], &x[i+n]);
-    	std::sort(z.begin(), z.end());    	
-        res[i+n-1] = q.hlo * z[q.lo] + q.hhi * z[q.hi];  
-    }
+	for(int i = 0; i < (sz-n+1); i++) {
+		// can be made a lot faster by not re-sorting each time
+		vector<double> z(&x[i], &x[i+n]);
+		sort(z.begin(), z.end());    	
+		res[i+n-1] = q.hlo * z[q.lo] + q.hhi * z[q.hi];  
+	}
     
-    // pad the first n-1 elements with NA
-    std::fill(res.begin(), res.end()-sz+n-1, NA_REAL);
-    return res;	
+	// pad the first n-1 elements with NA
+	fill(res.begin(), res.end()-sz+n-1, NA_REAL);
+	return res;	
 }
 
 // [[Rcpp::export]]
@@ -87,23 +88,24 @@ NumericVector run_quantile(NumericVector x, int n, double prob) {
 	// index vector
 	auto id = make_seq(n);
 	
-	std::sort(id.begin(), id.end(), 
-		[&](int a, int b) { return x[a] < x[b]; });
-	res[n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  	
+	for(int i = 0; i < (sz-n+1); i++) {
+		if(i == 0)
+			sort(id.begin(), id.end(), 
+				[&](int a, int b) { return x[a] < x[b]; });
+		else {
+	    		// remove index (i-1)
+		    	id.erase(find(id.begin(), id.end(), i-1));
+		    	// insert keeping sorted order
+	    		id.insert(lower_bound(id.begin(), id.end(), i+n-1, 
+	    			[&](int a, int b) { return x[a] < x[b]; }), i+n-1);
+		}    
 		
-    for(int i = 1; i < (sz-n+1); i++) {
-    	// remove index (i-1)
-    	id.erase(std::find(id.begin(), id.end(), i-1));
-    	// insert keeping sorted order
-    	id.insert(std::lower_bound(id.begin(), id.end(), i+n-1, 
-    		[&](int a, int b) { return x[a] < x[b]; }), i+n-1);
+		res[i+n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  
+	}
     
-        res[i+n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  
-    }
-    
-    // pad the first n-1 elements with NA
-    std::fill(res.begin(), res.end()-sz+n-1, NA_REAL);
-    return res;	
+	// pad the first n-1 elements with NA
+	fill(res.begin(), res.end()-sz+n-1, NA_REAL);
+	return res;	
 }
 {% endhighlight %}
 
@@ -173,9 +175,9 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                       |min    |lq     |mean   |median |uq     |max    |neval  |
 |:--|:--------------------------|:------|:------|:------|:------|:------|:------|:------|
-|1  |run_quantileR(x, n, probs) |13,655 |13,905 |14,471 |14,169 |15,042 |16,294 |    10 |
-|2  |run_quantile0(x, n, probs) |    39 |    40 |    50 |    50 |    55 |    77 |    10 |
-|3  |run_quantile(x, n, probs)  |    13 |    14 |    20 |    17 |    28 |    29 |    10 |
+|1  |run_quantileR(x, n, probs) |13,626 |13,803 |14,442 |14,048 |15,025 |16,197 |    10 |
+|2  |run_quantile0(x, n, probs) |    39 |    41 |    47 |    44 |    54 |    58 |    10 |
+|3  |run_quantile(x, n, probs)  |    14 |    15 |    23 |    24 |    30 |    32 |    10 |
     
 
 Second implementation, `run_quantile`, really shines over larger look back window
@@ -207,11 +209,11 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                       |min   |lq    |mean  |median |uq    |max   |neval |
 |:--|:--------------------------|:-----|:-----|:-----|:------|:-----|:-----|:-----|
-|1  |run_quantile0(x, n, probs) |5,561 |5,561 |5,561 |5,561  |5,561 |5,561 |    1 |
-|2  |run_quantile(x, n, probs)  |   81 |   81 |   81 |   81  |   81 |   81 |    1 |
+|1  |run_quantile0(x, n, probs) |5,566 |5,566 |5,566 |5,566  |5,566 |5,566 |    1 |
+|2  |run_quantile(x, n, probs)  |   82 |   82 |   82 |   82  |   82 |   82 |    1 |
     
 
 To be continued.
 
 
-*(this report was produced on: 2015-03-06)*
+*(this report was produced on: 2015-03-07)*

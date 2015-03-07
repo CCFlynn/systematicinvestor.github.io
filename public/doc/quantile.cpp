@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
+using namespace std;
 
 // [[Rcpp::plugins(cpp11)]]
 
@@ -19,9 +20,9 @@ quantile make_quantile(int n, double prob) {
 }
 
 // index vector
-std::vector<int> make_seq(int n) {
-	std::vector<int> id(n);
-	std::iota(id.begin(), id.end(), 0);
+vector<int> make_seq(int n) {
+	vector<int> id(n);
+	iota(id.begin(), id.end(), 0);
 	return id;
 }
 
@@ -33,16 +34,16 @@ NumericVector run_quantile0(NumericVector x, int n, double prob) {
 	// quantile setup
 	auto q = make_quantile(n, prob);
 
-    for(int i = 0; i < (sz-n+1); i++) {
-    	// can be made a lot faster by not re-sorting each time
-    	std::vector<double> z(&x[i], &x[i+n]);
-    	std::sort(z.begin(), z.end());    	
-        res[i+n-1] = q.hlo * z[q.lo] + q.hhi * z[q.hi];  
-    }
+	for(int i = 0; i < (sz-n+1); i++) {
+		// can be made a lot faster by not re-sorting each time
+		vector<double> z(&x[i], &x[i+n]);
+		sort(z.begin(), z.end());    	
+		res[i+n-1] = q.hlo * z[q.lo] + q.hhi * z[q.hi];  
+	}
     
-    // pad the first n-1 elements with NA
-    std::fill(res.begin(), res.end()-sz+n-1, NA_REAL);
-    return res;	
+	// pad the first n-1 elements with NA
+	fill(res.begin(), res.end()-sz+n-1, NA_REAL);
+	return res;	
 }
 
 // [[Rcpp::export]]
@@ -56,21 +57,64 @@ NumericVector run_quantile(NumericVector x, int n, double prob) {
 	// index vector
 	auto id = make_seq(n);
 	
-	std::sort(id.begin(), id.end(), 
-		[&](int a, int b) { return x[a] < x[b]; });
-	res[n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  	
+	for(int i = 0; i < (sz-n+1); i++) {
+		if(i == 0)
+			sort(id.begin(), id.end(), 
+				[&](int a, int b) { return x[a] < x[b]; });
+		else {
+	    		// remove index (i-1)
+		    	id.erase(find(id.begin(), id.end(), i-1));
+		    	// insert keeping sorted order
+	    		id.insert(lower_bound(id.begin(), id.end(), i+n-1, 
+	    			[&](int a, int b) { return x[a] < x[b]; }), i+n-1);
+		}    
 		
-    for(int i = 1; i < (sz-n+1); i++) {
-    	// remove index (i-1)
-    	id.erase(std::find(id.begin(), id.end(), i-1));
-    	// insert keeping sorted order
-    	id.insert(std::lower_bound(id.begin(), id.end(), i+n-1, 
-    		[&](int a, int b) { return x[a] < x[b]; }), i+n-1);
+		res[i+n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  
+	}
     
-        res[i+n-1] = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  
-    }
+	// pad the first n-1 elements with NA
+	fill(res.begin(), res.end()-sz+n-1, NA_REAL);
+	return res;	
+}
+
+// [[Rcpp::export]]
+NumericVector run_quantile_matrix(NumericVector x, int n, NumericVector probs) {
+	auto sz = x.size();
+	auto nprobs = probs.size();
+	
+	NumericMatrix res(sz, nprobs);
+	
+	// quantile setup
+	vector<quantile> qs(nprobs);
+	for(int j = 0; j < nprobs; j++)
+		qs[j] = make_quantile(n, probs[j]);
+
+	// index vector
+	auto id = make_seq(n);
+	
+	for(int i = 0; i < (sz-n+1); i++) {
+		if(i == 0)
+			sort(id.begin(), id.end(), 
+				[&](int a, int b) { return x[a] < x[b]; });
+		else {
+			// remove index (i-1)
+			id.erase(find(id.begin(), id.end(), i-1));
+			// insert keeping sorted order
+			id.insert(lower_bound(id.begin(), id.end(), i+n-1, 
+	    			[&](int a, int b) { return x[a] < x[b]; }), i+n-1);
+		}    
+
+		for(int j = 0; j < nprobs; j++) {
+			auto q = qs[j];
+        		res(i+n-1, j) = q.hlo * x[id[q.lo]] + q.hhi * x[id[q.hi]];  
+		}
+	}
     
-    // pad the first n-1 elements with NA
-    std::fill(res.begin(), res.end()-sz+n-1, NA_REAL);
-    return res;	
+	// move to Rcpp11 - http://stackoverflow.com/questions/23748572/initializing-a-matrix-to-na-in-rcpp
+	// pad the first n-1 elements with NA
+	for (int i = 0; i < (n-1); i++)
+		for(int j = 0; j < nprobs; j++)
+			res(i,j) = NA_REAL;
+    
+	return res;	
 }
