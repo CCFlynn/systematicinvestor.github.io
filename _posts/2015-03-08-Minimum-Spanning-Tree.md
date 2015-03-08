@@ -24,6 +24,8 @@ I found following references very useful:
 * [Correlation network](http://www.r-bloggers.com/correlation-network/)
 
 
+
+
 {% highlight r %}
 #*****************************************************************
 # Load historical end of day data
@@ -63,49 +65,6 @@ TRIP
 
 {% highlight r %}
 #*****************************************************************
-# Helper Function to Create / Clean Correlation Matrix
-#*****************************************************************
-clean.cor = function(ret, threshold = 0.5) {
-	cor_mat = cor(coredata(ret), use='complete.obs',method='pearson')
-	
-	cor_mat[ abs(cor_mat) < threshold] = 0
-
-	keep.index = rowSums(cor_mat != 0) > 1
-	
-	cor_mat = cor_mat[keep.index, keep.index]
-	
-	cor_mat[ lower.tri(cor_mat, diag=TRUE) ] = 0
-	
-	cor_mat
-}
-
-#*****************************************************************
-# Helper Function to Plot Minimum Spanning Tree
-#*****************************************************************
-plot.cor = function(ret, threshold = 0.5) {
-	cor_mat = clean.cor(ret, threshold)
-
-	load.packages('igraph')
-	graph = graph.adjacency(cor_mat, weighted=TRUE, mode='upper')
-	mst = minimum.spanning.tree(graph)
-
-	E(mst)[ weight>0.7 ]$color = col.add.alpha('black',150)
-	E(mst)[ weight>=0.65 & weight<0.7 ]$color = col.add.alpha('blue',150)
-	E(mst)[ weight>=0.6 & weight<0.65 ]$color = col.add.alpha('red',150)
-	E(mst)[ weight>=0.55 & weight<0.6 ]$color = col.add.alpha('green',150)
-	E(mst)[ weight<0.55 ]$color = col.add.alpha('orange',150)
-
-	set.seed(100)
-	par(mar=c(1,1,1,1))
-	plot(mst,vertex.size=5, vertex.color=NA, vertex.frame.color=NA, edge.width = 3) 
-	
-	legend('bottomleft', title='Colors', cex=0.75, pch=16, bty='n', ncol=2,
-		col=spl('black,blue,red,green,orange'), 
-		legend=spl('>70%,65-70,60-65,55-60,50-55')
-	)	
-}
-
-#*****************************************************************
 # Visualize Correlation Matrix
 #*****************************************************************
 prices = data$prices
@@ -113,13 +72,13 @@ prices = data$prices
 ret = diff(log(prices))
 	ret = last(ret, 252)
 
-print(join(c('#Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components',
+print(join(c('Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components',
 'based on daily returns for',format(range(index(ret)), '%d-%b-%Y')), ' '))
 {% endhighlight %}
 
 
 
-#Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components based on daily returns for 07-Mar-2014 06-Mar-2015
+Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components based on daily returns for 07-Mar-2014 06-Mar-2015
     
 
 
@@ -166,13 +125,13 @@ ret = diff(log(prices))
 	# last 5 days
 	ret = last(ret, 5 * ( 6*60+30+1))
 
-print(join(c('#Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components',
+print(join(c('Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components',
 'based on 1 minute returns for',format(range(index(ret)), '%d-%b-%Y %H-%M')), ' '))
 {% endhighlight %}
 
 
 
-#Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components based on 1 minute returns for 02-Mar-2015 09-30 06-Mar-2015 16-00
+Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components based on 1 minute returns for 02-Mar-2015 09-30 06-Mar-2015 16-00
     
 
 
@@ -183,6 +142,54 @@ plot.cor(ret, 0.5)
 {% endhighlight %}
 
 ![plot of chunk plot-3](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-3-1.png) 
+
+Helper functions:
+
+
+{% highlight r %}
+#*****************************************************************
+# Helper Function to Create / Clean Correlation Matrix
+#*****************************************************************
+clean.cor = function(ret, threshold = 0.5) {
+	cor_mat = cor(coredata(ret), use='complete.obs',method='pearson')
+	
+	cor_mat[ abs(cor_mat) < threshold] = 0
+
+	keep.index = rowSums(cor_mat != 0) > 1
+	
+	cor_mat = cor_mat[keep.index, keep.index]
+	
+	cor_mat[ lower.tri(cor_mat, diag=TRUE) ] = 0
+	
+	cor_mat
+}
+
+#*****************************************************************
+# Helper Function to Plot Minimum Spanning Tree
+#*****************************************************************
+plot.cor = function(ret, threshold = 0.5) {
+	cor_mat = clean.cor(ret, threshold)
+
+	load.packages('igraph')
+	graph = graph.adjacency(cor_mat, weighted=TRUE, mode='upper')
+	mst = minimum.spanning.tree(graph)
+
+	E(mst)[ weight>0.7 ]$color = col.add.alpha('black',150)
+	E(mst)[ weight>=0.65 & weight<0.7 ]$color = col.add.alpha('blue',150)
+	E(mst)[ weight>=0.6 & weight<0.65 ]$color = col.add.alpha('red',150)
+	E(mst)[ weight>=0.55 & weight<0.6 ]$color = col.add.alpha('green',150)
+	E(mst)[ weight<0.55 ]$color = col.add.alpha('orange',150)
+
+	set.seed(100)
+	par(mar=c(1,1,1,1))
+	plot(mst,vertex.size=5, vertex.color=NA, vertex.frame.color=NA, edge.width = 3) 
+	
+	legend('bottomleft', title='Colors', cex=0.75, pch=16, bty='n', ncol=2,
+		col=spl('black,blue,red,green,orange'), 
+		legend=spl('>70%,65-70,60-65,55-60,50-55')
+	)	
+}
+{% endhighlight %}
 
 
 
