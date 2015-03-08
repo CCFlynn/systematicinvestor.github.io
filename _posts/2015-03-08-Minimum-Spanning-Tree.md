@@ -88,7 +88,7 @@ Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components bas
 plot.cor(ret, 0.5)
 {% endhighlight %}
 
-![plot of chunk plot-2](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-2-1.png) 
+![plot of chunk plot-2](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-2-1.png) ![plot of chunk plot-2](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-2-2.png) 
 
 Next let's get intraday 1 minute historical quotes and visualize correlation based on the last 5 days:
 
@@ -141,7 +141,7 @@ Minimum Spanning Tree based on Pearson Correlation for Nasdaq 100 Components bas
 plot.cor(ret, 0.5)
 {% endhighlight %}
 
-![plot of chunk plot-3](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-3-1.png) 
+![plot of chunk plot-3](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-3-1.png) ![plot of chunk plot-3](/public/images/2015-03-08-Minimum-Spanning-Tree/plot-3-2.png) 
 
 Helper functions:
 
@@ -170,21 +170,43 @@ clean.cor = function(ret, threshold = 0.5) {
 plot.cor = function(ret, threshold = 0.5) {
 	cor_mat = clean.cor(ret, threshold)
 
+	transform.fn = function(x) x
+	transform.fn = function(x) sqrt(2.0 * ( 1 - x ) )
+	transform.fn = function(x) 1 - abs( x )
+			
+	dist = transform.fn( cor_mat )
+		dist[cor_mat == 0] = 0
+	
 	load.packages('igraph')
-	graph = graph.adjacency(cor_mat, weighted=TRUE, mode='upper')
+	graph = graph.adjacency(dist, weighted=TRUE, mode='upper')
 	mst = minimum.spanning.tree(graph)
 
-	E(mst)[ weight>0.7 ]$color = col.add.alpha('black',150)
-	E(mst)[ weight>=0.65 & weight<0.7 ]$color = col.add.alpha('blue',150)
-	E(mst)[ weight>=0.6 & weight<0.65 ]$color = col.add.alpha('red',150)
-	E(mst)[ weight>=0.55 & weight<0.6 ]$color = col.add.alpha('green',150)
-	E(mst)[ weight<0.55 ]$color = col.add.alpha('orange',150)
-
+	breaks = c(0,55,60,65,70,100)
+	cols = spl('black,blue,red,green,orange')
+	labels = 1:5
+	
+	factor = cut(E(mst)$weight, breaks = transform.fn(breaks/100), labels = labels)
+	for(i in labels)
+		E(mst)[ factor == i ]$color = col.add.alpha(cols[i],150)
+	
 	set.seed(100)
 	par(mar=c(1,1,1,1))
 	plot(mst,vertex.size=5, vertex.color=NA, vertex.frame.color=NA, edge.width = 3) 
+
+	legend('bottomleft', title='Minimum Spanning Tree', cex=0.75, pch=16, bty='n', ncol=2,
+		col=spl('black,blue,red,green,orange'), 
+		legend=spl('>70%,65-70,60-65,55-60,50-55')
+	)	
 	
-	legend('bottomleft', title='Colors', cex=0.75, pch=16, bty='n', ncol=2,
+	# full graph
+	factor = cut(E(graph)$weight, breaks = transform.fn(breaks/100), labels = labels)
+	for(i in labels)
+		E(graph)[ factor == i ]$color = col.add.alpha(cols[i],100)
+	
+	set.seed(100)
+	plot(graph,vertex.size=5, vertex.color=NA, vertex.frame.color=NA, edge.width = 3) 
+	
+	legend('bottomleft', title='Full Graph', cex=0.75, pch=16, bty='n', ncol=2,
 		col=spl('black,blue,red,green,orange'), 
 		legend=spl('>70%,65-70,60-65,55-60,50-55')
 	)	
