@@ -4,7 +4,7 @@ title: Volatility Strategy from TradingTheOdds
 ---
 
 
-To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](/about) page.
+To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinvestor/SIT) please visit [About](',base.url,'about) page.
 
 
 
@@ -187,46 +187,13 @@ tic(11)
 		models
 	}
 	
-if(F) {
-	#*****************************************************************
-	# Setup Parallel
-	#*****************************************************************			
-	load.packages('parallel')	
-	cores = detectCores()
-		
-	# we don't want to execute defult settings	
-		Sys.unsetenv("R_PROFILE_USER")	
-	cl = makeCluster(cores)	
-	
-	#*****************************************************************
-	# Setup Cluster
-	#*****************************************************************							
-	temp = clusterEvalQ(cl, {
-		# set up each worker.
-		library(quantmod)
-		con = gzcon(file('../sit', 'rb')) 
-			source(con) 
-		close(con)
-		
-		source('post.fn.r')
-		
-		NULL
-	})	
-	
-	#*****************************************************************
-	# Move Data to Cluster
-	#*****************************************************************								 	
-	clusterExport(cl=cl, spl('spyRets,sma.lens,data,run.backtest'),envir=environment()) 
-}	
-
-
 	#*****************************************************************
 	# Run Cluster
 	#*****************************************************************							
 	load.packages('parallel')
-	
-	cl = setup.cluster({source('post.fn.r')}, 'spyRets,sma.lens,data,run.backtest',envir=environment())
-	
+		
+	cl = setup.cluster(varlist='spyRets,sma.lens,data,run.backtest',envir=environment())
+		
 	out = clusterApplyLB(cl, vol.lens, function(j) { run.backtest(j) } )	
 
 	stopCluster(cl)	
@@ -238,9 +205,15 @@ toc(11)
 
 
 
-Elapsed time is 17.12 seconds
+Elapsed time is 18.29 seconds
 
     
+
+
+
+
+
+
 
 
 {% highlight r %}
@@ -276,41 +249,41 @@ Sharpe :
     
 
 
-![plot of chunk plot-7](/public/images/2014-11-23-TradingTheOdds/plot-7-1.png) 
+![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-1.png) 
 
 Cagr :
     
 
 
-![plot of chunk plot-7](/public/images/2014-11-23-TradingTheOdds/plot-7-2.png) 
+![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-2.png) 
 
 DVR :
     
 
 
-![plot of chunk plot-7](/public/images/2014-11-23-TradingTheOdds/plot-7-3.png) 
+![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-3.png) 
 
 MaxDD :
     
 
 
-![plot of chunk plot-7](/public/images/2014-11-23-TradingTheOdds/plot-7-4.png) 
+![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-4.png) 
 
 {% highlight r %}
 	load.packages('ggplot2,reshape2')
 	plot.data = melt(dummy)
 		colnames(plot.data) = c("vol", "sma", "Sharpe")
 	
-plot.data$SMA = as.numeric(gsub("S", "", plot.data$sma))
-plot.data$VOL = as.numeric(gsub("V", "", plot.data$vol))
-plot.data$Sharpe = scale(as.numeric(plot.data$Sharpe))
+	plot.data$SMA = as.numeric(gsub("S", "", plot.data$sma))
+	plot.data$VOL = as.numeric(gsub("V", "", plot.data$vol))
+	plot.data$Sharpe = scale(as.numeric(plot.data$Sharpe))
 
-ggplot(plot.data, aes(x=SMA, y=VOL, fill=Sharpe))+
-	geom_tile()+	
-	scale_fill_gradient2(high="skyblue", mid="blue", low="red")
+	ggplot(plot.data, aes(x=SMA, y=VOL, fill=Sharpe))+
+		geom_tile()+	
+		scale_fill_gradient2(high="skyblue", mid="blue", low="red")
 {% endhighlight %}
 
-![plot of chunk plot-7](/public/images/2014-11-23-TradingTheOdds/plot-7-5.png) 
+![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-5.png) 
 
 > Helmuth Vollmeier says [my app](https://alphaminer.shinyapps.io/VolaStrat/)
 > The strategy employs a SINGLE variable (the SMA of a ratio of 2 points on the term structure). 
@@ -412,7 +385,7 @@ data$ratio = prices$VIX / prices$VXV
 		mtext('Cumulative Performance', side = 2, line = 1)
 {% endhighlight %}
 
-![plot of chunk plot-8](/public/images/2014-11-23-TradingTheOdds/plot-8-1.png) 
+![plot of chunk plot-9](/public/images/2014-11-23-TradingTheOdds/plot-9-1.png) 
 
 {% highlight r %}
 	print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
@@ -422,25 +395,29 @@ data$ratio = prices$VIX / prices$VXV
 
 |           |strategy          |strategy1         |
 |:----------|:-----------------|:-----------------|
-|Period     |Jul2006 - Dec2014 |Jul2006 - Dec2014 |
-|Cagr       |56.19             |48.16             |
-|Sharpe     |1.15              |1.05              |
-|DVR        |0.98              |0.92              |
-|Volatility |49.11             |49.3              |
+|Period     |Jul2006 - Mar2015 |Jul2006 - Mar2015 |
+|Cagr       |48.16             |41.76             |
+|Sharpe     |1.05              |0.96              |
+|DVR        |0.87              |0.85              |
+|Volatility |49.17             |49.27             |
 |MaxDD      |-58.71            |-62.21            |
-|AvgDD      |-8.45             |-8.73             |
-|VaR        |-5.08             |-4.95             |
-|CVaR       |-7.66             |-7.57             |
-|Exposure   |69.02             |68.97             |
+|AvgDD      |-8.61             |-9.11             |
+|VaR        |-5.1              |-4.96             |
+|CVaR       |-7.75             |-7.63             |
+|Exposure   |68.92             |68.92             |
     
 		
 	
 Investigate:	
 	
-	
-	
-http://www.godotfinance.com/pdf/DynamicVIXFuturesVersion2Rev1.pdf
-http://www.godotfinance.com/workingpapers/	
+* http://www.godotfinance.com/pdf/DynamicVIXFuturesVersion2Rev1.pdf
+* http://www.godotfinance.com/workingpapers/	
+
+Good way to use this high performance strategy in your portfolio is to balance it 
+with other positions. For example, please see [Barbell investing with XIV / SVXY](http://dontfearthebear.com/2014/07/02/barbell-investing-with-xiv-svxy/)
+ at [Don't Fear the Bear blog](http://dontfearthebear.com/)
 
 
-*(this report was produced on: 2014-12-07)*
+
+
+*(this report was produced on: 2015-03-12)*
