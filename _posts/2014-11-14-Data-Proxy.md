@@ -131,7 +131,7 @@ On the all history chart CRB_2 is also different.
 
 |      |CRB Price |CRB Total |CRB_2 Price |CRB_2 Total |DBC Price |DBC Total |GSG Price |GSG Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|:---------|:---------|
-|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.4%     |-0.4%     |-6.9%     |-6.9%     |
+|Mean  | 8.2%     | 8.2%     |11.5%       |11.5%       |-0.8%     |-0.8%     |-7.5%     |-7.5%     |
 |StDev |16.3%     |16.3%     |21.5%       |21.5%       |20.9%     |20.9%     |25.0%     |25.0%     |
     
 
@@ -212,8 +212,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 |RWX   |      |66%   |67%   |
 |VGSIX |      |      |99%   |
 |      |      |      |      |
-|Mean  | 3.5% |12.6% |12.8% |
-|StDev |25.5% |40.4% |39.2% |
+|Mean  | 3.3% |12.6% |12.9% |
+|StDev |25.4% |40.2% |39.1% |
     
 
 
@@ -221,8 +221,8 @@ create.proxy = function(tickers, proxy.map.tickers, raw.data = new.env()) {
 
 |      |RWX Price |RWX Total |VGSIX Price |VGSIX Total |VNQ Price |VNQ Total |
 |:-----|:---------|:---------|:-----------|:-----------|:---------|:---------|
-|Mean  | 3.5%     | 3.5%     |14.4%       |14.4%       |15.8%     |15.8%     |
-|StDev |25.5%     |25.5%     |28.2%       |28.2%       |35.1%     |35.1%     |
+|Mean  | 3.3%     | 3.3%     |14.4%       |14.4%       |15.9%     |15.9%     |
+|StDev |25.4%     |25.4%     |28.1%       |28.1%       |35.1%     |35.1%     |
     
 
 
@@ -263,8 +263,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 |IYR   |      |85%   |99%   |
 |RWO   |      |      |85%   |
 |      |      |      |      |
-|Mean  |14.3% | 9.0% |16.2% |
-|StDev |39.1% |29.9% |42.0% |
+|Mean  |14.3% | 8.9% |16.2% |
+|StDev |38.9% |29.8% |41.8% |
     
 
 
@@ -272,8 +272,8 @@ Please use `VNQ` and `VGSIX` to extend REIT ex-U.S.
 
 |      |IYR Price |IYR Total |RWO Price |RWO Total |VGSIX Price |VGSIX Total |
 |:-----|:---------|:---------|:---------|:---------|:-----------|:-----------|
-|Mean  |14.5%     |14.5%     | 9.0%     | 9.0%     |14.4%       |14.4%       |
-|StDev |29.6%     |29.6%     |29.9%     |29.9%     |28.2%       |28.2%       |
+|Mean  |14.5%     |14.5%     | 8.9%     | 8.9%     |14.4%       |14.4%       |
+|StDev |29.6%     |29.6%     |29.8%     |29.8%     |28.1%       |28.1%       |
     
 
 
@@ -430,7 +430,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |IEF Price |IEF Total |TB10Y Price |TB10Y Total |VFITX Price |VFITX Total |
 |:-----|:---------|:---------|:-----------|:-----------|:-----------|:-----------|
-|Mean  |5.9%      |5.9%      |6.8%        |6.8%        |5.8%        |5.8%        |
+|Mean  |6.0%      |6.0%      |6.8%        |6.8%        |5.9%        |5.9%        |
 |StDev |7.0%      |7.0%      |9.6%        |9.6%        |5.2%        |5.2%        |
     
 
@@ -577,7 +577,7 @@ Please use `IYR` and `VGSIX` to extend Global REIT.
 
 |      |TB20Y Price |TB20Y Total |TLT Price |TLT Total |VUSTX Price |VUSTX Total |
 |:-----|:-----------|:-----------|:---------|:---------|:-----------|:-----------|
-|Mean  |155.4%      |155.4%      |  8.5%    |  8.5%    |  8.2%      |  8.2%      |
+|Mean  |155.4%      |155.4%      |  8.8%    |  8.8%    |  8.4%      |  8.4%      |
 |StDev | 70.3%      | 70.3%      | 13.8%    | 13.8%    | 10.5%      | 10.5%      |
     
 
@@ -637,7 +637,7 @@ are most likely month-end observations, but they are recorded as the first day o
 
 |      |GLD Price |GLD Total |GOLD Price |GOLD Total |
 |:-----|:---------|:---------|:----------|:----------|
-|Mean  |11.5%     |11.5%     | 9.4%      | 9.4%      |
+|Mean  |11.1%     |11.1%     | 9.4%      | 9.4%      |
 |StDev |20.3%     |20.3%     |20.1%      |20.1%      |
     
 
@@ -646,6 +646,26 @@ are most likely month-end observations, but they are recorded as the first day o
 </div>
 
 
+
+{% highlight r %}
+	#--------------------------------
+	# FTSE NAREIT U.S. Real Estate Index monthly total return series
+	# http://returns.reit.com/returns/MonthlyHistoricalReturns.xls
+	# https://r-forge.r-project.org/scm/viewvc.php/pkg/FinancialInstrument/inst/parser/download.NAREIT.R?view=markup&root=blotter
+	filename = 'data/NAREIT.xls'
+	if(!file.exists(filename)) {
+		url = 'http://returns.reit.com/returns/MonthlyHistoricalReturns.xls'
+		download.file(url, filename,  mode = 'wb')
+	}
+	
+	load.packages('gdata')
+	temp = read.xls(filename, pattern='Date', sheet='Index Data', stringsAsFactors=FALSE)
+	index = as.numeric(gsub(',','',temp$Index))
+	# monthly data, with 1-month-year format
+	NAREIT = make.xts(index, as.Date(paste(1,temp$Date),'%d %b-%y')) 
+	raw.data$NAREIT = make.stock.xts(NAREIT)
+	#--------------------------------
+{% endhighlight %}
 
 
 
@@ -761,4 +781,4 @@ print(bt.start.dates(data))
 
 
 
-*(this report was produced on: 2015-02-20)*
+*(this report was produced on: 2015-03-19)*
