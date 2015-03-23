@@ -18,7 +18,7 @@ Following are few tutorials with step by step instructions to package your
 
 * [Packaging your Shiny App as an Windows desktop app](http://blog.analytixware.com/2014/03/packaging-your-shiny-app-as-windows.html)
 * [Deploying Desktop Apps with R](http://oddhypothesis.blogspot.ca/2014/04/deploying-self-contained-r-apps-to.html)
-* [A Simple Shiny App for Monitoring Trading Strategies – Part II](http://www.thertrader.com/2014/08/07/a-simple-shiny-app-for-monitoring-trading-strategies-part-ii/)
+* [A Simple Shiny App for Monitoring Trading Strategies  Part II](http://www.thertrader.com/2014/08/07/a-simple-shiny-app-for-monitoring-trading-strategies-part-ii/)
 
 Basically, you need to get:
 
