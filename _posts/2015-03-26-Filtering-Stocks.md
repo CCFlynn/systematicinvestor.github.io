@@ -73,16 +73,7 @@ prices = data$prices
 	prices = coredata(prices)
 	
 load.packages('TSdist')
-{% endhighlight %}
-
-package 'proxy' successfully unpacked and MD5 sums checked
-package 'TSdist' successfully unpacked and MD5 sums checked
-
-The downloaded binary packages are in
-	C:\Temp\RtmpSOEZJt\downloaded_packages
-
-
-{% highlight r %}
+	
 # all possible combinations
 choices = expand.grid(t1=1:n,t2=1:n,KEEP.OUT.ATTRS=F)
 	choices = choices[choices$t1 <  choices$t2,]
@@ -164,16 +155,7 @@ prices = data$prices
 	rets = coredata(rets)
 	
 load.packages('quantreg')
-{% endhighlight %}
 
-package 'SparseM' successfully unpacked and MD5 sums checked
-package 'quantreg' successfully unpacked and MD5 sums checked
-
-The downloaded binary packages are in
-	C:\Temp\RtmpSOEZJt\downloaded_packages
-
-
-{% highlight r %}
 # Ask the slopes for 20% and 80%
 tau = c(.2,.8)
 
@@ -225,7 +207,6 @@ rq.plot(i,'Largest[10] Dist')
 {% endhighlight %}
 
 ![plot of chunk plot-3](/public/images/2015-03-26-Filtering-Stocks/plot-3-4.png) 
-
 
 Both concepts work, and show lot's of promise.
 
