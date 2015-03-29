@@ -4,6 +4,9 @@ title: Contact
 permalink: contact/
 ---
 
+  <p>
+    Please follow the <a href="http://sscce.org/">SSCCE</a> if submitting a coding question.
+  </p>
 
   <h1>Contact me</h1>
   
