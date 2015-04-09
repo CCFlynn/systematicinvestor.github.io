@@ -68,7 +68,7 @@ print(last(data$prices))
 
 |           | US.STOCKS| FOREIGN.STOCKS| EMERGING.MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
 |:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|-----:|
-|2015-04-07 |    107.77|             50|            41.56|           108.65|        84.2|        17.6| 83.52|
+|2015-04-08 |    108.23|          50.39|            42.43|           108.55|       84.33|       17.26| 83.46|
     
 
 
@@ -159,7 +159,7 @@ obj$weights$strategy = weight
 |Volatility    |10.93             |
 |MaxDD         |-14.18            |
 |Exposure      |99.51             |
-|Win.Percent   |63.5              |
+|Win.Percent   |63.67             |
 |Avg.Trade     |0.37              |
 |Profit.Factor |2.06              |
 |Num.Trades    |622               |
@@ -227,9 +227,9 @@ obj$weights$strategy = weight
 |US.STOCKS        | 33.3  |2015-02-27 |2015-03-31 |32    |108.51      |107.25     |-0.39  |
 |REAL.ESTATE      | 33.3  |2015-02-27 |2015-03-31 |32    | 82.87      | 84.31     | 0.58  |
 |CASH             | 33.3  |2015-02-27 |2015-03-31 |32    | 82.90      | 83.35     | 0.18  |
-|US.10YR.GOV.BOND | 33.3  |2015-03-31 |2015-04-07 | 7    |108.39      |108.65     | 0.08  |
-|REAL.ESTATE      | 33.3  |2015-03-31 |2015-04-07 | 7    | 84.31      | 84.20     |-0.04  |
-|CASH             | 33.3  |2015-03-31 |2015-04-07 | 7    | 83.35      | 83.52     | 0.07  |
+|US.10YR.GOV.BOND | 33.3  |2015-03-31 |2015-04-08 | 8    |108.39      |108.55     | 0.05  |
+|REAL.ESTATE      | 33.3  |2015-03-31 |2015-04-08 | 8    | 84.31      | 84.33     | 0.01  |
+|CASH             | 33.3  |2015-03-31 |2015-04-08 | 8    | 83.35      | 83.46     | 0.04  |
     
 
 
@@ -277,4 +277,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-04-08)*
+*(this report was produced on: 2015-04-09)*
