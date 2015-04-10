@@ -125,7 +125,14 @@ Otherwise, optimizer will be forced to find corner solutions and result in not s
 		# convert annual to monthly
 		ia$parameters.omega = ia$parameters.omega / 12
 
+	max.omega.portfolio(ia, constraints)		
+{% endhighlight %}
 
+[1] 0.000000e+00 7.255498e-02 1.688399e-01 1.097557e-16 0.000000e+00
+[6] 2.661959e-01 0.000000e+00 4.924093e-01
+
+
+{% highlight r %}
 	# create efficient frontier(s)
 	ef.risk = portopt(ia, constraints, 50, 'Risk')
 
@@ -254,7 +261,8 @@ I will use methods presented in
 #' @export 	
 target.omega.portfolio <- function
 (
-	target.omega
+	target.omega,
+	type = 'mixed'
 )
 {
 	target.omega = target.omega
@@ -266,27 +274,40 @@ target.omega.portfolio <- function
 	)
 	{
 		ia$parameters.omega = target.omega
-		max.omega.portfolio(ia, constraints)
+		max.omega.portfolio(ia, constraints, type)
 	}	
 }
-
  
- 
-	#*****************************************************************
-	# Load historical data
-	#****************************************************************** 
-	load.packages('quantmod,quadprog,corpcor,lpSolve')
-	tickers = spl('SPY,QQQ,EEM,IWM,EFA,TLT,IYR,GLD')
+#*****************************************************************
+# Load historical data
+#*****************************************************************
+library(SIT)
+load.packages('quantmod')
 
-	data = env()
-	getSymbols(tickers, src = 'yahoo', from = '1980-01-01', env = data, auto.assign = T)
-		for(i in ls(data)) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)							
-	bt.prep(data, align='remove.na', dates='1990::') 
+# load saved Proxies Raw Data, data.proxy.raw, to extend DBC and SHY
+# please see http://systematicinvestor.github.io/Data-Proxy/ for more details
+load('data/data.proxy.raw.Rdata')
+
+tickers = '
+LQD + VWESX
+DBC + CRB
+VTI +VTSMX # (or SPY)
+ICF + VGSIX # (or IYR)
+CASH = SHY + TB3Y
+'
+
+data <- new.env()
+getSymbols.extra(tickers, src = 'yahoo', from = '1970-01-01', env = data, raw.data = data.proxy.raw, set.symbolnames = T, auto.assign = T)
+for(i in data$symbolnames) data[[i]] = adjustOHLC(data[[i]], use.Adjusted=T)
+
+#print(bt.start.dates(data))
+bt.prep(data, align='remove.na', fill.gaps = T)
+
 	
-	#*****************************************************************
-	# Code Strategies
-	#****************************************************************** 					
-	obj = portfolio.allocation.helper(data$prices, 
+#*****************************************************************
+# Code Strategies
+#****************************************************************** 					
+obj = portfolio.allocation.helper(data$prices, 
 		periodicity = 'months', lookback.len = 60, 
 		min.risk.fns = list(
 			EW=equal.weight.portfolio,
@@ -295,7 +316,7 @@ target.omega.portfolio <- function
 			
 			MV=min.var.portfolio,
 			MVE=min.var.excel.portfolio,
-			MO=target.omega.portfolio(0/100),
+			MO=target.omega.portfolio(0/100, 'lp'),
 			
 			MC=min.corr.portfolio,
 			MCE=min.corr.excel.portfolio,
@@ -304,9 +325,11 @@ target.omega.portfolio <- function
 			MS=max.sharpe.portfolio()
 		),
 		silent=T
-	)
+)
 	
-	models = create.strategies(obj, data, silent=T)$models
+commission = list(cps = 0.01, fixed = 10.0, percentage = 0.0)
+
+models = create.strategies(obj, data, dates='1997::', commission=commission, silent=T)$models
 	
 #*****************************************************************
 # Create Report
@@ -326,21 +349,75 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromanc
 
 |           |EW                |RP                |MD                |MV                |MVE               |MO                |MC                |MCE               |MC2               |MS                |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
-|Period     |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |Nov2004 - Apr2015 |
-|Cagr       |8.95              |9.95              |10.7              |10.68             |11.59             |13.3              |9.97              |9.97              |9.83              |13.04             |
-|Sharpe     |0.58              |0.75              |1.24              |1.31              |1.29              |0.98              |1.1               |1.1               |1.06              |1                 |
-|DVR        |0.48              |0.67              |1.17              |1.22              |1.22              |0.89              |1.04              |1.04              |1.01              |0.92              |
-|R2         |0.84              |0.9               |0.95              |0.94              |0.95              |0.92              |0.95              |0.95              |0.95              |0.92              |
-|Volatility |17.6              |14.09             |8.52              |8.02              |8.85              |13.82             |9.05              |9.05              |9.24              |13.09             |
-|MaxDD      |-45.51            |-34.53            |-13.44            |-13.24            |-14.3             |-22.5             |-17.23            |-17.17            |-17.65            |-22.03            |
-|Exposure   |97.36             |97.36             |97.36             |97.36             |97.36             |97.36             |97.36             |97.36             |97.36             |97.36             |
+|Period     |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |
+|Cagr       |6.41              |4.06              |3.88              |3.15              |3.13              |4.2               |4.04              |4.02              |4.06              |4.43              |
+|Sharpe     |0.65              |1.26              |1.19              |1.73              |1.47              |0.72              |1.25              |1.22              |1.32              |0.76              |
+|DVR        |0.6               |1.21              |1.1               |1.61              |1.36              |0.61              |1.18              |1.16              |1.26              |0.63              |
+|R2         |0.93              |0.96              |0.92              |0.93              |0.93              |0.84              |0.94              |0.95              |0.96              |0.84              |
+|Volatility |10.51             |3.2               |3.26              |1.8               |2.12              |5.95              |3.21              |3.27              |3.07              |5.99              |
+|MaxDD      |-40.68            |-12.11            |-8.74             |-2.88             |-2.97             |-19.4             |-7.97             |-7.57             |-8.67             |-17.97            |
+|Exposure   |99.98             |99.98             |99.98             |99.98             |99.98             |99.98             |99.98             |99.98             |99.98             |99.98             |
+    
+
+Now let's do monthly
+
+
+{% highlight r %}
+data = bt.change.periodicity(data, periodicity = 'months')
+
+
+#*****************************************************************
+# Code Strategies
+#****************************************************************** 					
+obj = portfolio.allocation.helper(data$prices, 
+		periodicity = 'months', lookback.len = 24, 
+		min.risk.fns = list(
+			EW=equal.weight.portfolio,
+			RP=risk.parity.portfolio(),
+			MD=max.div.portfolio,						
+			
+			MV=min.var.portfolio,
+			MVE=min.var.excel.portfolio,
+			MO=target.omega.portfolio(0/100, 'lp'),
+			
+			MC=min.corr.portfolio,
+			MCE=min.corr.excel.portfolio,
+			MC2=min.corr2.portfolio,
+			
+			MS=max.sharpe.portfolio()
+		),
+		silent=T
+)
+	
+models = create.strategies(obj, data, dates='1997::', commission=commission, silent=T)$models
+	
+#*****************************************************************
+# Create Report
+#*****************************************************************
+#strategy.performance.snapshoot(models, T)
+plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
+	mtext('Cumulative Performance', side = 2, line = 1)
+{% endhighlight %}
+
+![plot of chunk plot-6](/public/images/2015-04-02-Sortino-Omega/plot-6-1.png) 
+
+{% highlight r %}
+print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T, perfromance.fn=engineering.returns.kpi))
+{% endhighlight %}
+
+
+
+|           |EW                |RP                |MD                |MV                |MVE               |MO                |MC                |MCE               |MC2               |MS                |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |Jan1997 - Apr2015 |
+|Cagr       |5.71              |3.63              |2.73              |2.74              |2.68              |3.29              |3.28              |3.28              |3.47              |3.38              |
+|Sharpe     |0.66              |1.05              |0.96              |1.47              |1.25              |1.13              |1.06              |1.03              |1.09              |1.1               |
+|DVR        |0.61              |0.99              |0.9               |1.34              |1.16              |1.07              |0.98              |0.96              |1.02              |1.03              |
+|R2         |0.93              |0.94              |0.94              |0.91              |0.93              |0.94              |0.93              |0.93              |0.93              |0.94              |
+|Volatility |8.97              |3.44              |2.83              |1.84              |2.12              |2.88              |3.08              |3.15              |3.16              |3.06              |
+|MaxDD      |-37.17            |-12.8             |-7.54             |-3.17             |-2.59             |-3.22             |-6.56             |-6.54             |-9.92             |-3.38             |
+|Exposure   |91.82             |91.82             |91.82             |91.82             |91.82             |91.82             |91.82             |91.82             |91.82             |91.82             |
     
 
 
-
-
-
-
-
-
-*(this report was produced on: 2015-04-07)*
+*(this report was produced on: 2015-04-10)*
