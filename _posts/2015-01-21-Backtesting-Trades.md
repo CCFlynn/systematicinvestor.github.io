@@ -2,7 +2,6 @@
 layout: post
 title: Back-testing Trades
 comments: true
-rss: true
 ---
 
 
@@ -29,13 +28,13 @@ library(SIT)
 load.packages('quantmod')
 
 
-filename = 'decisionmoose.Rdata'
+filename = 'data/decisionmoose.Rdata'
 if(!file.exists(filename)) {
 	url = 'http://www.decisionmoose.com/Moosistory.html'
 	txt = join(readLines(url))
 
 	# extract transaction history
-	temp = extract.table.from.webpage(txt, 'Transaction History', hasHeader = F)
+	temp = extract.table.from.webpage(txt, 'Transaction History', has.header = F)
 		temp = trim(temp[-1,2:5])
  	colnames(temp) = spl('id,date,name,equity')
  
@@ -65,7 +64,7 @@ load(file=filename)
 tickers = unique(info$tickers)
 
 # load saved Proxies Raw Data, data.proxy.raw
-load('data.proxy.raw.Rdata')
+load('data/data.proxy.raw.Rdata')
 
 # define Cash (3moT) 3MOT = BIL+TB3M 
 tickers = gsub('3MOT','3MOT=BIL+TB3M', tickers)
@@ -148,16 +147,16 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 
 |           |SPY               |decisionmoose     |
 |:----------|:-----------------|:-----------------|
-|Period     |Jan2000 - Jan2015 |Jan2000 - Jan2015 |
-|Cagr       |4.1               |19.05             |
-|Sharpe     |0.3               |0.94              |
-|DVR        |0.15              |0.92              |
-|Volatility |20.25             |20.27             |
+|Period     |Jan2000 - Apr2015 |Jan2000 - Apr2015 |
+|Cagr       |4.33              |18.31             |
+|Sharpe     |0.31              |0.91              |
+|DVR        |0.16              |0.89              |
+|Volatility |20.16             |20.29             |
 |MaxDD      |-55.19            |-24.43            |
-|AvgDD      |-2.64             |-4.21             |
-|VaR        |-2                |-2                |
-|CVaR       |-3.01             |-3                |
-|Exposure   |99.97             |97.65             |
+|AvgDD      |-2.55             |-4.28             |
+|VaR        |-1.98             |-2.01             |
+|CVaR       |-3                |-3                |
+|Exposure   |99.97             |97.68             |
     
 
 
@@ -177,28 +176,28 @@ print(last.trades(models$decisionmoose, smain='decisionmoose',make.plot=F, retur
 
 
 
-|decisionmoose |weight |entry.date |exit.date  |entry.price |exit.price |return |
-|:-------------|:------|:----------|:----------|:-----------|:----------|:------|
-|BTTRX         |100    |2011-09-30 |2012-02-10 | 72.26      | 71.63     |-0.87  |
-|IWM           |100    |2012-02-10 |2012-03-02 | 77.53      | 76.56     |-1.25  |
-|SPY           |100    |2012-03-02 |2012-05-04 |129.15      |129.42     | 0.21  |
-|BTTRX         |100    |2012-05-04 |2012-08-10 | 73.19      | 77.24     | 5.53  |
-|SPY           |100    |2012-08-10 |2012-09-21 |133.74      |139.25     | 4.12  |
-|GLD           |100    |2012-09-21 |2012-12-14 |171.96      |164.13     |-4.55  |
-|3MOT          |100    |2012-12-14 |2013-01-04 | 45.81      | 45.82     | 0.02  |
-|IEV           |100    |2013-01-04 |2013-02-08 | 37.25      | 38.00     | 2.02  |
-|3MOT          |100    |2013-02-08 |2013-05-10 | 45.81      | 45.80     |-0.02  |
-|EWJ           |100    |2013-05-10 |2013-05-31 | 11.47      | 10.58     |-7.76  |
-|IWM           |100    |2013-05-31 |2014-02-07 | 95.50      |109.33     |14.48  |
-|IEV           |100    |2014-02-07 |2014-03-07 | 44.94      | 46.86     | 4.26  |
-|IWM           |100    |2014-03-07 |2014-04-04 |118.17      |113.32     |-4.10  |
-|SPY           |100    |2014-04-04 |2014-04-11 |183.63      |178.82     |-2.62  |
-|EDV           |100    |2014-04-11 |2014-07-03 | 99.55      |100.51     | 0.96  |
-|ILF           |100    |2014-07-03 |2014-08-22 | 38.17      | 40.24     | 5.42  |
-|EDV           |100    |2014-08-22 |2014-09-05 |109.93      |108.78     |-1.05  |
-|ILF           |100    |2014-09-05 |2014-09-26 | 42.33      | 38.20     |-9.76  |
-|SPY           |100    |2014-09-26 |2014-10-10 |196.81      |189.49     |-3.72  |
-|EDV           |100    |2014-10-10 |2015-01-20 |114.80      |136.80     |19.16  |
+|decisionmoose |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
+|:-------------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
+|IWM           |100    |2012-02-10 |2012-03-02 | 21   | 77.53      | 76.56     |-1.25  |
+|SPY           |100    |2012-03-02 |2012-05-04 | 63   |128.57      |128.85     | 0.22  |
+|BTTRX         |100    |2012-05-04 |2012-08-10 | 98   | 73.19      | 77.24     | 5.53  |
+|SPY           |100    |2012-08-10 |2012-09-21 | 42   |133.14      |138.64     | 4.13  |
+|GLD           |100    |2012-09-21 |2012-12-14 | 84   |171.96      |164.13     |-4.55  |
+|3MOT          |100    |2012-12-14 |2013-01-04 | 21   | 45.81      | 45.82     | 0.02  |
+|IEV           |100    |2013-01-04 |2013-02-08 | 35   | 37.26      | 38.00     | 1.99  |
+|3MOT          |100    |2013-02-08 |2013-05-10 | 91   | 45.81      | 45.80     |-0.02  |
+|EWJ           |100    |2013-05-10 |2013-05-31 | 21   | 11.47      | 10.58     |-7.76  |
+|IWM           |100    |2013-05-31 |2014-02-07 |252   | 95.50      |109.33     |14.48  |
+|IEV           |100    |2014-02-07 |2014-03-07 | 28   | 44.94      | 46.85     | 4.25  |
+|IWM           |100    |2014-03-07 |2014-04-04 | 28   |118.17      |113.32     |-4.10  |
+|SPY           |100    |2014-04-04 |2014-04-11 |  7   |182.82      |178.02     |-2.63  |
+|EDV           |100    |2014-04-11 |2014-07-03 | 83   | 98.98      | 99.94     | 0.96  |
+|ILF           |100    |2014-07-03 |2014-08-22 | 50   | 38.17      | 40.24     | 5.42  |
+|EDV           |100    |2014-08-22 |2014-09-05 | 14   |109.30      |108.16     |-1.05  |
+|ILF           |100    |2014-09-05 |2014-09-26 | 21   | 42.33      | 38.20     |-9.76  |
+|SPY           |100    |2014-09-26 |2014-10-10 | 14   |195.94      |188.65     |-3.72  |
+|EDV           |100    |2014-10-10 |2015-03-13 |154   |114.15      |124.09     | 8.71  |
+|EWJ           |100    |2015-03-13 |2015-04-10 | 28   | 12.48      | 12.94     | 3.69  |
     
 
 
@@ -208,4 +207,4 @@ print(last.trades(models$decisionmoose, smain='decisionmoose',make.plot=F, retur
 
 
 
-*(this report was produced on: 2015-01-22)*
+*(this report was produced on: 2015-04-11)*
