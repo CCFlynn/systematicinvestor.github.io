@@ -160,17 +160,18 @@ run_quantile_weightR = function(x, n, low.prob, high.prob) {
 		index1 = sort.list(index[1:lo], decreasing=T)
 		l1 = sum(temp[index[1:lo]] * lo.index * index1) / sum(lo.index * index1)
 				
-		c(l,h,l1)
+		c(l1,l,h)
 	}
 	))
-	t(out)
+	out = t(out)
+	colnames(out) = spl('low.new,low.old,high')
+	out
 }	
 
 #*****************************************************************
 # Test David's example
 #*****************************************************************
 print.helper = function(stats) {
-	colnames(stats) = spl('low,high,low1')[1:ncol(stats)]
 	print(stats[nrow(stats),,drop=F])
 }
 
@@ -184,9 +185,9 @@ stats = run_quantile_weightR(x, n, low.prob, high.prob)
 
 
 
-|      low|     high|     low1|
+|  low.new|  low.old|     high|
 |--------:|--------:|--------:|
-| 119.4906| 214.0909| 118.3514|
+| 118.3514| 119.4906| 214.0909|
     
 
 
@@ -215,9 +216,9 @@ stats = run_quantile_weightR(x, n, low.prob, high.prob)
 
 
 
-|      low|     high| low1|
-|--------:|--------:|----:|
-| 4.090909| 119.4906|    3|
+| low.new|  low.old|     high|
+|-------:|--------:|--------:|
+|       3| 4.090909| 119.4906|
     
 
 
@@ -249,7 +250,7 @@ low.prob = 0.25
 high.prob = 0.75
 x = runif(100)
 
-test1 = run_quantile_weightR(x, n, low.prob, high.prob)[,c(3,2)]
+test1 = run_quantile_weightR(x, n, low.prob, high.prob)[,c(1,3)]
 test2 = run_quantile_weight(x, n, low.prob, high.prob)
 
 print(all.equal(test1, test2))
@@ -257,7 +258,7 @@ print(all.equal(test1, test2))
 
 
 
-Attributes: < Length mismatch: comparison on first 1 components >
+Attributes: < Component "dimnames": Component 2: 1 string mismatch >
     
 
 
@@ -265,7 +266,7 @@ Attributes: < Length mismatch: comparison on first 1 components >
 
 {% highlight r %}
 print(to.nice(summary(microbenchmark(
-	run_quantile_weightR(x, n, low.prob, high.prob)[,c(3,2)],
+	run_quantile_weightR(x, n, low.prob, high.prob)[,c(1,3)],
 	run_quantile_weight(x, n, low.prob, high.prob),
 	times = 10
 )),0))
@@ -275,10 +276,10 @@ print(to.nice(summary(microbenchmark(
 
 |   |expr                                                       |min    |lq     |mean   |median |uq     |max    |neval  |
 |:--|:----------------------------------------------------------|:------|:------|:------|:------|:------|:------|:------|
-|1  |run_quantile_weightR(x, n, low.prob, high.prob)[, c(3, 2)] |14,582 |14,667 |15,588 |15,375 |16,119 |17,940 |    10 |
-|2  |run_quantile_weight(x, n, low.prob, high.prob)             |   103 |   104 |   116 |   109 |   131 |   135 |    10 |
+|1  |run_quantile_weightR(x, n, low.prob, high.prob)[, c(1, 3)] |14,757 |14,979 |15,643 |15,555 |16,335 |16,631 |    10 |
+|2  |run_quantile_weight(x, n, low.prob, high.prob)             |   103 |   106 |   118 |   115 |   124 |   145 |    10 |
     
 
 
 
-*(this report was produced on: 2015-04-10)*
+*(this report was produced on: 2015-04-13)*

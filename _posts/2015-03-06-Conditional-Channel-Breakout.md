@@ -165,7 +165,7 @@ print(allocation[last.period,])
 
 |           | LQD| DBC| VTI| ICF| CASH|
 |:----------|---:|---:|---:|---:|----:|
-|2015-04-08 |   1|  -1|   1| 0.5|    0|
+|2015-04-10 |   1|  -1|   1| 0.5|    0|
     
 
 
@@ -179,7 +179,7 @@ print(to.percent(last(hist.vol[last.period,])))
 
 |           |LQD   |DBC   |VTI   |ICF   |CASH |
 |:----------|:-----|:-----|:-----|:-----|:----|
-|2015-04-08 |0.40% |1.37% |0.78% |1.18% |     |
+|2015-04-10 |0.41% |1.38% |0.74% |1.23% |     |
     
 
 
@@ -193,7 +193,7 @@ print(to.percent(last(weight[last.period,])))
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |50.61% | 0.00% |25.98% | 8.60% |14.80% |
+|2015-04-10 |49.58% | 0.00% |27.44% | 8.25% |14.73% |
     
 
 Let's add another benchmark, for comparison we will use
@@ -248,9 +248,9 @@ print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
 |           |ew                |rp                |channel.ew        |channel.rp        |QATAA             |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
 |Period     |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |
-|Cagr       |7.82              |7.15              |10.95             |10.04             |9.49              |
-|Sharpe     |0.64              |0.8               |1.36              |1.54              |1.23              |
-|DVR        |0.59              |0.74              |1.29              |1.46              |1.2               |
+|Cagr       |7.81              |7.14              |10.93             |10.03             |9.46              |
+|Sharpe     |0.64              |0.8               |1.36              |1.53              |1.23              |
+|DVR        |0.58              |0.74              |1.29              |1.46              |1.19              |
 |Volatility |13.16             |9.2               |7.87              |6.38              |7.64              |
 |MaxDD      |-48.78            |-40.52            |-12.81            |-7.95             |-13.71            |
 |AvgDD      |-1.52             |-1.21             |-1.16             |-1.01             |-1.06             |
@@ -303,7 +303,7 @@ for(m in names(models)) {
 |2012 |  4.2 |  2.4 |  1.2 |  0.4 | -5.3 |  3.0 |  3.1 |  2.0 |  0.2 | -1.4 |  0.3 |  0.8 | 11.1 | -7.5 |
 |2013 |  2.3 | -0.6 |  1.7 |  1.7 | -2.2 | -2.3 |  2.5 | -2.0 |  1.0 |  2.4 | -1.0 |  0.9 |  4.3 | -7.9 |
 |2014 |  0.0 |  4.0 |  0.3 |  1.6 |  1.1 |  1.3 | -1.7 |  1.9 | -4.3 |  2.7 | -0.7 | -2.0 |  4.1 | -5.6 |
-|2015 |  0.6 |  1.1 | -1.3 |  0.6 |      |      |      |      |      |      |      |      |  1.0 | -3.4 |
+|2015 |  0.6 |  1.1 | -1.3 |  0.5 |      |      |      |      |      |      |      |      |  0.9 | -3.4 |
 |Avg  |  0.4 |  0.4 |  1.2 |  1.9 |  0.3 |  0.1 |  0.9 |  0.5 |  0.2 |  0.2 |  0.5 |  1.7 |  8.0 |-10.0 |
     
 
@@ -312,7 +312,7 @@ for(m in names(models)) {
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |24.90% |25.52% |24.87% |24.71% | 0.00% |
+|2015-04-10 |24.99% |25.25% |25.29% |24.46% | 0.00% |
     
 
 
@@ -345,7 +345,7 @@ for(m in names(models)) {
 |2012 |  3.5 |  2.3 |  0.2 |  0.5 | -3.5 |  2.2 |  3.2 |  0.9 |  0.4 | -0.6 | -0.1 |  0.3 |  9.4 | -4.8 |
 |2013 |  1.3 | -0.1 |  0.9 |  2.1 | -2.8 | -2.5 |  2.5 | -1.2 |  0.7 |  2.4 | -0.6 |  0.9 |  3.5 | -7.2 |
 |2014 |  0.0 |  3.2 |  0.2 |  1.4 |  1.1 |  1.0 | -1.6 |  1.7 | -3.4 |  1.7 |  0.0 | -0.7 |  4.6 | -4.4 |
-|2015 |  1.9 |  0.0 | -0.9 |  0.7 |      |      |      |      |      |      |      |      |  1.6 | -3.1 |
+|2015 |  1.9 |  0.0 | -0.9 |  0.5 |      |      |      |      |      |      |      |      |  1.5 | -3.1 |
 |Avg  |  0.5 |  0.3 |  0.7 |  1.3 |  0.2 |  0.4 |  0.9 |  0.7 |  0.2 | -0.2 |  0.4 |  1.8 |  7.2 | -7.7 |
     
 
@@ -354,7 +354,7 @@ for(m in names(models)) {
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |44.19% |17.37% |23.28% |15.16% | 0.00% |
+|2015-04-10 |44.25% |17.15% |23.62% |14.98% | 0.00% |
     
 
 
@@ -387,7 +387,7 @@ for(m in names(models)) {
 |2012 |  0.5 |  0.1 |  2.2 |  1.0 | -2.9 |  1.8 |  1.9 |  0.3 |  0.3 | -1.5 |  0.2 | -0.2 |  3.7 | -5.3 |
 |2013 |  2.9 | -0.8 |  2.5 |  3.5 | -1.9 | -1.0 |  2.0 | -1.1 |  1.3 |  1.3 |  0.9 |  0.8 | 10.7 | -6.4 |
 |2014 | -1.0 |  1.8 |  0.2 |  1.3 |  1.1 |  1.3 | -1.7 |  2.6 | -2.5 |  1.4 |  1.5 |  0.3 |  6.4 | -4.0 |
-|2015 |  2.2 | -0.9 |  0.3 |  0.4 |      |      |      |      |      |      |      |      |  2.0 | -3.6 |
+|2015 |  2.2 | -0.9 |  0.3 |  0.2 |      |      |      |      |      |      |      |      |  1.8 | -3.6 |
 |Avg  |  1.1 |  0.8 |  0.8 |  0.5 |  0.2 |  1.1 |  1.2 |  0.6 |  1.1 |  0.5 |  1.0 |  1.6 | 10.4 | -5.5 |
     
 
@@ -396,7 +396,7 @@ for(m in names(models)) {
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |28.66% | 0.00% |28.63% |14.22% |28.49% |
+|2015-04-10 |28.57% | 0.00% |28.91% |13.98% |28.54% |
     
 
 
@@ -429,7 +429,7 @@ for(m in names(models)) {
 |2012 | 0.9 | 0.7 | 0.7 | 1.0 |-1.4 | 1.3 | 2.8 | 0.1 | 0.5 |-0.5 |-0.2 |-0.3 | 5.6 |-3.7  |
 |2013 | 1.8 |-0.3 | 1.6 | 3.6 |-2.6 |-0.8 | 1.6 |-1.1 | 1.2 | 1.6 | 0.7 | 0.9 | 8.3 |-5.2  |
 |2014 |-0.9 | 1.3 | 0.1 | 1.2 | 1.1 | 1.0 |-1.6 | 2.3 |-2.1 | 1.4 | 1.2 | 0.2 | 5.2 |-3.0  |
-|2015 | 2.9 |-1.3 | 0.0 | 0.5 |     |     |     |     |     |     |     |     | 2.1 |-3.1  |
+|2015 | 2.9 |-1.3 | 0.0 | 0.4 |     |     |     |     |     |     |     |     | 1.9 |-3.1  |
 |Avg  | 1.0 | 0.5 | 0.5 | 0.4 | 0.3 | 1.1 | 1.1 | 0.8 | 1.3 | 0.6 | 0.8 | 1.4 | 9.5 |-4.4  |
     
 
@@ -438,7 +438,7 @@ for(m in names(models)) {
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |48.09% | 0.00% |25.33% | 8.25% |18.33% |
+|2015-04-10 |47.94% | 0.00% |25.59% | 8.11% |18.37% |
     
 
 
@@ -471,8 +471,8 @@ for(m in names(models)) {
 |2012 |  3.3 |  1.0 |  1.2 |  0.4 | -5.4 |  2.5 |  1.7 |  0.5 |  0.2 | -1.5 | -0.2 | -0.1 |  3.5 | -7.2 |
 |2013 |  2.3 | -0.6 |  1.6 |  2.7 | -1.9 | -0.8 |  1.5 | -2.5 |  1.1 |  1.1 |  0.7 |  0.6 |  5.8 | -6.0 |
 |2014 | -0.3 |  1.5 |  0.3 |  1.6 |  1.1 |  1.3 | -1.7 |  2.3 | -2.5 |  3.7 |  1.5 |  0.3 |  9.3 | -2.7 |
-|2015 |  2.2 | -0.1 |  0.3 |  0.4 |      |      |      |      |      |      |      |      |  2.8 | -2.8 |
-|Avg  |  1.0 |  0.9 |  0.7 |  0.8 | -0.1 |  0.7 |  1.0 |  0.6 |  0.4 |  0.7 |  1.0 |  1.4 |  9.1 | -5.3 |
+|2015 |  2.2 | -0.1 |  0.3 | -0.1 |      |      |      |      |      |      |      |      |  2.3 | -2.8 |
+|Avg  |  1.0 |  0.9 |  0.7 |  0.8 | -0.1 |  0.7 |  1.0 |  0.6 |  0.4 |  0.7 |  1.0 |  1.4 |  9.0 | -5.3 |
     
 
 
@@ -480,7 +480,7 @@ for(m in names(models)) {
 
 |           |LQD    |DBC    |VTI    |ICF    |CASH   |
 |:----------|:------|:------|:------|:------|:------|
-|2015-04-08 |25.10% | 0.00% |25.06% |24.90% |24.94% |
+|2015-04-10 |25.07% | 0.00% |25.37% |24.53% |25.04% |
     
 
 
@@ -512,10 +512,10 @@ print(plotbt.strategy.sidebyside(models.2010, make.plot=F, return.table=T))
 |           |ew                |rp                |channel.ew        |channel.rp        |QATAA             |
 |:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
 |Period     |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |
-|Cagr       |7.62              |7.28              |8.01              |8.06              |5.33              |
-|Sharpe     |0.72              |0.99              |0.91              |1.25              |0.64              |
-|DVR        |0.66              |0.91              |0.86              |1.2               |0.47              |
-|Volatility |11.42             |7.6               |9.16              |6.55              |9.11              |
+|Cagr       |7.58              |7.24              |7.96              |8.02              |5.24              |
+|Sharpe     |0.71              |0.98              |0.9               |1.24              |0.63              |
+|DVR        |0.65              |0.91              |0.85              |1.19              |0.47              |
+|Volatility |11.41             |7.6               |9.15              |6.55              |9.11              |
 |MaxDD      |-14.76            |-9.27             |-12.81            |-7.3              |-13.71            |
 |AvgDD      |-1.64             |-1.2              |-1.39             |-1.09             |-1.57             |
 |VaR        |-1.11             |-0.73             |-0.83             |-0.61             |-0.92             |
@@ -524,8 +524,132 @@ print(plotbt.strategy.sidebyside(models.2010, make.plot=F, return.table=T))
     
 
 
-David, thank you for another interesting concept.
+**David, thank you for another interesting concept.**
 
 
 
-*(this report was produced on: 2015-04-10)*
+
+Just a quick update with new code for Channel function. I.e. fix for a lower channel outlined at
+[Run Channel in Rcpp Update](/Run-Channel-Rcpp-Update) post.
+
+
+
+
+{% highlight r %}
+#*****************************************************************
+# Strategy:
+#
+# 1) Use 60,120,180, 252-day percentile channels
+# - corresponding to 3,6,9 and 12 months in the momentum literature- 
+# (4 separate systems) with a .75 long entry and .25 exit threshold with 
+# long triggered above .75 and holding through until exiting below .25 
+# (just like in the previous post) - no shorts!!!
+#
+# 2) If the indicator shows that you should be in cash, hold SHY
+#
+# 3) Use 20-day historical volatility for risk parity position-sizing 
+# among active assets (no leverage is used). This is 1/volatility (asset A) 
+# divided by the sum of 1/volatility for all assets to determine the position size.
+#******************************************************************
+
+# load conditional qunatile function developed in the [Run Channel in Rcpp Update](/Run-Channel-Rcpp-Update) post
+load.packages('Rcpp')
+# you can download `channel1.cpp` file at [channel1.cpp](/public/doc/channel1.cpp)
+sourceCpp('channel1.cpp')
+ 
+allocation = 0 * ifna(prices, 0)
+for(lookback.len in c(60,120,180, 252)) {
+  channels = bt.apply.matrix.ex2(prices, run_quantile_weight, lookback.len, 0.25, 0.75)
+  signal = iif(cross.up(prices, channels$high), 1, iif(cross.dn(prices, channels$low), -1, NA))
+  allocation = allocation + ifna( bt.apply.matrix(signal, ifna.prev), 0) 
+}
+
+# (A) Channel score
+allocation = ifna(allocation / 4, 0)
+
+# equal-weight
+weight = abs(allocation) / rowSums(abs(allocation))
+	weight[allocation < 0] = 0
+weight$CASH = 1 - rowSums(weight, na.rm=T)
+
+data$weight[] = NA
+  data$weight[period.ends,] = weight[period.ends,]
+models$channel.ew = bt.run.share(data, clean.signal=F, commission = commission, trade.summary=T, silent=T)
+
+
+
+
+# risk-parity: (C)
+weight = allocation * 1 / hist.vol
+weight = abs(weight) / rowSums(abs(weight), na.rm=T)
+	weight[allocation < 0] = 0
+weight$CASH = 1 - rowSums(weight, na.rm=T)
+
+data$weight[] = NA
+  data$weight[period.ends,] = ifna(weight[period.ends,], 0)
+models$channel.rp = bt.run.share(data, clean.signal=F, commission = commission, trade.summary=T, silent=T)
+
+#*****************************************************************
+# Report
+#*****************************************************************
+#strategy.performance.snapshoot(models, T)
+plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
+	mtext('Cumulative Performance', side = 2, line = 1)
+{% endhighlight %}
+
+![plot of chunk plot-5](/public/images/2015-03-06-Conditional-Channel-Breakout/plot-5-1.png) 
+
+{% highlight r %}
+print(plotbt.strategy.sidebyside(models, make.plot=F, return.table=T))
+{% endhighlight %}
+
+
+
+|           |ew                |rp                |channel.ew        |channel.rp        |QATAA             |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |Jun1996 - Apr2015 |
+|Cagr       |7.81              |7.14              |11.01             |9.94              |9.46              |
+|Sharpe     |0.64              |0.8               |1.38              |1.53              |1.23              |
+|DVR        |0.58              |0.74              |1.31              |1.46              |1.19              |
+|Volatility |13.16             |9.2               |7.81              |6.36              |7.64              |
+|MaxDD      |-48.78            |-40.52            |-12.79            |-8.33             |-13.71            |
+|AvgDD      |-1.52             |-1.21             |-1.15             |-1.01             |-1.06             |
+|VaR        |-1.07             |-0.76             |-0.75             |-0.6              |-0.7              |
+|CVaR       |-2.01             |-1.34             |-1.15             |-0.92             |-1.14             |
+|Exposure   |99.98             |99.51             |99.98             |99.98             |99.98             |
+    
+
+
+
+
+{% highlight r %}
+models.2010 = bt.trim(models, dates = '2010::')
+
+plotbt(models.2010, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
+	mtext('Cumulative Performance', side = 2, line = 1)
+{% endhighlight %}
+
+![plot of chunk plot-5](/public/images/2015-03-06-Conditional-Channel-Breakout/plot-5-2.png) 
+
+{% highlight r %}
+print(plotbt.strategy.sidebyside(models.2010, make.plot=F, return.table=T))
+{% endhighlight %}
+
+
+
+|           |ew                |rp                |channel.ew        |channel.rp        |QATAA             |
+|:----------|:-----------------|:-----------------|:-----------------|:-----------------|:-----------------|
+|Period     |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |Jan2010 - Apr2015 |
+|Cagr       |7.58              |7.24              |7.77              |7.93              |5.24              |
+|Sharpe     |0.71              |0.98              |0.89              |1.23              |0.63              |
+|DVR        |0.65              |0.91              |0.84              |1.18              |0.47              |
+|Volatility |11.41             |7.6               |9.11              |6.54              |9.11              |
+|MaxDD      |-14.76            |-9.27             |-12.79            |-7.91             |-13.71            |
+|AvgDD      |-1.64             |-1.2              |-1.39             |-1.1              |-1.57             |
+|VaR        |-1.11             |-0.73             |-0.85             |-0.61             |-0.92             |
+|CVaR       |-1.74             |-1.12             |-1.42             |-0.99             |-1.45             |
+|Exposure   |100               |100               |100               |100               |100               |
+    
+
+
+*(this report was produced on: 2015-04-13)*
