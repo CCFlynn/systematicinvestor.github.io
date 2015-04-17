@@ -10,7 +10,7 @@ To install [Systematic Investor Toolbox (SIT)](https://github.com/systematicinve
 
 
 
-There are many great examples of using Rcpp at [Rcpp Galaery](http://gallery.rcpp.org).
+There are many great examples of using Rcpp at [Rcpp Gallery](http://gallery.rcpp.org).
 Below, I will use [Rrcp Pparallel] to speed computations of [correlation matrix](http://en.wikipedia.org/wiki/Correlation_and_dependence).
 
 
