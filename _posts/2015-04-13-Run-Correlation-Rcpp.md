@@ -440,14 +440,8 @@ print(test.equality(r.cor,c.cor,cp.cor,c.cor.smart,cp.cor.smart))
 # free memory
 env.del(spl('r.cor,c.cor,cp.cor,c.cor.smart,cp.cor.smart'), globalenv())
 gc(T)
-{% endhighlight %}
-
-          used (Mb) gc trigger   (Mb)  max used   (Mb)
-Ncells  599863 32.1     984024   52.6    818163   43.7
-Vcells 2724781 20.8  294566566 2247.4 317727782 2424.1
 
 
-{% highlight r %}
 # compare performance
 library(rbenchmark)
 res <- benchmark(rtest(ret, nwindow),
@@ -484,4 +478,4 @@ The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 1.8
 
 
 
-*(this report was produced on: 2015-04-16)*
+*(this report was produced on: 2015-04-11)*

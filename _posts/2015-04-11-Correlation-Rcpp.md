@@ -311,4 +311,4 @@ print(res[,1:4])
 The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 3.5 times faster.
 
 
-*(this report was produced on: 2015-04-16)*
+*(this report was produced on: 2015-04-11)*
