@@ -465,7 +465,7 @@ print(res[,1:4])
 |1           |rtest(ret, nwindow)            |            1|    3.03|   13.174|
     
 
-The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 1.8 times faster.
+The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 1.9 times faster.
 
 
 
