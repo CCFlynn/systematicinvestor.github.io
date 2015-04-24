@@ -76,18 +76,19 @@ rtest = function(ret, nwindow) {
 	nlag = floor(nwindow/2)
 	n = ncol(ret)
 	nperiod = nrow(ret)
-	out = array(NA, c(n,n,nperiod))
+	out = array(0, c(n,n,nperiod))
 	index = !lower.tri(out[,,1])
 
 	for(i in nwindow:nperiod) {
 		temp = coredata(ret[(i-nwindow+1):i,])
-		temp.out = matrix(NA, n,n)
+		temp.out = matrix(0, n,n)
 		
 		for (c1 in 2:n) {
 			data1 = temp[,c1]
 			c2.index = 1:(c1-1)
 			data2 = temp[,c2.index,drop=F]
 
+			# if c1.cor : c2 -> c1 i.e. cor(data1[(lag+1):nwindow], data2[1:(nwindow-lag),])
 			c1.cor = rep(0,ncol(data2))
 			for (lag in 0:nlag) {
 				cor.temp = cor(data1[(lag+1):nwindow], data2[1:(nwindow-lag),])
@@ -95,6 +96,7 @@ rtest = function(ret, nwindow) {
 			}
 			c1.cor = c1.cor / (nlag + 1)
 			
+			# if c2.cor : c1 -> c2 i.e. cor(data1[1:(nwindow-lag)], data2[(lag+1):nwindow,])
 			c2.cor = rep(0,ncol(data2))
 			for (lag in 1:nlag) {
 				cor.temp = cor(data1[1:(nwindow-lag)], data2[(lag+1):nwindow,])
@@ -102,13 +104,15 @@ rtest = function(ret, nwindow) {
 			}
 			c2.cor = c2.cor / nlag
 			
+			# if c1.cor >= c2.cor hence c2 -> c1 i.e. cor(data1[(lag+1):nwindow], data2[1:(nwindow-lag),])
 			index = c1.cor >= c2.cor
 			if(any(index))
-				temp.out[c1, c2.index[index]] = c1.cor[index]
+				temp.out[c2.index[index], c1] = c1.cor[index]
 				
+			# if c2.cor >= c1.cor hence c1 -> c2 i.e. cor(data1[1:(nwindow-lag)], data2[(lag+1):nwindow,])
 			index = !index
 			if(any(index))
-				temp.out[c2.index[index], c1] = c2.cor[index]							
+				temp.out[c1, c2.index[index]] = c2.cor[index]							
 		}			
 		out[,,i] = temp.out
 	}
@@ -308,11 +312,11 @@ if (!first_run) infoXY[lag][xyi] += -mat(r20, c1) * mat(r10, c2) + mat(r21, c1) 
 				c2cor = c2cor / nlag;
 
 				if (c1cor >= c2cor) {
-					rmat(c1, c2) = c1cor;
-					rmat(c2, c1) = NA_REAL;
+					rmat(c2, c1) = c1cor;
+					rmat(c1, c2) = 0.0;
 				} else {
-					rmat(c2, c1) = c2cor;
-					rmat(c1, c2) = NA_REAL;
+					rmat(c1, c2) = c2cor;
+					rmat(c2, c1) = 0.0;
 				}
 			}
 		}
@@ -333,7 +337,7 @@ NumericVector cp_run_leadership_smart(NumericMatrix mat, int nwindow, bool runIn
 	int nc = mat.ncol();
 	int nperiod = mat.nrow();
 	NumericVector ret = NumericVector(Dimension(nc, nc, nperiod));
-		fill_n(ret.begin(), ((0 + nwindow - 1) * nc * nc), NA_REAL);
+		fill_n(ret.begin(), ((0 + nwindow - 1) * nc * nc), 0.0);
 
 	// pre-compute first run
 	NumericVector rsum(nc), rsum2(nc), rstdev(nc);
@@ -344,7 +348,7 @@ NumericVector cp_run_leadership_smart(NumericMatrix mat, int nwindow, bool runIn
 		p1.do_first_run(0, nc);
 
 	NumericMatrix cor(nc, nc);
-		fill(cor.begin(), cor.end(), NA_REAL);
+		fill(cor.begin(), cor.end(), 0.0);
 	int nlag = floor(nwindow / 2);
 
 	vector<vector<double>> infoXY(2*nlag + 1, vector<double>( floor((nc-1)*nc / 2) ));
@@ -430,7 +434,7 @@ print(max(abs(r.cor - c.cor), na.rm=T))
 
 
 
-1.38777878078145e-16
+1.11022302462516e-16
     
 
 
@@ -496,7 +500,7 @@ print(max(abs(r.cor - c.cor), na.rm=T))
 
 
 
-1.22124532708767e-15
+1.02695629777827e-15
     
 
 
@@ -515,11 +519,11 @@ print(res[,1:4])
 
 
 
-|rownames(x) |test                                     | replications| elapsed| relative|
-|:-----------|:----------------------------------------|------------:|-------:|--------:|
-|2           |cp_run_leadership_smart(ret, nwindow, T) |            2|    0.01|        1|
-|3           |cp_run_leadership_smart(ret, nwindow, F) |            2|    0.02|        2|
-|1           |rtest(ret, nwindow)                      |            2|    8.31|      831|
+|rownames(x) |test                                     | replications| elapsed|relative |
+|:-----------|:----------------------------------------|------------:|-------:|:--------|
+|1           |rtest(ret, nwindow)                      |            2|    8.26|         |
+|2           |cp_run_leadership_smart(ret, nwindow, T) |            2|    0.00|         |
+|3           |cp_run_leadership_smart(ret, nwindow, F) |            2|    0.01|         |
     
 
 
@@ -582,8 +586,8 @@ print(res[,1:4])
 
 |rownames(x) |test                                     | replications| elapsed| relative|
 |:-----------|:----------------------------------------|------------:|-------:|--------:|
-|1           |cp_run_leadership_smart(ret, nwindow, T) |            1|    1.98|    1.000|
-|2           |cp_run_leadership_smart(ret, nwindow, F) |            1|    9.67|    4.884|
+|1           |cp_run_leadership_smart(ret, nwindow, T) |            1|    2.03|    1.000|
+|2           |cp_run_leadership_smart(ret, nwindow, F) |            1|    9.71|    4.783|
     
 
 The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 4 times faster.
@@ -601,4 +605,4 @@ The [RcppParallel](http://rcppcore.github.io/RcppParallel/) version is about 4 t
 
 
 
-*(this report was produced on: 2015-04-22)*
+*(this report was produced on: 2015-04-23)*

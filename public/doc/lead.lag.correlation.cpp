@@ -124,6 +124,7 @@ struct leadership_smart_p2 : public Worker {
 		}
 	}
 
+
 	// update run: use pre-compute correlations and sums to compute stats
 	void do_update(size_t begin, size_t end) {
 		int xyi = floor(begin * (begin - 1) / 2);
@@ -163,6 +164,7 @@ if (!first_run) infoXY[lag][xyi] += -mat(r10, c1) * mat(r20, c2) + mat(r11, c1) 
 
 					temp = (nperiod1 * infoXY[lag][xyi] - r1sum * r2sum) / (r1stdev * r2stdev);
 					c1cor += max(temp, 0.0);
+
 				}
 
 				r1sum = sum[c1]; r1sum2 = sum2[c1];
@@ -185,16 +187,18 @@ if (!first_run) infoXY[lag][xyi] += -mat(r20, c1) * mat(r10, c2) + mat(r21, c1) 
 
 					temp = (nperiod1 * infoXY[lag][xyi] - r1sum * r2sum) / (r1stdev * r2stdev);
 					c2cor += max(temp, 0.0);
+
 				}
+
 				c1cor = c1cor / (nlag + 1);
 				c2cor = c2cor / nlag;
 
 				if (c1cor >= c2cor) {
-					rmat(c1, c2) = c1cor;
-					rmat(c2, c1) = NA_REAL;
+					rmat(c2, c1) = c1cor;
+					rmat(c1, c2) = 0.0;
 				} else {
-					rmat(c2, c1) = c2cor;
-					rmat(c1, c2) = NA_REAL;
+					rmat(c1, c2) = c2cor;
+					rmat(c2, c1) = 0.0;
 				}
 			}
 		}
@@ -216,7 +220,8 @@ NumericVector cp_run_leadership_smart(NumericMatrix mat, int nwindow, bool runIn
 	int nc = mat.ncol();
 	int nperiod = mat.nrow();
 	NumericVector ret = NumericVector(Dimension(nc, nc, nperiod));
-		fill_n(ret.begin(), ((0 + nwindow - 1) * nc * nc), NA_REAL);
+		//fill_n(ret.begin(), ((0 + nwindow - 1) * nc * nc), NA_REAL);
+		fill_n(ret.begin(), ((0 + nwindow - 1) * nc * nc), 0.0);
 
 	// pre-compute first run
 	NumericVector rsum(nc), rsum2(nc), rstdev(nc);
@@ -227,7 +232,7 @@ NumericVector cp_run_leadership_smart(NumericMatrix mat, int nwindow, bool runIn
 		p1.do_first_run(0, nc);
 
 	NumericMatrix cor(nc, nc);
-		fill(cor.begin(), cor.end(), NA_REAL);
+		fill(cor.begin(), cor.end(), 0.0);
 	int nlag = floor(nwindow / 2);
 
 	vector<vector<double>> infoXY(2*nlag + 1, vector<double>( floor((nc-1)*nc / 2) ));
