@@ -4,6 +4,9 @@ title: Nginx RApi
 comments: true
 ---
 
+I put [Lua Rclient Library for Nginx and complete setup at GitHub repository for your convenience](https://github.com/systematicinvestor/lua-rclient/blob/master/nginx.zip)
+
+
 I want to share a very simple and light way to setup custom api to R functions using [Nginx server](http://wiki.nginx.org/Main)
 
 There are of course more complete solutions available, for example using:
@@ -63,7 +66,7 @@ http {
 
 Next we need to process `http://localhost:8080/rapi` R API requests in the `lualibs/serve_rapi.lua` file:
 
-```{lua}
+```
 local program, param =
 ngx.var.program, ngx.var.param
 
@@ -130,7 +133,7 @@ Next, start [Nginx server](http://wiki.nginx.org/Main) and try following URL in 
 
 Now we can setup a simple html page to access above RAPI:
 
-```{html}
+```
 <html>
 <head>
 <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
