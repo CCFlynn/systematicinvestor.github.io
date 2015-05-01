@@ -575,7 +575,7 @@ plotbt(models, plotX = T, log = 'y', LeftMargin = 3, main = NULL)
 	mtext('Cumulative Performance', side = 2, line = 1)
 {% endhighlight %}
 
-![plot of chunk plot-6](public/images/2015-04-22-Optimizing-Run-Time-Large-Universe/plot-6-1.png) 
+![plot of chunk plot-6](/public/images/2015-04-22-Optimizing-Run-Time-Large-Universe/plot-6-1.png) 
 
 {% highlight r %}
 toc(1); 
