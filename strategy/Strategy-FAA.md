@@ -59,9 +59,9 @@ print(last(data$prices))
 
 
 
-|           | US.STOCKS| FOREIGN.STOCKS| EMERGING>MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES| CASH|
-|:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|----:|
-|2015-06-01 |    109.58|           50.4|            40.96|           106.28|       80.11|       17.67| 81.9|
+|           | US.STOCKS| FOREIGN.STOCKS| EMERGING>MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
+|:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|-----:|
+|2015-06-02 |     109.5|           50.6|            41.12|           105.54|       79.37|       17.88| 81.67|
     
 
 
@@ -154,7 +154,7 @@ obj$weights$strategy = weight
 |Volatility    |9.86              |
 |MaxDD         |-16.17            |
 |Exposure      |99.71             |
-|Win.Percent   |64.01             |
+|Win.Percent   |64.17             |
 |Avg.Trade     |0.38              |
 |Profit.Factor |2.13              |
 |Num.Trades    |628               |
@@ -222,9 +222,9 @@ obj$weights$strategy = weight
 |US.STOCKS        | 33.3  |2015-04-30 |2015-05-29 |29    |107.91      |109.31     | 0.43  |
 |EMERGING>MARKETS | 33.3  |2015-04-30 |2015-05-29 |29    | 42.88      | 41.12     |-1.37  |
 |US.10YR.GOV.BOND | 33.3  |2015-04-30 |2015-05-29 |29    |107.37      |106.92     |-0.14  |
-|US.STOCKS        | 33.3  |2015-05-29 |2015-06-01 | 3    |109.31      |109.58     | 0.08  |
-|FOREIGN.STOCKS   | 33.3  |2015-05-29 |2015-06-01 | 3    | 50.51      | 50.40     |-0.07  |
-|CASH             | 33.3  |2015-05-29 |2015-06-01 | 3    | 82.34      | 81.90     |-0.18  |
+|US.STOCKS        | 33.3  |2015-05-29 |2015-06-02 | 4    |109.31      |109.50     | 0.06  |
+|FOREIGN.STOCKS   | 33.3  |2015-05-29 |2015-06-02 | 4    | 50.51      | 50.60     | 0.06  |
+|CASH             | 33.3  |2015-05-29 |2015-06-02 | 4    | 82.34      | 81.67     |-0.27  |
     
 
 
@@ -290,4 +290,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-06-02)*
+*(this report was produced on: 2015-06-03)*
