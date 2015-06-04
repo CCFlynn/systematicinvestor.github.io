@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Review of "Momentum and Markowitz: A Golden Combination" paper
+title: Review of Momentum and Markowitz: A Golden Combination paper
 comments: true
 ---
 
