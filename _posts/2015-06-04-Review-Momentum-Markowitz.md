@@ -221,7 +221,6 @@ barplot.with.labels(sapply(models, compute.turnover, data), 'Average Annual Port
 ![plot of chunk plot-8](/public/images/2015-06-04-Review-Momentum-Markowitz/plot-8-2.png) 
 
 Our replication results are almost identical results to the results using kellerCLAfun.
-So I'm not very sure why author's decide to introduce all this extra machinery in Appendix.
 
 Using Averaged Input Assumptions produces slightly better results.
 
