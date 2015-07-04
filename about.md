@@ -37,7 +37,7 @@ package
 # github.com/systematicinvestor/SIT
 ###############################################################################
 library(curl)
-curl_download('http://www.systematicportfolio.com/SIT.tar.gz', 'sit',mode = 'wb',quiet=T)
+curl_download('https://github.com/systematicinvestor/SIT/raw/master/SIT.tar.gz', 'sit',mode = 'wb',quiet=T)
 install.packages('sit', repos = NULL, type='source')
 {% endhighlight %}
 
@@ -56,7 +56,7 @@ library(SIT)
 # github.com/systematicinvestor/SIT
 ###############################################################################
 library(curl)
-con = gzcon(curl('http://www.systematicportfolio.com/sit.gz','rb'))
+con = gzcon(curl('https://github.com/systematicinvestor/SIT/raw/master/sit.gz','rb'))
 	source(con)
 close(con)
 {% endhighlight %}
@@ -93,7 +93,7 @@ In some of my coding I also use a mixture of these two methods. See below:
 ###############################################################################
 library(curl)
 if(!file.exists('../sit'))
-	curl_download('http://www.systematicportfolio.com/sit.gz', '../sit',mode = 'wb',quiet=T)
+	curl_download('https://github.com/systematicinvestor/SIT/raw/master/sit.gz', '../sit',mode = 'wb',quiet=T)
 con = gzcon(file('../sit', 'rb'))
 	source(con)
 close(con)
