@@ -35,15 +35,52 @@ This report covers following ETFs:
 * [Small Cap(IJR)](http://finance.yahoo.com/q/hl?s=IJR+Holdings)
 
 
-{% highlight text %}
-## Error in `[.xts`(m, 1:(n - nlag), ): only zeros may be mixed with negative subscripts
-{% endhighlight %}
+##Relative Perfromace Charts:
+    
+
+
+![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-1.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-2.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-3.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-4.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-5.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-6.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-7.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-8.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-9.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-10.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-11.png) 
+
+<input type="button" class="btn btn-sm" value="+">Detail Charts:
+---
+    
 
 
 
-{% highlight text %}
-## Error in `[.xts`(m, 1:(n - nlag), ): only zeros may be mixed with negative subscripts
-{% endhighlight %}
+
+<div markdown="1" style="display:none;">
+    
+
+
+![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-12.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-13.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-14.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-15.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-16.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-17.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-18.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-19.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-20.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-21.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-22.png) ![plot of chunk plot-2](/public/images/Tool-US-Relative-Market/plot-2-23.png) 
+
+</div>
+    
+
+
+
+
+##Summary Perfromace:
+    
+
+
+
+
+|    |Aug14  |Sep14  |Oct14  |Nov14  |Dec14  |Jan15  |Feb15  |Mar15  |Apr15  |May15  |Jun15  |Jul15  |Total  |
+|:---|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|
+|SPY |  3.9% | -1.4% |  2.4% |  2.7% | -0.3% | -3.0% |  5.6% | -1.6% |  1.0% |  1.3% | -2.0% |  1.9% | 10.8% |
+|XLV |  4.8% |  0.4% |  5.3% |  3.5% | -1.4% |  1.3% |  4.3% |  0.6% | -1.1% |  4.5% | -0.4% |  2.0% | 26.3% |
+|XLY |  4.4% | -2.8% |  2.1% |  5.4% |  0.9% | -3.0% |  8.5% | -0.5% | -0.1% |  1.3% |  0.6% |  3.0% | 21.3% |
+|XLP |  4.6% |  0.6% |  3.5% |  5.5% | -0.9% | -1.0% |  4.1% | -1.9% | -0.8% |  0.9% | -1.8% |  4.3% | 18.1% |
+|XLF |  4.2% | -0.4% |  2.9% |  2.3% |  1.9% | -7.0% |  5.8% | -0.6% |  0.1% |  1.9% | -0.5% |  2.3% | 13.2% |
+|IJR |  4.3% | -5.2% |  6.9% | -0.2% |  2.9% | -3.6% |  6.0% |  1.6% | -2.3% |  1.5% |  1.1% |  0.9% | 13.8% |
+|XLK |  3.3% | -0.5% |  1.6% |  4.8% | -2.2% | -3.5% |  8.0% | -3.4% |  2.8% |  1.9% | -4.1% |  1.6% |  9.8% |
+|MDY |  5.1% | -4.5% |  3.5% |  1.8% |  0.8% | -1.1% |  5.0% |  1.3% | -1.5% |  1.7% | -1.3% |  0.9% | 12.0% |
+|XLU |  4.9% | -1.9% |  8.0% |  1.2% |  3.6% |  2.3% | -6.4% | -1.0% | -0.5% |  0.6% | -6.0% |  3.7% |  7.9% |
+|XLI |  4.2% | -1.1% |  3.9% |  3.1% |  0.0% | -3.6% |  5.4% | -2.5% | -0.3% |  0.3% | -2.6% |  1.2% |  7.8% |
+|XLB |  3.9% | -1.4% | -2.4% |  1.6% | -0.6% | -1.8% |  8.0% | -4.9% |  3.4% |  0.4% | -3.9% | -0.4% |  1.0% |
+|XLE |  2.2% | -7.8% | -3.5% | -8.7% | -0.2% | -4.6% |  4.6% | -1.2% |  6.6% | -5.2% | -3.5% | -1.6% |-21.5% |
+    
 
 
 For your convenience, the 
@@ -52,4 +89,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-07-13)*
+*(this report was produced on: 2015-07-14)*
