@@ -67,9 +67,9 @@ print(last(data$prices))
 
 
 
-|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
-|:----------|---------:|--------------:|----------------:|-----------:|-----------:|-----:|
-|2015-07-22 |    109.33|          48.62|           105.27|       78.72|       16.41| 81.31|
+|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES| CASH|
+|:----------|---------:|--------------:|----------------:|-----------:|-----------:|----:|
+|2015-07-23 |     108.7|          48.44|            105.7|       77.74|       16.27| 81.5|
     
 
 
@@ -122,14 +122,14 @@ obj$weights$strategy = weight[period.ends,]
 |              |strategy          |
 |:-------------|:-----------------|
 |Period        |May1996 - Jul2015 |
-|Cagr          |9.57              |
+|Cagr          |9.56              |
 |Sharpe        |1.17              |
 |DVR           |1.14              |
 |R2            |0.97              |
 |Volatility    |8.1               |
 |MaxDD         |-13.48            |
 |Exposure      |99.71             |
-|Win.Percent   |64.72             |
+|Win.Percent   |64.61             |
 |Avg.Trade     |0.2               |
 |Profit.Factor |2.05              |
 |Num.Trades    |958               |
@@ -197,9 +197,9 @@ obj$weights$strategy = weight[period.ends,]
 |US.10YR.GOV.BOND | 20    |2015-05-29 |2015-06-30 |32    |106.59      |104.85     |-0.33  |
 |REAL.ESTATE      | 20    |2015-05-29 |2015-06-30 |32    | 78.35      | 74.69     |-0.93  |
 |CASH             | 20    |2015-05-29 |2015-06-30 |32    | 82.01      | 81.10     |-0.22  |
-|US.STOCKS        | 20    |2015-06-30 |2015-07-22 |22    |107.02      |109.33     | 0.43  |
-|FOREIGN.STOCKS   | 20    |2015-06-30 |2015-07-22 |22    | 48.55      | 48.62     | 0.03  |
-|CASH             | 60    |2015-06-30 |2015-07-22 |22    | 81.10      | 81.31     | 0.16  |
+|US.STOCKS        | 20    |2015-06-30 |2015-07-23 |23    |107.02      |108.70     | 0.31  |
+|FOREIGN.STOCKS   | 20    |2015-06-30 |2015-07-23 |23    | 48.55      | 48.44     |-0.05  |
+|CASH             | 60    |2015-06-30 |2015-07-23 |23    | 81.10      | 81.50     | 0.30  |
     
 
 
@@ -265,4 +265,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-07-23)*
+*(this report was produced on: 2015-07-24)*
