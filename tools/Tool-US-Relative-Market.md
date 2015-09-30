@@ -22,15 +22,15 @@ around 50 day moving average.
 
 This report covers following ETFs:
 
-* [Consumer Cyclicals(XLY)](http://www.sectorspdr.com/spdr/composition/?symbol=XLY)
-* [Consumer Staples(XLP)](http://www.sectorspdr.com/spdr/composition/?symbol=XLP)
-* [Energy(XLE)](http://www.sectorspdr.com/spdr/composition/?symbol=XLE)
-* [Financials(XLF)](http://www.sectorspdr.com/spdr/composition/?symbol=XLF)
-* [Health Care(XLV)](http://www.sectorspdr.com/spdr/composition/?symbol=XLV)
-* [Industrials(XLI)](http://www.sectorspdr.com/spdr/composition/?symbol=XLI)
-* [Materials(XLB)](http://www.sectorspdr.com/spdr/composition/?symbol=XLB)
-* [Technology(XLK)](http://www.sectorspdr.com/spdr/composition/?symbol=XLK)
-* [Utilities(XLU)](http://www.sectorspdr.com/spdr/composition/?symbol=XLU)
+* [Consumer Cyclicals(XLY)](http://www.sectorspdr.com/sectorspdr/sector/XLY)
+* [Consumer Staples(XLP)](http://www.sectorspdr.com/sectorspdr/sector/XLP)
+* [Energy(XLE)](http://www.sectorspdr.com/sectorspdr/sector/XLE)
+* [Financials(XLF)](http://www.sectorspdr.com/sectorspdr/sector/XLF)
+* [Health Care(XLV)](http://www.sectorspdr.com/sectorspdr/sector/XLV)
+* [Industrials(XLI)](http://www.sectorspdr.com/sectorspdr/sector/XLI)
+* [Materials(XLB)](http://www.sectorspdr.com/sectorspdr/sector/XLB)
+* [Technology(XLK)](http://www.sectorspdr.com/sectorspdr/sector/XLK)
+* [Utilities(XLU)](http://www.sectorspdr.com/sectorspdr/sector/XLU)
 * [Mid Cap(MDY)](https://www.spdrs.com/product/fund.seam?ticker=MDY)
 * [Small Cap(IJR)](http://finance.yahoo.com/q/hl?s=IJR+Holdings)
 
@@ -68,18 +68,18 @@ This report covers following ETFs:
 
 |    |Oct14  |Nov14  |Dec14  |Jan15  |Feb15  |Mar15  |Apr15  |May15  |Jun15  |Jul15  |Aug15  |Sep15  |Total  |
 |:---|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|:------|
-|SPY |  2.4% |  2.7% | -0.3% | -3.0% |  5.6% | -1.6% |  1.0% |  1.3% | -2.0% |  2.2% | -6.1% | -4.4% | -2.7% |
-|XLY |  2.1% |  5.4% |  0.9% | -3.0% |  8.5% | -0.5% | -0.1% |  1.3% |  0.6% |  4.9% | -6.5% | -2.9% | 10.4% |
+|SPY |  2.4% |  2.7% | -0.3% | -3.0% |  5.6% | -1.6% |  1.0% |  1.3% | -2.0% |  2.2% | -6.1% | -4.3% | -2.6% |
+|XLY |  2.1% |  5.4% |  0.9% | -3.0% |  8.5% | -0.5% | -0.1% |  1.3% |  0.6% |  4.9% | -6.5% | -3.2% | 10.0% |
 |XLP |  3.5% |  5.5% | -0.9% | -1.0% |  4.1% | -1.9% | -0.8% |  0.9% | -1.8% |  5.7% | -6.0% | -0.5% |  6.4% |
-|XLU |  8.0% |  1.2% |  3.6% |  2.3% | -6.4% | -1.0% | -0.5% |  0.6% | -6.0% |  6.1% | -3.5% |  1.1% |  4.6% |
-|IJR |  6.9% | -0.2% |  2.9% | -3.6% |  6.0% |  1.6% | -2.3% |  1.5% |  1.1% | -0.8% | -5.2% | -4.6% |  2.4% |
-|XLV |  5.3% |  3.5% | -1.4% |  1.3% |  4.3% |  0.6% | -1.1% |  4.5% | -0.4% |  2.9% | -8.0% | -8.5% |  2.0% |
-|XLK |  1.6% |  4.8% | -2.2% | -3.5% |  8.0% | -3.4% |  2.8% |  1.9% | -4.1% |  2.9% | -5.4% | -2.9% | -0.7% |
-|MDY |  3.5% |  1.8% |  0.8% | -1.1% |  5.0% |  1.3% | -1.5% |  1.7% | -1.3% |  0.1% | -5.7% | -4.3% |  0.0% |
-|XLF |  2.9% |  2.3% |  1.9% | -7.0% |  5.8% | -0.6% |  0.1% |  1.9% | -0.5% |  3.4% | -7.1% | -4.4% | -2.1% |
-|XLI |  3.9% |  3.1% |  0.0% | -3.6% |  5.4% | -2.5% | -0.3% |  0.3% | -2.6% |  0.2% | -5.4% | -4.3% | -6.2% |
-|XLB | -2.4% |  1.6% | -0.6% | -1.8% |  8.0% | -4.9% |  3.4% |  0.4% | -3.9% | -5.0% | -5.6% | -9.7% |-19.9% |
-|XLE | -3.5% | -8.7% | -0.2% | -4.6% |  4.6% | -1.2% |  6.6% | -5.2% | -3.5% | -7.7% | -4.2% | -9.3% |-32.1% |
+|XLU |  8.0% |  1.2% |  3.6% |  2.3% | -6.4% | -1.0% | -0.5% |  0.6% | -6.0% |  6.1% | -3.5% |  1.1% |  4.7% |
+|XLV |  5.3% |  3.5% | -1.4% |  1.3% |  4.3% |  0.6% | -1.1% |  4.5% | -0.4% |  2.9% | -8.0% | -7.6% |  2.9% |
+|IJR |  6.9% | -0.2% |  2.9% | -3.6% |  6.0% |  1.6% | -2.3% |  1.5% |  1.1% | -0.8% | -5.2% | -5.0% |  2.0% |
+|XLK |  1.6% |  4.8% | -2.2% | -3.5% |  8.0% | -3.4% |  2.8% |  1.9% | -4.1% |  2.9% | -5.4% | -3.4% | -1.1% |
+|MDY |  3.5% |  1.8% |  0.8% | -1.1% |  5.0% |  1.3% | -1.5% |  1.7% | -1.3% |  0.1% | -5.7% | -4.5% | -0.2% |
+|XLF |  2.9% |  2.3% |  1.9% | -7.0% |  5.8% | -0.6% |  0.1% |  1.9% | -0.5% |  3.4% | -7.1% | -4.3% | -1.9% |
+|XLI |  3.9% |  3.1% |  0.0% | -3.6% |  5.4% | -2.5% | -0.3% |  0.3% | -2.6% |  0.2% | -5.4% | -3.7% | -5.6% |
+|XLB | -2.4% |  1.6% | -0.6% | -1.8% |  8.0% | -4.9% |  3.4% |  0.4% | -3.9% | -5.0% | -5.6% | -9.4% |-19.5% |
+|XLE | -3.5% | -8.7% | -0.2% | -4.6% |  4.6% | -1.2% |  6.6% | -5.2% | -3.5% | -7.7% | -4.2% | -9.4% |-32.2% |
     
 
 
@@ -89,4 +89,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-09-29)*
+*(this report was produced on: 2015-09-30)*
