@@ -68,7 +68,7 @@ print(last(data$prices))
 
 |           | US.STOCKS| FOREIGN.STOCKS| EMERGING.MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
 |:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|-----:|
-|2015-10-16 |    104.51|          45.88|            36.25|           108.03|          80|       15.42| 82.07|
+|2015-10-19 |    104.63|          45.61|            35.86|           107.98|       81.13|       15.14| 82.07|
     
 
 
@@ -157,7 +157,7 @@ obj$weights$strategy = weight
 |Sharpe        |1.04              |
 |DVR           |1                 |
 |R2            |0.96              |
-|Volatility    |10.8              |
+|Volatility    |10.79             |
 |MaxDD         |-14.18            |
 |Exposure      |99.71             |
 |Win.Percent   |62.97             |
@@ -230,7 +230,7 @@ obj$weights$strategy = weight
 |US.STOCKS        | 33.3  |2015-07-31 |2015-08-31 |31    |108.84      |102.21     |-2.03  |
 |CASH             | 66.7  |2015-07-31 |2015-08-31 |31    | 81.48      | 81.28     |-0.16  |
 |CASH             |100.0  |2015-08-31 |2015-09-30 |30    | 81.28      | 81.77     | 0.60  |
-|CASH             |100.0  |2015-09-30 |2015-10-16 |16    | 81.77      | 82.07     | 0.37  |
+|CASH             |100.0  |2015-09-30 |2015-10-19 |19    | 81.77      | 82.07     | 0.37  |
     
 
 
@@ -278,4 +278,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-10-19)*
+*(this report was produced on: 2015-10-20)*
