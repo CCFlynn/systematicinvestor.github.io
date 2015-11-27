@@ -72,9 +72,9 @@ print(last(data$prices))
 
 
 
-|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
-|:----------|---------:|--------------:|----------------:|-----------:|-----------:|-----:|
-|2015-11-24 |    107.39|          45.09|           106.19|       78.97|       14.52| 81.29|
+|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES| CASH|
+|:----------|---------:|--------------:|----------------:|-----------:|-----------:|----:|
+|2015-11-25 |    107.47|          45.11|           106.25|       79.29|        14.5| 81.3|
     
 
 
@@ -139,7 +139,7 @@ obj$weights$strategy = weight[period.ends,]
 |R2            |0.97              |
 |Volatility    |7.86              |
 |MaxDD         |-13.24            |
-|Exposure      |99.71             |
+|Exposure      |99.72             |
 |Win.Percent   |63.97             |
 |Avg.Trade     |0.2               |
 |Profit.Factor |2.05              |
@@ -209,8 +209,8 @@ obj$weights$strategy = weight[period.ends,]
 |CASH             | 80    |2015-08-31 |2015-09-30 |30    | 81.11      | 81.60     | 0.48  |
 |US.10YR.GOV.BOND | 20    |2015-09-30 |2015-10-30 |30    |107.54      |106.86     |-0.13  |
 |CASH             | 80    |2015-09-30 |2015-10-30 |30    | 81.60      | 81.62     | 0.02  |
-|US.10YR.GOV.BOND | 20    |2015-10-30 |2015-11-24 |25    |106.86      |106.19     |-0.12  |
-|CASH             | 80    |2015-10-30 |2015-11-24 |25    | 81.62      | 81.29     |-0.32  |
+|US.10YR.GOV.BOND | 20    |2015-10-30 |2015-11-25 |26    |106.86      |106.25     |-0.11  |
+|CASH             | 80    |2015-10-30 |2015-11-25 |26    | 81.62      | 81.30     |-0.31  |
     
 
 
@@ -276,4 +276,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-11-26)*
+*(this report was produced on: 2015-11-27)*
