@@ -72,9 +72,9 @@ print(last(data$prices))
 
 
 
-|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES| CASH|
-|:----------|---------:|--------------:|----------------:|-----------:|-----------:|----:|
-|2015-11-25 |    107.47|          45.11|           106.25|       79.29|        14.5| 81.3|
+|           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
+|:----------|---------:|--------------:|----------------:|-----------:|-----------:|-----:|
+|2015-11-27 |    107.63|          44.95|           106.36|       79.98|       14.28| 81.34|
     
 
 
@@ -142,7 +142,7 @@ obj$weights$strategy = weight[period.ends,]
 |Exposure      |99.72             |
 |Win.Percent   |63.97             |
 |Avg.Trade     |0.2               |
-|Profit.Factor |2.05              |
+|Profit.Factor |2.06              |
 |Num.Trades    |941               |
     
 
@@ -209,8 +209,8 @@ obj$weights$strategy = weight[period.ends,]
 |CASH             | 80    |2015-08-31 |2015-09-30 |30    | 81.11      | 81.60     | 0.48  |
 |US.10YR.GOV.BOND | 20    |2015-09-30 |2015-10-30 |30    |107.54      |106.86     |-0.13  |
 |CASH             | 80    |2015-09-30 |2015-10-30 |30    | 81.60      | 81.62     | 0.02  |
-|US.10YR.GOV.BOND | 20    |2015-10-30 |2015-11-25 |26    |106.86      |106.25     |-0.11  |
-|CASH             | 80    |2015-10-30 |2015-11-25 |26    | 81.62      | 81.30     |-0.31  |
+|US.10YR.GOV.BOND | 20    |2015-10-30 |2015-11-27 |28    |106.86      |106.36     |-0.09  |
+|CASH             | 80    |2015-10-30 |2015-11-27 |28    | 81.62      | 81.34     |-0.28  |
     
 
 
@@ -224,7 +224,6 @@ obj$weights$strategy = weight[period.ends,]
 
 |           | US.STOCKS| FOREIGN.STOCKS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES| CASH|
 |:----------|---------:|--------------:|----------------:|-----------:|-----------:|----:|
-|2014-03-28 |        20|             20|                0|          20|           0|   40|
 |2014-04-29 |        20|             20|                0|          20|           0|   40|
 |2014-05-29 |        20|             20|                0|          20|           0|   40|
 |2014-06-27 |        20|             20|                0|          20|           0|   40|
@@ -244,6 +243,7 @@ obj$weights$strategy = weight[period.ends,]
 |2015-08-28 |         0|              0|               20|           0|           0|   80|
 |2015-09-29 |         0|              0|               20|           0|           0|   80|
 |2015-10-29 |         0|              0|               20|           0|           0|   80|
+|2015-11-27 |         0|              0|               20|           0|           0|   80|
     
 
 
@@ -276,4 +276,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-11-27)*
+*(this report was produced on: 2015-11-28)*
