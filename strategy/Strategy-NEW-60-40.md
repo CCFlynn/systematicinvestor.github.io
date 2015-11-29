@@ -86,6 +86,21 @@ prices = data$prices * data$universe
 
 
 
+{% highlight text %}
+## Error in business.days.location.end(data$dates, input$calendar, fn.ends = date.ends.fn(input$period)): unused argument (fn.ends = date.ends.fn(input$period))
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in date.ends.index(out, out$signal.timing): object 'out' not found
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'period.ends' not found
+{% endhighlight %}
 
 
 Code Strategy Rules:
@@ -101,7 +116,17 @@ target.allocation = NA * prices[1,]
  target.allocation$BOND = 40/100
 
 obj$weights$dollar.w.60.40 = rep.row(target.allocation, len(period.ends))
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in len(period.ends): object 'period.ends' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 #*****************************************************************
 # Risk Weighted 40% Bonds & 60% Stock
 #******************************************************************
@@ -113,7 +138,17 @@ weight.risk = 1 / hist.vol
 	weight.risk = weight.risk / rowSums(weight.risk, na.rm=T)
 
 obj$weights$risk.w.60.40 = weight.risk[period.ends,]
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in `[.xts`(weight.risk, period.ends, ): object 'period.ends' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 #*****************************************************************
 # Cash Filter
 #******************************************************************
@@ -123,170 +158,128 @@ sma = bt.apply.matrix(prices, SMA, 200)
 # go to cash if prices falls below 10 month moving average
 go2cash = prices < sma
   go2cash = ifna(go2cash, T)[period.ends,]
+{% endhighlight %}
 
 
+
+{% highlight text %}
+## Error in `[.xts`(ifna(go2cash, T), period.ends, ): object 'period.ends' not found
+{% endhighlight %}
+
+
+
+{% highlight r %}
 weight = obj$weights$risk.w.60.40
 	weight[go2cash] = 0
 weight$CASH = 1 - rowSums(weight, na.rm=T)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in rowSums(weight, na.rm = T): 'x' must be an array of at least two dimensions
+{% endhighlight %}
+
+
+
+{% highlight r %}
 obj$weights$risk.w.60.40.CASH = weight
 
 
 weight[] = obj$weights$dollar.w.60.40
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in weight[] = obj$weights$dollar.w.60.40: replacement has length zero
+{% endhighlight %}
+
+
+
+{% highlight r %}
 	weight[go2cash] = 0
 weight$CASH = 1 - rowSums(weight, na.rm=T)
+{% endhighlight %}
+
+
+
+{% highlight text %}
+## Error in rowSums(weight, na.rm = T): 'x' must be an array of at least two dimensions
+{% endhighlight %}
+
+
+
+{% highlight r %}
 obj$weights$dollar.w.60.40.CASH = weight
 
 #*****************************************************************
 # Scale Risk Weighted 40% Bonds & 60% Stock strategy to have 6% volatility
 #****************************************************************** 
 models = get.back.test(data, obj, input)
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in rowSums(weight, na.rm = T): 'x' must be an array of at least two dimensions
+{% endhighlight %}
+
+
+
+{% highlight r %}
 weight = target.vol.strategy(models$risk.w.60.40, ifna(weight.risk,0),
 		target=6/100, lookback.len=21, max.portfolio.leverage=100/100)
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in log(model$equity): non-numeric argument to mathematical function
+{% endhighlight %}
+
+
+
+{% highlight r %}
 # invested not allocated to CASH
 weight$CASH = 1 - rowSums(weight)
+{% endhighlight %}
 
+
+
+{% highlight text %}
+## Error in rowSums(weight): 'x' must be an array of at least two dimensions
+{% endhighlight %}
+
+
+
+{% highlight r %}
 obj$weights$risk.w.60.40.target6.cash = weight[period.ends,]
 {% endhighlight %}
 
 
-![plot of chunk plot-6](/public/images/Strategy-NEW-60-40/plot-6-1.png) 
 
-#Strategy Performance:
-    
-
-
-
-
-|              |dollar.w.60.40    |risk.w.60.40      |risk.w.60.40.CASH |dollar.w.60.40.CASH |risk.w.60.40.target6.cash |
-|:-------------|:-----------------|:-----------------|:-----------------|:-------------------|:-------------------------|
-|Period        |May1986 - Nov2015 |May1986 - Nov2015 |May1986 - Nov2015 |May1986 - Nov2015   |May1986 - Nov2015         |
-|Cagr          |9.05              |9.29              |8.65              |8.81                |7.97                      |
-|Sharpe        |0.83              |1.07              |1.09              |1                   |1.17                      |
-|DVR           |0.76              |0.96              |1                 |0.91                |1.1                       |
-|R2            |0.92              |0.89              |0.92              |0.92                |0.93                      |
-|Volatility    |11.16             |8.64              |7.87              |8.87                |6.74                      |
-|MaxDD         |-31.76            |-18.66            |-15.04            |-21.19              |-11.39                    |
-|Exposure      |99.88             |99.6              |99.88             |99.88               |99.3                      |
-|Win.Percent   |61.53             |61.33             |65.34             |65.44               |64.38                     |
-|Avg.Trade     |0.39              |0.4               |0.39              |0.4                 |0.25                      |
-|Profit.Factor |1.7               |1.81              |2.05              |2.04                |1.91                      |
-|Num.Trades    |707               |706               |678               |677                 |977                       |
-    
-
-
-![plot of chunk plot-6](/public/images/Strategy-NEW-60-40/plot-6-2.png) 
-
-#Monthly Results for risk.w.60.40.target6.cash :
-    
+{% highlight text %}
+## Error in eval(expr, envir, enclos): object 'period.ends' not found
+{% endhighlight %}
 
 
 
-
-|     |Jan   |Feb   |Mar   |Apr   |May   |Jun   |Jul   |Aug   |Sep   |Oct   |Nov   |Dec   |Year  |MaxDD |
-|:----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|:-----|
-|1986 |      |      |      |      |      |  0.0 | -0.1 |  4.5 | -4.9 |  1.8 |  1.9 | -2.2 |  0.7 | -6.0 |
-|1987 |  1.9 |  1.8 | -0.3 | -3.1 | -0.3 |  1.9 |  1.4 |  0.3 | -2.6 | -0.3 |  0.1 |  2.1 |  2.6 |-11.4 |
-|1988 |  3.4 |  1.3 | -2.1 | -0.4 | -0.9 |  4.1 | -0.8 | -0.7 |  3.2 |  2.0 | -1.4 |  0.4 |  8.0 | -4.5 |
-|1989 |  3.4 | -1.8 |  1.0 |  3.1 |  3.1 |  2.9 |  3.8 | -0.9 |  0.0 |  1.2 |  1.1 |  0.7 | 18.9 | -3.1 |
-|1990 | -4.8 |  0.0 |  0.6 | -2.0 |  6.0 |  1.0 |  0.6 | -5.1 |  0.1 |  1.3 |  3.3 |  1.9 |  2.4 | -7.8 |
-|1991 |  2.0 |  1.5 |  0.7 |  0.9 |  1.1 | -1.5 |  2.3 |  3.0 |  1.4 |  0.4 | -1.0 |  5.9 | 17.9 | -2.6 |
-|1992 | -2.6 |  0.8 | -1.3 |  1.2 |  1.8 |  0.0 |  3.9 | -0.5 |  1.3 | -0.7 |  1.8 |  2.3 |  8.0 | -4.1 |
-|1993 |  1.5 |  1.4 |  0.7 | -0.4 |  0.8 |  2.3 |  0.6 |  3.9 | -0.2 |  1.0 | -1.7 |  0.7 | 11.0 | -3.6 |
-|1994 |  2.9 | -3.5 | -3.0 | -0.5 |  0.2 | -0.9 |  2.3 |  1.8 | -2.3 |  0.7 | -0.9 |  0.9 | -2.6 | -8.3 |
-|1995 |  2.7 |  3.4 |  1.6 |  2.0 |  6.1 |  1.3 |  0.7 |  1.0 |  3.3 |  1.2 |  3.1 |  2.2 | 32.6 | -2.0 |
-|1996 |  1.3 | -2.1 | -0.5 | -0.4 |  0.4 |  1.2 | -2.2 |  0.0 |  2.8 |  3.0 |  3.9 | -2.4 |  4.8 | -6.5 |
-|1997 |  1.2 |  0.1 | -2.3 |  2.6 |  1.6 |  2.0 |  5.1 | -2.5 |  2.4 |  1.1 |  1.2 |  1.7 | 14.9 | -5.1 |
-|1998 |  1.7 |  1.2 |  2.0 |  0.6 |  0.5 |  2.2 | -0.7 | -0.2 |  3.7 |  0.0 |  0.9 |  2.4 | 15.2 | -4.8 |
-|1999 |  1.3 | -3.8 |  0.9 |  0.8 | -1.5 |  0.9 | -1.0 | -0.3 |  0.3 |  1.1 |  0.0 |  0.8 | -0.7 | -5.3 |
-|2000 | -1.0 |  1.3 |  3.4 | -0.8 | -0.3 |  1.9 |  0.5 |  2.7 | -2.4 |  0.9 |  1.6 |  1.8 |  9.8 | -4.1 |
-|2001 |  1.2 | -1.2 | -1.2 | -0.5 |  0.2 | -0.3 |  2.0 |  0.4 | -1.6 |  2.9 | -2.0 | -0.7 | -0.9 | -6.5 |
-|2002 |  0.1 |  0.2 | -1.9 |  0.6 |  0.1 | -0.8 |  0.1 |  3.6 |  0.7 | -0.4 |  0.7 |  0.4 |  3.3 | -5.4 |
-|2003 | -1.0 |  1.4 | -0.9 |  3.4 |  6.1 | -0.4 | -3.5 |  0.6 |  1.9 |  0.7 |  0.7 |  3.2 | 12.7 | -7.3 |
-|2004 |  1.7 |  1.6 |  0.2 | -4.0 |  0.2 |  1.0 | -0.5 |  2.3 |  0.9 |  1.5 |  0.1 |  2.3 |  7.4 | -6.7 |
-|2005 | -0.1 |  0.0 | -1.0 |  0.9 |  2.7 |  1.2 |  0.3 |  0.9 | -1.6 | -2.3 |  1.5 |  0.9 |  3.4 | -4.8 |
-|2006 |  0.6 |  0.9 | -2.2 | -0.7 | -1.5 |  0.6 |  1.5 |  2.4 |  2.2 |  1.9 |  2.1 | -1.0 |  7.0 | -5.1 |
-|2007 |  0.3 |  0.9 | -0.7 |  1.9 |  0.3 | -1.2 |  0.6 |  1.5 |  1.0 |  1.2 |  1.7 | -0.7 |  7.1 | -4.3 |
-|2008 | -0.7 | -0.6 |  0.5 | -0.3 | -0.9 | -1.4 | -0.5 |  1.8 | -1.8 | -3.8 |  3.6 |  3.3 | -1.0 | -8.5 |
-|2009 | -5.1 | -2.1 |  2.4 | -0.7 | -0.2 |  0.1 |  2.0 |  1.9 |  2.2 | -1.4 |  2.5 | -2.6 | -1.4 | -7.8 |
-|2010 | -0.8 |  0.7 |  1.0 |  2.1 | -0.6 |  1.0 |  1.7 |  2.8 |  2.7 |  0.2 | -0.7 |  1.0 | 11.8 | -3.7 |
-|2011 |  0.8 |  2.4 | -0.1 |  2.5 |  0.7 | -2.0 |  1.1 |  1.5 |  1.8 |  2.1 |  0.7 |  1.8 | 14.2 | -2.7 |
-|2012 |  1.7 |  1.7 |  0.6 |  1.5 |  0.9 |  1.1 |  2.6 |  0.5 |  0.5 | -1.3 |  0.8 | -1.1 |  9.7 | -3.0 |
-|2013 |  1.2 |  1.2 |  1.6 |  3.1 | -2.4 | -1.8 |  0.6 | -1.8 |  1.5 |  3.0 | -0.2 |  0.6 |  6.7 | -6.1 |
-|2014 |  1.1 |  2.1 |  0.8 |  1.3 |  2.7 |  1.0 | -0.6 |  4.2 | -1.5 |  2.5 |  2.0 |  1.2 | 18.0 | -2.4 |
-|2015 |  2.9 | -0.3 | -0.4 | -0.6 | -0.1 | -1.7 |  2.7 | -3.4 |  0.3 |  2.8 | -0.2 |      |  1.8 | -5.6 |
-|Avg  |  0.6 |  0.4 |  0.0 |  0.5 |  0.9 |  0.5 |  0.9 |  0.9 |  0.5 |  0.8 |  0.9 |  1.0 |  8.1 | -5.3 |
-    
-
-
-![plot of chunk plot-6](/public/images/Strategy-NEW-60-40/plot-6-3.png) ![plot of chunk plot-6](/public/images/Strategy-NEW-60-40/plot-6-4.png) 
-
-#Trades for risk.w.60.40.target6.cash :
-    
+{% highlight text %}
+## Error in rowSums(weight, na.rm = T): 'x' must be an array of at least two dimensions
+{% endhighlight %}
 
 
 
-
-|risk.w.60.40.target6.cash |weight |entry.date |exit.date  |nhold |entry.price |exit.price |return |
-|:-------------------------|:------|:----------|:----------|:-----|:-----------|:----------|:------|
-|STOCK                     |63.6   |2015-04-30 |2015-05-29 |29    |206.38      |209.03     | 0.82  |
-|BOND                      |36.4   |2015-04-30 |2015-05-29 |29    |124.07      |121.13     |-0.86  |
-|STOCK                     |38.2   |2015-05-29 |2015-06-30 |32    |209.03      |204.82     |-0.77  |
-|BOND                      |23.5   |2015-05-29 |2015-06-30 |32    |121.13      |116.27     |-0.94  |
-|CASH                      |38.2   |2015-05-29 |2015-06-30 |32    | 84.64      | 84.66     | 0.01  |
-|STOCK                     |57.6   |2015-06-30 |2015-07-31 |31    |204.82      |209.36     | 1.28  |
-|BOND                      |33.3   |2015-06-30 |2015-07-31 |31    |116.27      |121.48     | 1.49  |
-|CASH                      | 9.1   |2015-06-30 |2015-07-31 |31    | 84.66      | 84.70     | 0.00  |
-|STOCK                     |50.0   |2015-07-31 |2015-08-31 |31    |209.36      |196.52     |-3.07  |
-|BOND                      |41.2   |2015-07-31 |2015-08-31 |31    |121.48      |120.64     |-0.28  |
-|CASH                      | 8.8   |2015-07-31 |2015-08-31 |31    | 84.70      | 84.66     | 0.00  |
-|STOCK                     |17.6   |2015-08-31 |2015-09-30 |30    |196.52      |191.59     |-0.44  |
-|BOND                      |29.4   |2015-08-31 |2015-09-30 |30    |120.64      |123.02     | 0.58  |
-|CASH                      |52.9   |2015-08-31 |2015-09-30 |30    | 84.66      | 84.91     | 0.16  |
-|STOCK                     |36.4   |2015-09-30 |2015-10-30 |30    |191.59      |207.87     | 3.09  |
-|BOND                      |48.5   |2015-09-30 |2015-10-30 |30    |123.02      |122.47     |-0.21  |
-|CASH                      |15.2   |2015-09-30 |2015-10-30 |30    | 84.91      | 84.79     |-0.02  |
-|STOCK                     |45.5   |2015-10-30 |2015-11-27 |28    |207.87      |209.56     | 0.37  |
-|BOND                      |48.5   |2015-10-30 |2015-11-27 |28    |122.47      |120.97     |-0.60  |
-|CASH                      | 6.1   |2015-10-30 |2015-11-27 |28    | 84.79      | 84.60     |-0.01  |
-    
+{% highlight text %}
+## Error in out[[1]][[1]]: subscript out of bounds
+{% endhighlight %}
 
 
 
-
-#Signals for risk.w.60.40.target6.cash :
-    
-
-
-
-
-|           | STOCK| BOND| CASH|
-|:----------|-----:|----:|----:|
-|2014-04-29 |    39|   61|    0|
-|2014-05-29 |    56|   44|    0|
-|2014-06-27 |    64|   36|    0|
-|2014-07-30 |    59|   41|    0|
-|2014-08-28 |    45|   39|   15|
-|2014-09-29 |    56|   44|    0|
-|2014-10-30 |    24|   45|   30|
-|2014-11-26 |    59|   41|    0|
-|2014-12-30 |    41|   41|   18|
-|2015-01-29 |    50|   50|    0|
-|2015-02-26 |    50|   32|   18|
-|2015-03-30 |    26|   24|   50|
-|2015-04-29 |    64|   36|    0|
-|2015-05-28 |    38|   24|   38|
-|2015-06-29 |    58|   33|    9|
-|2015-07-30 |    50|   41|    9|
-|2015-08-28 |    18|   29|   53|
-|2015-09-29 |    36|   48|   15|
-|2015-10-29 |    45|   48|    6|
-|2015-11-27 |    35|   50|   15|
-    
-
-
-
+{% highlight text %}
+## Error in out[[1]][[1]]: subscript out of bounds
+{% endhighlight %}
 
 
 For your convenience, the 
@@ -299,4 +292,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-11-28)*
+*(this report was produced on: 2015-11-29)*
