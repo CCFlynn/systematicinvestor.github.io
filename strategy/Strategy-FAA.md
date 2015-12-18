@@ -61,7 +61,7 @@ print(last(data$prices))
 
 |           | US.STOCKS| FOREIGN.STOCKS| EMERGING>MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
 |:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|-----:|
-|2015-12-16 |    106.24|          44.01|            33.19|           105.61|       80.41|       13.35| 80.81|
+|2015-12-17 |    104.68|          43.46|            32.76|           106.05|       80.01|       13.21| 80.98|
     
 
 
@@ -246,4 +246,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-12-17)*
+*(this report was produced on: 2015-12-18)*
