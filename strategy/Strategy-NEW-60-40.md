@@ -64,9 +64,9 @@ print(last(data$prices))
 
 
 
-|           |  STOCK|   BOND|  CASH|
-|:----------|------:|------:|-----:|
-|2015-12-18 | 200.02| 123.23| 84.52|
+|           |  STOCK|  BOND|  CASH|
+|:----------|------:|-----:|-----:|
+|2015-12-21 | 201.67| 123.2| 84.51|
     
 
 
@@ -292,4 +292,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2015-12-21)*
+*(this report was produced on: 2015-12-22)*
