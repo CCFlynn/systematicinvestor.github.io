@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Strategy
+permalink: strategy/
 ---
 
 Following are automated Strategy back-test and signal reports,
