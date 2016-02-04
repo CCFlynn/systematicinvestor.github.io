@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Tools
+permalink: tools/
 ---
 
 Following are automated researcg reports that are created each night:
