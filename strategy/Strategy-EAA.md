@@ -68,7 +68,7 @@ print(last(data$prices))
 
 |           | US.STOCKS| FOREIGN.STOCKS| EMERGING.MARKETS| US.10YR.GOV.BOND| REAL.ESTATE| COMMODITIES|  CASH|
 |:----------|---------:|--------------:|----------------:|----------------:|-----------:|-----------:|-----:|
-|2016-02-16 |     96.08|          39.61|            29.97|           110.25|       73.62|       12.36| 81.88|
+|2016-02-17 |     97.67|          40.36|            30.56|           109.98|       74.25|       12.62| 81.86|
     
 
 
@@ -153,7 +153,7 @@ obj$weights$strategy = weight
 |              |strategy          |
 |:-------------|:-----------------|
 |Period        |May1996 - Feb2016 |
-|Cagr          |11.01             |
+|Cagr          |11                |
 |Sharpe        |1.03              |
 |DVR           |0.99              |
 |R2            |0.96              |
@@ -231,7 +231,7 @@ obj$weights$strategy = weight
 |CASH             | 66.7  |2015-11-30 |2015-12-31 |31    | 80.73      | 80.59     |-0.12  |
 |REAL.ESTATE      | 33.3  |2015-12-31 |2016-01-29 |29    | 79.73      | 76.99     |-1.15  |
 |CASH             | 66.7  |2015-12-31 |2016-01-29 |29    | 80.59      | 81.56     | 0.80  |
-|CASH             |100.0  |2016-01-29 |2016-02-16 |18    | 81.56      | 81.88     | 0.40  |
+|CASH             |100.0  |2016-01-29 |2016-02-17 |19    | 81.56      | 81.86     | 0.37  |
     
 
 
@@ -279,4 +279,4 @@ report can also be downloaded and viewed the pdf format.
 
 
 
-*(this report was produced on: 2016-02-17)*
+*(this report was produced on: 2016-02-18)*
